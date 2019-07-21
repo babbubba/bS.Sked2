@@ -8,58 +8,56 @@ using System.Text;
 
 namespace bS.Sked2.Repository
 {
-    public class Repository<TBase> : IRepository<TBase> where TBase : class, IPersisterEntity
+    public class Repository : IRepository 
     {
-        //private static ILog log = LogManager.GetLogger<Repository<TBase>>();
 
         private readonly IUnitOfWork _mainUnitOfWork;
 
         public Repository(IUnitOfWork mainUnitOfWork)
         {
             _mainUnitOfWork = mainUnitOfWork;
-            //log.Trace($"Repository created for the Unit Of Work '{mainUnitOfWork.GetHashCode()}'.");
         }
 
         #region IRepository<TBase> Members
 
-        public IQueryable<TImpl> GetQuery<TImpl>(IUnitOfWork uow) where TImpl : class, TBase
+        public IQueryable<TImpl> GetQuery<TImpl>(IUnitOfWork uow) where TImpl : class, IPersisterEntity
         {
             return uow.Context.CreateObjectSet<TImpl>();
         }
 
-        public IQueryable<TImpl> GetQuery<TImpl>() where TImpl : class, TBase
+        public IQueryable<TImpl> GetQuery<TImpl>() where TImpl : class, IPersisterEntity
         {
             return GetQuery<TImpl>(_mainUnitOfWork);
         }
 
-        public void Add<TImpl>(TImpl item, IUnitOfWork uow) where TImpl : class, TBase
+        public void Add<TImpl>(TImpl item, IUnitOfWork uow) where TImpl : class, IPersisterEntity
         {
             uow.Context.CreateObjectSet<TImpl>().Add(item);
         }
 
-        public void Add<TImpl>(TImpl item) where TImpl : class, TBase
+        public void Add<TImpl>(TImpl item) where TImpl : class, IPersisterEntity
         {
             Add<TImpl>(item, _mainUnitOfWork);
             FlushIfMainUnitOfWorkIsNotInTransaction();
         }
 
-        public void Update<TImpl>(TImpl item, IUnitOfWork uow) where TImpl : class, TBase
+        public void Update<TImpl>(TImpl item, IUnitOfWork uow) where TImpl : class, IPersisterEntity
         {
             uow.Context.CreateObjectSet<TImpl>().Update(item);
         }
 
-        public void Update<TImpl>(TImpl item) where TImpl : class, TBase
+        public void Update<TImpl>(TImpl item) where TImpl : class, IPersisterEntity
         {
             Update<TImpl>(item, _mainUnitOfWork);
             FlushIfMainUnitOfWorkIsNotInTransaction();
         }
 
-        public void Delete<TImpl>(TImpl item, IUnitOfWork uow) where TImpl : class, TBase
+        public void Delete<TImpl>(TImpl item, IUnitOfWork uow) where TImpl : class, IPersisterEntity
         {
             uow.Context.CreateObjectSet<TImpl>().Delete(item);
         }
 
-        public void Delete<TImpl>(TImpl item) where TImpl : class, TBase
+        public void Delete<TImpl>(TImpl item) where TImpl : class, IPersisterEntity
         {
             Delete<TImpl>(item, _mainUnitOfWork);
             FlushIfMainUnitOfWorkIsNotInTransaction();

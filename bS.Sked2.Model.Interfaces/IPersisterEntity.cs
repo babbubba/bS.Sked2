@@ -6,5 +6,6 @@ namespace bS.Sked2.Model.Interfaces
 {
     public interface IPersisterEntity
     {
+        Guid Id { get; set; }
     }
 }

@@ -4,10 +4,9 @@ using System.Text;
 
 namespace bS.Sked2.DtoModel.Interfaces
 {
-   public interface IInterchangeablyDto<T>
+    public interface IInterchangeablyDto<T> : IInterchangeablyBaseDto
     {
-        bool IsValid { get; set; }
-        bool IsInit { get; set; }
+     
 
         void Init();
         T Get();
