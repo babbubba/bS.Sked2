@@ -4,4 +4,12 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FluentNHibernate" Version="2.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\bS.Sked2.Repository.Interfaces\bS.Sked2.Repository.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>

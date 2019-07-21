@@ -6,7 +6,7 @@ using System.Text;
 
 namespace bS.Sked2.Repository.Interfaces
 {
-    public interface IRepositoryContext 
+    public interface IRepositoryContext : IDisposable
     {
         IObjectSet<T> CreateObjectSet<T>() where T : class, IPersisterEntity;
 

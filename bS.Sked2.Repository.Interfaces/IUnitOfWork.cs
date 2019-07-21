@@ -5,7 +5,7 @@ using System.Text;
 
 namespace bS.Sked2.Repository.Interfaces
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         IRepositoryContext Context { get; }
         void Flush();
