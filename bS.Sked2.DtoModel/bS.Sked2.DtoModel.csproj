@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\bS.Sked2.DtoModel.Interfaces\bS.Sked2.DtoModel.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>
