@@ -10,7 +10,7 @@ For repository we use [bs.Data](https://github.com/babbubba/bs.Data "bs.Data") N
 It implements the Composition Root pattern (usefull in unit testing).
 #### bS.Sked2.Service
 It implements Service Pattern.
-#### bS.Sked2.Module.Common
+#### bS.Sked2.Extensions.Common
 It implements the base extension module.
 #### bS.Sked2.Engine
 It implement the Engine logic for the elements execution.
