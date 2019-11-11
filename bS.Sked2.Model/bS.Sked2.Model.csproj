@@ -8,9 +8,4 @@
     <PackageReference Include="FluentNHibernate" Version="2.1.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\bS.Sked2.DtoModel.Interfaces\bS.Sked2.DtoModel.Interfaces.csproj" />
-    <ProjectReference Include="..\bS.Sked2.Model.Interfaces\bS.Sked2.Model.Interfaces.csproj" />
-  </ItemGroup>
-
 </Project>
