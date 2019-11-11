@@ -9,5 +9,19 @@ namespace bS.Sked2.Structure.Engine
     /// </summary>
     public interface IEngineTrigger
     {
+        /// <summary>
+        /// Gets or sets the last execution time.
+        /// </summary>
+        /// <value>
+        /// The last execution time.
+        /// </value>
+        DateTime LastExecutionTime { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is enable.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is enable; otherwise, <c>false</c>.
+        /// </value>
+        bool IsEnable { get; set; }
     }
 }
