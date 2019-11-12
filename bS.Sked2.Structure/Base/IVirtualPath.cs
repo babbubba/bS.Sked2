@@ -9,5 +9,10 @@ namespace bS.Sked2.Structure.Base
     /// </summary>
     public interface IVirtualPath
     {
+        string Path { get; }
+        string RealPath { get; }
     }
+
+  
+
 }

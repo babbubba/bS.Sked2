@@ -58,5 +58,14 @@ namespace bS.Sked2.Structure.Service
         /// <returns></returns>
         bool CopyFile(IVirtualPath origin, IVirtualPath target);
 
+        /// <summary>
+        /// Deletes the folder in the specified virtual path.
+        /// </summary>
+        /// <param name="path">The folder's virtual path.</param>
+        /// <param name="deleteSubElements">if set to <c>true</c> [delete sub elements].</param>
+        /// <returns></returns>
+        bool DeleteFolder(IVirtualPath path, bool deleteSubElements = false);
+
+
     }
 }
