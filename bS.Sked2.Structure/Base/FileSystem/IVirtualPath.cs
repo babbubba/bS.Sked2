@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace bS.Sked2.Structure.Base
+namespace bS.Sked2.Structure.Base.FileSystem
 {
     /// <summary>
     /// Represent a virtual path object used in a file manager

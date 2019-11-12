@@ -9,5 +9,6 @@ namespace bS.Sked2.Structure.Service
     /// </summary>
     public interface IService
     {
+        
     }
 }
