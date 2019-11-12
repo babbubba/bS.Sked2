@@ -27,13 +27,13 @@ namespace bS.Sked2.Structure.Base
         /// <value>
         /// The begin time.
         /// </value>
-        DateTime BeginTime { get; set; }
+        DateTime BeginTime { get; }
         /// <summary>
         /// Gets or sets the end time.
         /// </summary>
         /// <value>
         /// The end time.
         /// </value>
-        DateTime EndTime { get; set; }
+        DateTime EndTime { get; }
     }
 }

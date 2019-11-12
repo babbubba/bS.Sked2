@@ -4,6 +4,9 @@ using System.Text;
 
 namespace bS.Sked2.Structure.Base.FileSystem
 {
+    /// <summary>
+    /// It rapresent the result value for a virtual file/folder watcher.
+    /// </summary>
     public interface IVirtualPathWatch
     {
         event EventHandler<string> Renamed;

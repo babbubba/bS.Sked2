@@ -6,6 +6,10 @@ using System.Text;
 
 namespace bS.Sked2.Structure.Base.Exceptions
 {
+    /// <summary>
+    /// This is the base abstracded class for all exception. It automatically manages log messages when user throw created exception based on this and permits to manage an error code integer value.
+    /// </summary>
+    /// <seealso cref="System.Exception" />
     public abstract class BaseLoggableException : Exception
     {
         public int ErrorCode { get; private set; }
