@@ -21,11 +21,11 @@ namespace bS.Sked2.Engine
             // Check if element can be executed
             if (!element.CanBeExecuted())
             {
-                if (element.ParentTask.FailIfAnyElementHasError)
-                {
-                    element.ParentTask.AddMessage($"The element {element.Name} (id: {element.InstanceID}) cannot be executed. The task will be aborted.", MessageSeverity.Fatal);
-                    element.ParentTask.Stop();
-                }
+                //if (element.ParentTask.FailIfAnyElementHasError)
+                //{
+                element.ParentTask.AddMessage($"The element {element.Name} (id: {element.InstanceID}) cannot be executed. The task will be aborted.", MessageSeverity.Fatal);
+                //element.ParentTask.Stop();
+                //}
                 throw new EngineException(logger, $"The element {element.Name} (id: {element.InstanceID}) cannot be executed.");
             }
 

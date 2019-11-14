@@ -1,5 +1,7 @@
 ﻿using bS.Sked2.Structure.Base.Exceptions;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 
 namespace bS.Sked2.Structure.Engine.Data
@@ -119,6 +121,18 @@ namespace bS.Sked2.Structure.Engine.Data
                     if (typeof(T) != typeof(DataTable))
                     {
                         throw new EngineException("Error parsing Engine Data Value. The type of value is not the right type for this data (expected 'DataTable').");
+                    }
+                    break;
+                case DataType.DictionaryEntry:
+                    if (typeof(T) != typeof(DictionaryEntry))
+                    {
+                        throw new EngineException("Error parsing Engine Data Value. The type of value is not the right type for this data (expected 'DictionaryEntry').");
+                    }
+                    break;
+                case DataType.Collection:
+                    if (typeof(T) != typeof(IList<IEngineData>))
+                    {
+                        throw new EngineException("Error parsing Engine Data Value. The type of value is not the right type for this data (expected 'List<IEngineData>').");
                     }
                     break;
             }

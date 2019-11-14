@@ -37,14 +37,16 @@ namespace bS.Sked2.Extensions.Common.FlatFile
         public override void Start()
         {
             base.Start();
-            var sourceFilePath = GetDataValue(EngineDataDirection.Input, "SourceFilePath").Get<string>();
-            var skipStartingDataRows = GetDataValue(EngineDataDirection.Input, "SkipStartingDataRows").Get<int?>();
-            var firstRowHasHeader = GetDataValue(EngineDataDirection.Input, "FirstRowHasHeader").Get<bool>();
-            var columnDelimiter = GetDataValue(EngineDataDirection.Input, "ColumnDelimiter").Get<char>();
-            var limitToRows = GetDataValue(EngineDataDirection.Input, "LimitToRows").Get<int?>();
 
             try
             {
+                // Get parameters
+                var sourceFilePath = GetDataValue(EngineDataDirection.Input, "SourceFilePath").Get<string>();
+                var skipStartingDataRows = GetDataValue(EngineDataDirection.Input, "SkipStartingDataRows").Get<int?>();
+                var firstRowHasHeader = GetDataValue(EngineDataDirection.Input, "FirstRowHasHeader").Get<bool>();
+                var columnDelimiter = GetDataValue(EngineDataDirection.Input, "ColumnDelimiter").Get<char>();
+                var limitToRows = GetDataValue(EngineDataDirection.Input, "LimitToRows").Get<int?>();
+
                 //Start parsing file
                 AddMessage("Configuring parser to read file", MessageSeverity.Debug);
                 var parser = new GenericParserAdapter(sourceFilePath);

@@ -58,7 +58,9 @@ namespace bS.Sked2.Structure.Engine
              @Char = 4,
              @String = 5,
              @Datetime = 6,
-             @Table = 7
+             @Table = 7,
+             @DictionaryEntry = 8,
+             Collection = 9
     }
 
     public enum EngineDataDirection
