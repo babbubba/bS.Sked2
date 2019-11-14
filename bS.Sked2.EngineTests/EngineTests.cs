@@ -10,6 +10,8 @@ using bS.Sked2.Structure.Service;
 using bS.Sked2.Structure.Engine;
 using bS.Sked2.Engine.Objects;
 using bS.Sked2.Structure.Engine.Data;
+using System.Data;
+using bS.Sked2.Service.Message;
 
 namespace bS.Sked2.Engine.Tests
 {
@@ -24,12 +26,14 @@ namespace bS.Sked2.Engine.Tests
         public void Init()
         { 
            logger = Mock.Of<ILogger<Engine>>();
-           messageService = Mock.Of<IMessageService>();
             engine = new Engine(logger);
         }
         [TestMethod()]
         public void ExecuteElementTest()
         {
+            var messageService = new MessageService();
+
+
             var commonModule = new Extensions.Common.Common(logger, messageService);
             commonModule.Init();
 
@@ -44,10 +48,11 @@ namespace bS.Sked2.Engine.Tests
             flatFileReader.ParentModule = commonModule;
             flatFileReader.ParentTask = task;
 
-            flatFileReader.SetDataValue(EngineDataDirection.Input, "SourceFilePath", new StringValue(@"c:\temp\flatfile.csv"));
-            flatFileReader.SetDataValue(EngineDataDirection.Input, "FirstRowHasHeader", new BoolValue(true));
-            flatFileReader.SetDataValue(EngineDataDirection.Input, "ColumnDelimiter", new CharValue(';'));
+            flatFileReader.SetDataValue(EngineDataDirection.Input, "SourceFilePath", new StringValue(@"c:\temp\provincia-regione-sigla.csv"));
+            flatFileReader.SetDataValue(EngineDataDirection.Input, "FirstRowHasHeader", new BoolValue(false));
+            flatFileReader.SetDataValue(EngineDataDirection.Input, "ColumnDelimiter", new CharValue(','));
             engine.ExecuteElement(flatFileReader);
+            var result = flatFileReader.GetDataValue(EngineDataDirection.Output, "Table").Get<DataTable>();
         }
     }
 }

@@ -4,5 +4,7 @@
     {
         string Message { get; set; }
         MessageSeverity Severity { get; set; }
+
+        string Instance { get; set; }
     }
 }

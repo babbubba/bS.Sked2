@@ -43,25 +43,32 @@ namespace bS.Sked2.Extensions.Common.FlatFile
             var columnDelimiter = GetDataValue(EngineDataDirection.Input, "ColumnDelimiter").Get<char>();
             var limitToRows = GetDataValue(EngineDataDirection.Input, "LimitToRows").Get<int?>();
 
-            //Start parsing file
-            AddMessage("Configuring parser to read file", MessageSeverity.Debug);
-            var parser = new GenericParserAdapter(sourceFilePath);
-            parser.SkipStartingDataRows = skipStartingDataRows ?? 0;
-            parser.FirstRowHasHeader = firstRowHasHeader;
-            parser.ColumnDelimiter = columnDelimiter;
-            parser.MaxRows = limitToRows ?? 0;
-            var table = new TableValue();
+            try
+            {
+                //Start parsing file
+                AddMessage("Configuring parser to read file", MessageSeverity.Debug);
+                var parser = new GenericParserAdapter(sourceFilePath);
+                parser.SkipStartingDataRows = skipStartingDataRows ?? 0;
+                parser.FirstRowHasHeader = firstRowHasHeader;
+                parser.ColumnDelimiter = columnDelimiter;
+                parser.MaxRows = limitToRows ?? 0;
+                var table = new TableValue();
 
-            AddMessage($"Begin parsing file: '{sourceFilePath}'.", MessageSeverity.Debug);
-            table.Set(parser.GetDataTable());
+                AddMessage($"Begin parsing file: '{sourceFilePath}'.", MessageSeverity.Debug);
+                table.Set(parser.GetDataTable());
 
-            AddMessage($"Setting output value in element.", MessageSeverity.Debug);
-            SetDataValue( EngineDataDirection.Output,"Table", table);
+                AddMessage($"Setting output value in element.", MessageSeverity.Debug);
+                SetDataValue(EngineDataDirection.Output, "Table", table);
 
-            AddMessage($"Releasing unnecessary resources.", MessageSeverity.Debug);
-            parser.Dispose();
+                AddMessage($"Releasing unnecessary resources.", MessageSeverity.Debug);
+                parser.Dispose();
 
-            AddMessage($"Parsing file completed. {table.RowCount} read.", MessageSeverity.Debug);
+                AddMessage($"Parsing file completed. {table.RowCount} read.", MessageSeverity.Debug);
+            }
+            catch (Exception e)
+            {
+                AddMessage($"Error reading flat file. {e.Message}", MessageSeverity.Error);
+            }
         }
 
     }
