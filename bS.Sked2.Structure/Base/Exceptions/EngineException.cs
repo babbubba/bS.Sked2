@@ -13,6 +13,10 @@ namespace bS.Sked2.Structure.Base.Exceptions
     public class EngineException : BaseLoggableException
     {
         public Guid JobInstanceId { get; }
+
+        public EngineException(string message) : base(message)
+        {
+        }
         public EngineException(ILogger logger, string message) : base(logger, message)
         {
         }

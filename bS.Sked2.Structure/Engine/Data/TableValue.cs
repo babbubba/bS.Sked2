@@ -1,41 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
 namespace bS.Sked2.Structure.Engine.Data
 {
-    public class TableValue : IEngineData
+    /// <summary>
+    /// Rapresent a Table Value
+    /// </summary>
+    /// <seealso cref="bS.Sked2.Structure.Engine.Data.BaseEngineValue" />
+    public class TableValue : BaseEngineValue
     {
-        DataTable value;
+
         public TableValue()
         {
+            dataType = DataType.Table;
             value = new DataTable("Table");
         }
+
         public TableValue(DataTable table)
         {
-           // value = new DataTable("Table");
+            dataType = DataType.Table;
             value = table;
         }
 
-        public string DataType => "Table";
-
-        public bool CanPersistInStorage => false;
-        public bool IsFilled { get; set; }
-        public bool IsValid { get; set; }
-
-        public object Get()  
+        /// <summary>
+        /// Gets the row count.
+        /// </summary>
+        /// <value>
+        /// The row count.
+        /// </value>
+        public int RowCount
         {
-            return value;
-        }
-
-        public void Set(object value)
-        {
-            this.value = value as DataTable;
-            if (this.value == null)
+            get
             {
-                IsValid = false;
-                IsFilled = true;
+                var val = value as DataTable;
+                return val?.Rows?.Count ?? 0;
             }
         }
     }

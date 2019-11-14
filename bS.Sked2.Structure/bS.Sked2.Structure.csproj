@@ -8,4 +8,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\bS.Sked2.Shared\bS.Sked2.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

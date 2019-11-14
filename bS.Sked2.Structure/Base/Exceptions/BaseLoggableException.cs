@@ -13,6 +13,9 @@ namespace bS.Sked2.Structure.Base.Exceptions
     public abstract class BaseLoggableException : Exception
     {
         public int ErrorCode { get; private set; }
+        public BaseLoggableException( string message) : base(message)
+        {
+        }
         public BaseLoggableException(ILogger logger, string message) : base(message)
         {
             logger.LogError(message);

@@ -12,6 +12,9 @@ namespace bS.Sked2.Structure.Base.Exceptions
     /// <seealso cref="bS.Sked2.Structure.Base.Exceptions.BaseLoggableException" />
     public class StorageException : BaseLoggableException
     {
+        public StorageException(string message) : base(message)
+        {
+        }
         public StorageException(ILogger logger, string message) : base(logger, message)
         {
         }

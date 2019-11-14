@@ -15,7 +15,7 @@ namespace bS.Sked2.Structure.Engine
         /// <value>
         /// The type of the data.
         /// </value>
-        public string DataType { get; }
+        public DataType DataType { get; }
         /// <summary>
         /// Gets or sets a value indicating whether this instance can persist in storage.
         /// </summary>
@@ -41,11 +41,29 @@ namespace bS.Sked2.Structure.Engine
         /// Sets the value.
         /// </summary>
         /// <param name="value">The value.</param>
-        public void Set(object value);
+        public void Set<T>(T value);
         /// <summary>
         /// Gets the value.
         /// </summary>
         /// <returns></returns>
-        public object Get();
+        public T Get<T>();
+    }
+
+    public enum DataType
+    { 
+             @Int = 0,
+             @Bool = 1,
+             @Decimal = 2,
+             @Double = 3,
+             @Char = 4,
+             @String = 5,
+             @Datetime = 6,
+             @Table = 7
+    }
+
+    public enum EngineDataDirection
+    {
+        Input = 0,
+        Output = 1
     }
 }
