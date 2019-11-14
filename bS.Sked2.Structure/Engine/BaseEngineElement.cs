@@ -258,6 +258,12 @@ namespace bS.Sked2.Structure.Engine
                 case DataType.Table:
                     SetDataValue(EngineDataDirection.Input, key, new TableValue());
                     break;
+                case DataType.DictionaryEntry:
+                    SetDataValue(EngineDataDirection.Input, key, new DictionaryEntryValue());
+                    break;
+                case DataType.Collection:
+                    SetDataValue(EngineDataDirection.Input, key, new CollectionValue());
+                    break;
             }
 
         }

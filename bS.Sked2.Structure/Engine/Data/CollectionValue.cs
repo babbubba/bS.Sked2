@@ -4,7 +4,7 @@ using System.Text;
 
 namespace bS.Sked2.Structure.Engine.Data
 {
-    class CollectionValue : BaseEngineValue
+    public class CollectionValue : BaseEngineValue
     {
         public CollectionValue()
         {
@@ -19,14 +19,14 @@ namespace bS.Sked2.Structure.Engine.Data
             Set(val);
         }
 
-        public void AddValue(IEngineData value)
+        public void AddValue(IEngineData val)
         {
-            ((List<IEngineData>)value).Add(value);
+            ((List<IEngineData>)value).Add(val);
         }
 
-        public void RemoveValue(IEngineData value)
+        public void RemoveValue(IEngineData val)
         {
-            ((List<IEngineData>)value).Remove(value);
+            ((List<IEngineData>)value).Remove(val);
         }
 
 

@@ -54,22 +54,37 @@ namespace bS.Sked2.Engine.Tests
             engine.ExecuteElement(flatFileReader);
             var resultFlatFileReader = flatFileReader.GetDataValue(EngineDataDirection.Output, "Table").Get<DataTable>();
 
-            var sqlQueryReader = new SqlQueryReader(logger, messageService);
-            sqlQueryReader.ParentModule = commonModule;
-            sqlQueryReader.ParentTask = task;
-            sqlQueryReader.SetDataValue(EngineDataDirection.Input, "ConnectionString", new StringValue(@"Data Source=(localdb)\mssqllocaldb;Persist Security Info=True;User ID=sa;Password=gabe;Database=EPS_HR;"));
-            sqlQueryReader.SetDataValue(EngineDataDirection.Input, "SqlQuery", new StringValue(@"
-SELECT [Id]
-      ,[Code]
-      ,[PayrollingCode]
-      ,[Name]
-      ,[Description]
-      ,[Order]
-      ,[Type]
-      ,[IsEnabled]
-  FROM [BaseActivities];"));
-            engine.ExecuteElement(sqlQueryReader);
-            var resultSqlQueryReader = sqlQueryReader.GetDataValue(EngineDataDirection.Output, "Table").Get<DataTable>();
+            //            var sqlQueryReader = new SqlQueryReader(logger, messageService);
+            //            sqlQueryReader.ParentModule = commonModule;
+            //            sqlQueryReader.ParentTask = task;
+            //            sqlQueryReader.SetDataValue(EngineDataDirection.Input, "ConnectionString", new StringValue(@"Data Source=(localdb)\mssqllocaldb;Persist Security Info=True;User ID=sa;Password=gabe;Database=EPS_HR;"));
+            //            sqlQueryReader.SetDataValue(EngineDataDirection.Input, "SqlQuery", new StringValue(@"
+            //SELECT [Id]
+            //      ,[Code]
+            //      ,[PayrollingCode]
+            //      ,[Name]
+            //      ,[Description]
+            //      ,[Order]
+            //      ,[Type]
+            //      ,[IsEnabled]
+            //  FROM [BaseActivities];"));
+            //            engine.ExecuteElement(sqlQueryReader);
+            //            var resultSqlQueryReader = sqlQueryReader.GetDataValue(EngineDataDirection.Output, "Table").Get<DataTable>();
+
+            var sqlWriter = new SqlWriter(logger, messageService);
+            sqlWriter.ParentModule = commonModule;
+            sqlWriter.ParentTask = task;
+            sqlWriter.SetDataValue(EngineDataDirection.Input, "ConnectionString", new StringValue(@"Data Source=(localdb)\mssqllocaldb;Persist Security Info=True;User ID=sa;Password=gabe;Database=EPS_HR;"));
+            sqlWriter.SetDataValue(EngineDataDirection.Input, "SqlTable", new StringValue(@"TestTable"));
+            var mappings = new CollectionValue();
+            mappings.AddValue(new DictionaryEntryValue("Column1", "3"));
+            mappings.AddValue(new DictionaryEntryValue("Column2", "1"));
+            mappings.AddValue(new DictionaryEntryValue("Column3", "2"));
+            sqlWriter.SetDataValue(EngineDataDirection.Input, "ColumnsMapping", mappings);
+            sqlWriter.SetDataValue(EngineDataDirection.Input, "SourceTable", flatFileReader.GetDataValue(EngineDataDirection.Output, "Table"));
+         
+            engine.ExecuteElement(sqlWriter);
+
         }
     }
 }

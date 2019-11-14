@@ -130,7 +130,7 @@ namespace bS.Sked2.Structure.Engine.Data
                     }
                     break;
                 case DataType.Collection:
-                    if (typeof(T) != typeof(IList<IEngineData>))
+                    if (typeof(T) != typeof(List<IEngineData>))
                     {
                         throw new EngineException("Error parsing Engine Data Value. The type of value is not the right type for this data (expected 'List<IEngineData>').");
                     }
