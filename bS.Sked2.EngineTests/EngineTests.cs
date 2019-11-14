@@ -12,6 +12,7 @@ using bS.Sked2.Engine.Objects;
 using bS.Sked2.Structure.Engine.Data;
 using System.Data;
 using bS.Sked2.Service.Message;
+using bS.Sked2.Extensions.Common.SqlServer;
 
 namespace bS.Sked2.Engine.Tests
 {
@@ -47,12 +48,28 @@ namespace bS.Sked2.Engine.Tests
             var flatFileReader = new FlatFileReader(logger, messageService);
             flatFileReader.ParentModule = commonModule;
             flatFileReader.ParentTask = task;
-
             flatFileReader.SetDataValue(EngineDataDirection.Input, "SourceFilePath", new StringValue(@"c:\temp\provincia-regione-sigla.csv"));
             flatFileReader.SetDataValue(EngineDataDirection.Input, "FirstRowHasHeader", new BoolValue(false));
             flatFileReader.SetDataValue(EngineDataDirection.Input, "ColumnDelimiter", new CharValue(','));
             engine.ExecuteElement(flatFileReader);
-            var result = flatFileReader.GetDataValue(EngineDataDirection.Output, "Table").Get<DataTable>();
+            var resultFlatFileReader = flatFileReader.GetDataValue(EngineDataDirection.Output, "Table").Get<DataTable>();
+
+            var sqlQueryReader = new SqlQueryReader(logger, messageService);
+            sqlQueryReader.ParentModule = commonModule;
+            sqlQueryReader.ParentTask = task;
+            sqlQueryReader.SetDataValue(EngineDataDirection.Input, "ConnectionString", new StringValue(@"Data Source=(localdb)\mssqllocaldb;Persist Security Info=True;User ID=sa;Password=gabe;Database=EPS_HR;"));
+            sqlQueryReader.SetDataValue(EngineDataDirection.Input, "SqlQuery", new StringValue(@"
+SELECT [Id]
+      ,[Code]
+      ,[PayrollingCode]
+      ,[Name]
+      ,[Description]
+      ,[Order]
+      ,[Type]
+      ,[IsEnabled]
+  FROM [BaseActivities];"));
+            engine.ExecuteElement(sqlQueryReader);
+            var resultSqlQueryReader = sqlQueryReader.GetDataValue(EngineDataDirection.Output, "Table").Get<DataTable>();
         }
     }
 }
