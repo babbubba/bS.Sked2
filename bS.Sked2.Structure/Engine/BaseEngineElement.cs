@@ -230,7 +230,36 @@ namespace bS.Sked2.Structure.Engine
                 throw new EngineException(logger, $"Cannot add property for this element. The property with key {key} still exists.");
             }
 
+            // Init default value
             inputProperties.Add(new ElementProperty(key,description,dataType, mandatory));
+            switch (dataType)
+            {
+                case DataType.Int:
+                    SetDataValue(EngineDataDirection.Input, key, new IntValue());
+                    break;
+                case DataType.Bool:
+                    SetDataValue(EngineDataDirection.Input, key, new BoolValue());
+                    break;
+                case DataType.Decimal:
+                    SetDataValue(EngineDataDirection.Input, key, new DecimalValue());
+                    break;
+                case DataType.Double:
+                    SetDataValue(EngineDataDirection.Input, key, new DoubleValue());
+                    break;
+                case DataType.Char:
+                    SetDataValue(EngineDataDirection.Input, key, new CharValue());
+                    break;
+                case DataType.String:
+                    SetDataValue(EngineDataDirection.Input, key, new StringValue());
+                    break;
+                case DataType.Datetime:
+                    SetDataValue(EngineDataDirection.Input, key, new DateTimeValue());
+                    break;
+                case DataType.Table:
+                    SetDataValue(EngineDataDirection.Input, key, new TableValue());
+                    break;
+            }
+
         }
 
         /// <summary>

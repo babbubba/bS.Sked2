@@ -44,7 +44,7 @@ namespace bS.Sked2.Structure.Engine.Data
         public T Get<T>()
         {
             CheckType<T>();
-
+            if (value == null) return default;
             return (T)Convert.ChangeType(value, typeof(T));
         }
 
