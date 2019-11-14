@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using bS.Sked2.Structure.Service;
+using Microsoft.Extensions.Logging;
 
 namespace bS.Sked2.Structure.Engine
 {
-    /// <summary>
-    /// Tutti i moduli di estensione devono implementare questa interfaccia. Un modulo di estensione rappresenta un insieme di operazioni disponibili all'interno di un task. Ogni operazione è rappresentata da un Elemento <see cref="IEngineElement"/>
-    /// </summary>
-    public interface IEngineModule : IEngineComponent
+    public abstract class BaseEngineModule : BaseEngineComponent, IEngineModule
     {
+        public BaseEngineModule(ILogger logger, IMessageService messageService) : base(logger, messageService)
+        {
+        }
+
         /// <summary>
         /// Gets or sets the key.
         /// </summary>
         /// <value>
         /// The key.
         /// </value>
-        string Key { get; }
+        public string Key { get; protected set; }
 
         /// <summary>
         /// Gets or sets the name.
@@ -23,7 +26,7 @@ namespace bS.Sked2.Structure.Engine
         /// <value>
         /// The name.
         /// </value>
-        string Name { get; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// Gets or sets the description.
@@ -31,8 +34,11 @@ namespace bS.Sked2.Structure.Engine
         /// <value>
         /// The description.
         /// </value>
-        string Description { get; }
+        public string Description { get; protected set; }
 
-        void Init();
+        public void Init()
+        {
+            instanceId = new Guid();
+        }
     }
 }

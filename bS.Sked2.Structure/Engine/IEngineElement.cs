@@ -81,12 +81,7 @@ namespace bS.Sked2.Structure.Engine
         /// <param name="value">The value.</param>
         void SetDataValue(EngineDataDirection direction, string propertyKey, IEngineData value);
 
-        /// <summary>
-        /// Adds the message.
-        /// </summary>
-        /// <param name="Message">The message.</param>
-        /// <param name="severity">The severity (Optional: default is Info).</param>
-        void AddMessage(string Message, MessageSeverity severity = MessageSeverity.Info);
+
     
     }
 }

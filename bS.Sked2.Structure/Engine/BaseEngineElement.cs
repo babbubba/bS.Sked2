@@ -11,17 +11,10 @@ using System.Linq;
 
 namespace bS.Sked2.Structure.Engine
 {
-    public abstract class BaseEngineElement : IEngineElement
+    public abstract class BaseEngineElement : BaseEngineComponent, IEngineElement
     {
         #region Fields
-        /// <summary>
-        /// The logger
-        /// </summary>
-        protected readonly ILogger logger;
-        /// <summary>
-        /// The message service
-        /// </summary>
-        protected readonly IMessageService messageService;
+ 
         /// <summary>
         /// The input properties
         /// </summary>
@@ -34,22 +27,10 @@ namespace bS.Sked2.Structure.Engine
         protected DateTime? beginTime;
         protected DateTime? endTime;
         protected bool isPaused;
-        protected IList<IMessage> messages;
 
-        /// <summary>
-        /// The instance identifier 
-        /// </summary>
-        protected Guid? instanceID;
         #endregion
 
         #region Properties
-        /// <summary>
-        /// Gets the instance identifier.
-        /// </summary>
-        /// <value>
-        /// The instance identifier.
-        /// </value>
-        public Guid? InstanceID => instanceID;
 
         /// <summary>
         /// Gets or sets the begin time.
@@ -147,23 +128,6 @@ namespace bS.Sked2.Structure.Engine
         /// </value>
         public bool IsPaused => isPaused;
 
-        /// <summary>
-        /// Gets a value indicating whether this instance has errors.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance has errors; otherwise, <c>false</c>.
-        /// </value>
-        public bool HasErrors => messages?.Any(m => m.Severity == MessageSeverity.Error || m.Severity == MessageSeverity.Fatal) ?? false;
-
-        /// <summary>
-        /// Gets a value indicating whether this instance has warnings.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance has warnings; otherwise, <c>false</c>.
-        /// </value>
-        public bool HasWarnings => messages?.Any(m => m.Severity == MessageSeverity.Warning) ?? false;
-
-     
         #endregion
 
         #region C.tor
@@ -172,11 +136,9 @@ namespace bS.Sked2.Structure.Engine
         /// Initializes a new instance of the <see cref="BaseEngineElement"/> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        public BaseEngineElement(ILogger logger, IMessageService messageService)
+        /// <param name="messageService">The message service.</param>
+        public BaseEngineElement(ILogger logger, IMessageService messageService) : base(logger, messageService)
         {
-            this.logger = logger;
-            this.messageService = messageService;
-            messages = new List<IMessage>();
             inputProperties = new List<IEngineElementProperty>();
             outputProperties = new List<IEngineElementProperty>();
         }
@@ -242,15 +204,7 @@ namespace bS.Sked2.Structure.Engine
 
          
         }
-        /// <summary>
-        /// Adds the message.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="severity">The severity.</param>
-        public void AddMessage(string message, MessageSeverity severity = MessageSeverity.Info)
-        {
-            messages.Add(messageService.CreateMessage(message, this, severity));
-        }
+ 
 
         /// <summary>
         /// Registers the input properties.
@@ -321,7 +275,7 @@ namespace bS.Sked2.Structure.Engine
         public virtual void Start()
         {
             // Create the instance ID for this element
-            instanceID = new Guid();
+            instanceId = new Guid();
 
             // Set the execution begin time
             beginTime = DateTime.Now;
@@ -386,11 +340,23 @@ namespace bS.Sked2.Structure.Engine
                 switch (property.DataType)
                 {
                     case DataType.Int:
+                        if (property.Value?.Get<int>() == null) isNull = true;
+                        break;
                     case DataType.Bool:
+                        if (property.Value?.Get<bool>() == null) isNull = true;
+                        break;
                     case DataType.Decimal:
+                        if (property.Value?.Get<decimal>() == null) isNull = true;
+                        break;
                     case DataType.Double:
+                        if (property.Value?.Get<double>() == null) isNull = true;
+                        break;
                     case DataType.Char:
+                        if (property.Value?.Get<char>() == null) isNull = true;
+                        break;
                     case DataType.Datetime:
+                        if (property.Value?.Get<DateTime>() == null) isNull = true;
+                        break;
                     case DataType.Table:
                         if (property.Value?.Get<DataTable>() == null) isNull = true;
                         break;

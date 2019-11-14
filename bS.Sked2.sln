@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Tests", "5 - Tests", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bS.Sked2.Shared", "bS.Sked2.Shared\bS.Sked2.Shared.csproj", "{4BC8F2C8-D55E-4944-B1AB-EAE28C7660FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bS.Sked2.EngineTests", "bS.Sked2.EngineTests\bS.Sked2.EngineTests.csproj", "{FFC774BE-E164-4C52-8338-DE4CA2AB66D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{4BC8F2C8-D55E-4944-B1AB-EAE28C7660FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BC8F2C8-D55E-4944-B1AB-EAE28C7660FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BC8F2C8-D55E-4944-B1AB-EAE28C7660FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFC774BE-E164-4C52-8338-DE4CA2AB66D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFC774BE-E164-4C52-8338-DE4CA2AB66D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFC774BE-E164-4C52-8338-DE4CA2AB66D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFC774BE-E164-4C52-8338-DE4CA2AB66D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +100,7 @@ Global
 		{EFE3C67B-67E1-4D08-8AEE-180F81C4661B} = {C7DB5D05-8B4F-4612-AD94-620C4AE1A80A}
 		{54BA288F-0F82-46B9-9FE5-394343EDB6EF} = {A679E3A5-85C1-4821-94B1-4640FB1D0844}
 		{4BC8F2C8-D55E-4944-B1AB-EAE28C7660FD} = {A3D1F7A8-1C05-4267-BFE9-37989238403B}
+		{FFC774BE-E164-4C52-8338-DE4CA2AB66D4} = {A679E3A5-85C1-4821-94B1-4640FB1D0844}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A94D725F-CE8D-4304-AC56-6F6BBC01E002}

@@ -11,5 +11,8 @@ namespace bS.Sked2.Structure.Engine
     public interface IEngineTask : IStartable, IEngineComponent
     {
         IEngineJob ParentJob { get; set; }
+
+        bool FailIfAnyElementHasError { get; set; }
+        bool FailIfAnyElementHasWarning { get; set; }
     }
 }

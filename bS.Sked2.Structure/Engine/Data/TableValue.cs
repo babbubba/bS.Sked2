@@ -20,7 +20,7 @@ namespace bS.Sked2.Structure.Engine.Data
         public TableValue(DataTable table)
         {
             dataType = DataType.Table;
-            value = table;
+            Set(table);
         }
 
         /// <summary>

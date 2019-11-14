@@ -74,31 +74,31 @@ namespace bS.Sked2.Structure.Engine.Data
             switch (dataType)
             {
                 case DataType.Int:
-                    if (typeof(T) != typeof(int) || typeof(T) != typeof(int?))
+                    if (typeof(T) != typeof(int) && typeof(T) != typeof(int?))
                     {
                         throw new EngineException("Error parsing Engine Data Value. The type of value is not the right type for this data (expected 'int').");
                     }
                     break;
                 case DataType.Bool:
-                    if (typeof(T) != typeof(bool) || typeof(T) != typeof(bool?))
+                    if (typeof(T) != typeof(bool) && typeof(T) != typeof(bool?))
                     {
                         throw new EngineException("Error parsing Engine Data Value. The type of value is not the right type for this data (expected 'bool').");
                     }
                     break;
                 case DataType.Decimal:
-                    if (typeof(T) != typeof(decimal) || typeof(T) != typeof(decimal?))
+                    if (typeof(T) != typeof(decimal) && typeof(T) != typeof(decimal?))
                     {
                         throw new EngineException("Error parsing Engine Data Value. The type of value is not the right type for this data (expected 'decimal').");
                     }
                     break;
                 case DataType.Double:
-                    if (typeof(T) != typeof(double) || typeof(T) != typeof(double?))
+                    if (typeof(T) != typeof(double) && typeof(T) != typeof(double?))
                     {
                         throw new EngineException("Error parsing Engine Data Value. The type of value is not the right type for this data (expected 'double').");
                     }
                     break;
                 case DataType.Char:
-                    if (typeof(T) != typeof(char) || typeof(T) != typeof(char?))
+                    if (typeof(T) != typeof(char) && typeof(T) != typeof(char?))
                     {
                         throw new EngineException("Error parsing Engine Data Value. The type of value is not the right type for this data (expected 'char').");
                     }
@@ -110,7 +110,7 @@ namespace bS.Sked2.Structure.Engine.Data
                     }
                     break;
                 case DataType.Datetime:
-                    if (typeof(T) != typeof(DateTime) || typeof(T) != typeof(DateTime?))
+                    if (typeof(T) != typeof(DateTime) && typeof(T) != typeof(DateTime?))
                     {
                         throw new EngineException("Error parsing Engine Data Value. The type of value is not the right type for this data (expected 'DateTime').");
                     }
