@@ -1,4 +1,5 @@
-﻿using bS.Sked2.Structure.Engine;
+﻿using bS.Sked2.Structure.Base;
+using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Service;
 using bS.Sked2.Structure.Service.Messages;
 using Microsoft.Extensions.Logging;
@@ -11,9 +12,9 @@ using System.Text;
 
 namespace bS.Sked2.Extensions.Common.SqlServer
 {
-    public class SqlWriter : BaseEngineElement
+    public class SqlTableWriter : BaseEngineElement
     {
-        public SqlWriter(ILogger logger, IMessageService messageService) : base(logger, messageService)
+        public SqlTableWriter(ILogger logger, IMessageService messageService) : base(logger, messageService)
         {
             // Config the element
             Key = "SqlWriter";
@@ -25,6 +26,16 @@ namespace bS.Sked2.Extensions.Common.SqlServer
             RegisterInputProperties("SqlTable", "Sql destination table", DataType.String, true);
             RegisterInputProperties("ColumnsMapping", "Columns Mapping", DataType.Collection);
             RegisterInputProperties("SourceTable", "Source TableValue", DataType.Table, true);
+        }
+
+        public override void LoadEntity(IElementEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IElementEntity SaveEntity(IElementEntity entity)
+        {
+            throw new NotImplementedException();
         }
 
         public override void Start()
@@ -60,6 +71,4 @@ namespace bS.Sked2.Extensions.Common.SqlServer
             }
         }
     }
-
-
 }

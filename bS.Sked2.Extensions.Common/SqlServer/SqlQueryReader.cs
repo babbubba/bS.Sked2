@@ -1,4 +1,5 @@
-﻿using bS.Sked2.Structure.Engine;
+﻿using bS.Sked2.Structure.Base;
+using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Engine.Data;
 using bS.Sked2.Structure.Service;
 using bS.Sked2.Structure.Service.Messages;
@@ -25,6 +26,16 @@ namespace bS.Sked2.Extensions.Common.SqlServer
             RegisterInputProperties("SqlQuery", "SqL Query", DataType.String, true);
 
             RegisterOutputProperties("Table", "Rows imported from Sql Query", DataType.Table, true);
+        }
+
+        public override void LoadEntity(IElementEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IElementEntity SaveEntity(IElementEntity entity)
+        {
+            throw new NotImplementedException();
         }
 
         public override void Start()

@@ -6,8 +6,10 @@ using System.Text;
 namespace bS.Sked2.Structure.Engine
 {
     /// <summary>
-    /// E' l'elemento che rappresenta una operazione specifica in un Task. Ogni elemento viene eseguito dal suo specifico modulo <see cref="IEngineModule"/>.
+    /// E' l'elemento che rappresenta una operazione specifica in un Task. Ogni elemento viene eseguito dal suo specifico modulo <see cref="IEngineModule" />.
     /// </summary>
+    /// <seealso cref="bS.Sked2.Structure.Base.IStartable" />
+    /// <seealso cref="bS.Sked2.Structure.Engine.IEngineComponent" />
     public interface IEngineElement : IStartable, IEngineComponent
     {
         /// <summary>
@@ -56,6 +58,7 @@ namespace bS.Sked2.Structure.Engine
         /// <param name="key">The key.</param>
         /// <param name="description">The description.</param>
         /// <param name="dataType">Type of the data.</param>
+        /// <param name="mandatory">if set to <c>true</c> [mandatory].</param>
         void RegisterInputProperties(string key, string description, DataType dataType, bool mandatory = false);
 
         /// <summary>
@@ -64,8 +67,9 @@ namespace bS.Sked2.Structure.Engine
         /// <param name="key">The key.</param>
         /// <param name="description">The description.</param>
         /// <param name="dataType">Type of the data.</param>
+        /// <param name="mandatory">if set to <c>true</c> [mandatory].</param>
         void RegisterOutputProperties(string key, string description, DataType dataType, bool mandatory = false);
-       
+
         /// <summary>
         /// Gets the data value.
         /// </summary>
@@ -81,7 +85,19 @@ namespace bS.Sked2.Structure.Engine
         /// <param name="value">The value.</param>
         void SetDataValue(EngineDataDirection direction, string propertyKey, IEngineData value);
 
+        /// <summary>
+        /// Loads the entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        void LoadEntity(IElementEntity entity);
+        /// <summary>
+        /// Saves the entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        IElementEntity SaveEntity(IElementEntity entity);
 
-    
+
+
     }
 }

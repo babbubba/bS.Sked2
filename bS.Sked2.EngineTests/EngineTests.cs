@@ -67,7 +67,7 @@ namespace bS.Sked2.Engine.Tests
         [TestMethod()]
         public void ExecuteSqlWriter()
         {
-            SqlWriter sqlWriter = GetSqlWriter();
+            SqlTableWriter sqlWriter = GetSqlWriter();
             sqlWriter.ParentTask = task;
             engine.ExecuteElement(sqlWriter);
         }
@@ -142,10 +142,10 @@ namespace bS.Sked2.Engine.Tests
               FROM [BaseActivities];"));
             return sqlQueryReader;
         }
-        private SqlWriter GetSqlWriter()
+        private SqlTableWriter GetSqlWriter()
         {
             DataTable dt = GetTestTable();
-            var sqlWriter = new SqlWriter(logger, messageService);
+            var sqlWriter = new SqlTableWriter(logger, messageService);
             sqlWriter.ParentModule = commonModule;
             sqlWriter.SetDataValue(EngineDataDirection.Input, "ConnectionString", new StringValue(@"Data Source=(localdb)\mssqllocaldb;Persist Security Info=True;User ID=sa;Password=gabe;Database=EPS_HR;"));
             sqlWriter.SetDataValue(EngineDataDirection.Input, "SqlTable", new StringValue(@"TestTable"));

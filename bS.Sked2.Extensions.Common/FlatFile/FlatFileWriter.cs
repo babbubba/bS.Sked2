@@ -1,4 +1,5 @@
-﻿using bS.Sked2.Structure.Engine;
+﻿using bS.Sked2.Structure.Base;
+using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Service;
 using bS.Sked2.Structure.Service.Messages;
 using Microsoft.Extensions.Logging;
@@ -11,8 +12,17 @@ using System.Text;
 
 namespace bS.Sked2.Extensions.Common.FlatFile
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="bS.Sked2.Structure.Engine.BaseEngineElement" />
     public class FlatFileWriter : BaseEngineElement
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FlatFileWriter"/> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="messageService">The message service.</param>
         public FlatFileWriter(ILogger logger, IMessageService messageService) : base(logger, messageService)
         {
             // Config the element
@@ -26,6 +36,30 @@ namespace bS.Sked2.Extensions.Common.FlatFile
             RegisterInputProperties("Table", "TableValue to write in flat file", DataType.Table, true);
         }
 
+        /// <summary>
+        /// Loads the entity with filled parameters.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <exception cref="NotImplementedException"></exception>
+        public override void LoadEntity(IElementEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Saves the entity with filled parameters.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public override IElementEntity SaveEntity(IElementEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Starts this instance. In derived class you have to execute this base before your overrided code.
+        /// </summary>
         public override void Start()
         {
             base.Start();

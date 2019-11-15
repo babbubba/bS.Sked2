@@ -1,4 +1,5 @@
 ﻿using bS.Sked2.Shared;
+using bS.Sked2.Structure.Base;
 using bS.Sked2.Structure.Base.Exceptions;
 using bS.Sked2.Structure.Engine.Data;
 using bS.Sked2.Structure.Service;
@@ -11,10 +12,15 @@ using System.Linq;
 
 namespace bS.Sked2.Structure.Engine
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="bS.Sked2.Structure.Engine.BaseEngineComponent" />
+    /// <seealso cref="bS.Sked2.Structure.Engine.IEngineElement" />
     public abstract class BaseEngineElement : BaseEngineComponent, IEngineElement
     {
         #region Fields
- 
+
         /// <summary>
         /// The input properties
         /// </summary>
@@ -24,8 +30,17 @@ namespace bS.Sked2.Structure.Engine
         /// </summary>
         protected IList<IEngineElementProperty> outputProperties;
 
+        /// <summary>
+        /// The begin time
+        /// </summary>
         protected DateTime? beginTime;
+        /// <summary>
+        /// The end time
+        /// </summary>
         protected DateTime? endTime;
+        /// <summary>
+        /// The is paused
+        /// </summary>
         protected bool isPaused;
 
         #endregion
@@ -133,7 +148,7 @@ namespace bS.Sked2.Structure.Engine
         #region C.tor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseEngineElement"/> class.
+        /// Initializes a new instance of the <see cref="BaseEngineElement" /> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="messageService">The message service.</param>
@@ -152,11 +167,9 @@ namespace bS.Sked2.Structure.Engine
         /// <param name="direction">The direction.</param>
         /// <param name="propertyKey">The property key.</param>
         /// <returns></returns>
-        /// <exception cref="EngineException">
-        /// No input property with key {propertyKey} has been registered for this element.
+        /// <exception cref="EngineException">No input property with key {propertyKey} has been registered for this element.
         /// or
-        /// No output property with key {propertyKey} has been registered for this element.
-        /// </exception>
+        /// No output property with key {propertyKey} has been registered for this element.</exception>
         public IEngineData GetDataValue(EngineDataDirection direction, string propertyKey)
         {
             switch (direction)
@@ -180,11 +193,9 @@ namespace bS.Sked2.Structure.Engine
         /// <param name="direction">The direction.</param>
         /// <param name="propertyKey">The property key.</param>
         /// <param name="value">The value.</param>
-        /// <exception cref="EngineException">
-        /// No input property with key {propertyKey} has been registered for this element.
+        /// <exception cref="EngineException">No input property with key {propertyKey} has been registered for this element.
         /// or
-        /// No output property with key {propertyKey} has been registered for this element.
-        /// </exception>
+        /// No output property with key {propertyKey} has been registered for this element.</exception>
         public void SetDataValue(EngineDataDirection direction, string propertyKey, IEngineData value)
         {
             switch (direction)
@@ -204,7 +215,7 @@ namespace bS.Sked2.Structure.Engine
 
          
         }
- 
+
 
         /// <summary>
         /// Registers the input properties.
@@ -213,11 +224,9 @@ namespace bS.Sked2.Structure.Engine
         /// <param name="description">The description.</param>
         /// <param name="dataType">Type of the data.</param>
         /// <param name="mandatory"></param>
-        /// <exception cref="EngineException">
-        /// Invalid property fields provided.
+        /// <exception cref="EngineException">Invalid property fields provided.
         /// or
-        /// Cannot add property for this element. The property with key {key} still exists.
-        /// </exception>
+        /// Cannot add property for this element. The property with key {key} still exists.</exception>
         public void RegisterInputProperties(string key, string description, DataType dataType, bool mandatory = false)
         {
             if (key.IsNullOrWhiteSpace())
@@ -275,11 +284,9 @@ namespace bS.Sked2.Structure.Engine
         /// <param name="description">The description.</param>
         /// <param name="dataType">Type of the data.</param>
         /// <param name="mandatory"></param>
-        /// <exception cref="EngineException">
-        /// Invalid property fields provided.
+        /// <exception cref="EngineException">Invalid property fields provided.
         /// or
-        /// Cannot add property for this element. The property with key {key} still exists.
-        /// </exception>
+        /// Cannot add property for this element. The property with key {key} still exists.</exception>
         public void RegisterOutputProperties(string key, string description, DataType dataType, bool mandatory = false)
         {
             if (key.IsNullOrWhiteSpace() )
@@ -407,6 +414,18 @@ namespace bS.Sked2.Structure.Engine
             }
             return !isAnyNull;
         }
+
+        /// <summary>
+        /// Loads the entity with filled parameters.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        public abstract void LoadEntity(IElementEntity entity);
+        /// <summary>
+        /// Saves the entity with filled parameters.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        public abstract IElementEntity SaveEntity(IElementEntity entity);
         #endregion Startable
 
     }
