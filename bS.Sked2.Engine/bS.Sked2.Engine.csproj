@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="bs.Data" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\bS.Sked2.Structure\bS.Sked2.Structure.csproj" />
   </ItemGroup>
 

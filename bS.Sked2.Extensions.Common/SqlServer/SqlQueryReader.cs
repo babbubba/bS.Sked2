@@ -14,7 +14,12 @@ namespace bS.Sked2.Extensions.Common.SqlServer
 {
     public class SqlQueryReader : BaseEngineElement
     {
-        public SqlQueryReader(ILogger logger, IMessageService messageService) : base(logger, messageService)
+        private readonly ISqlValidationService sqlValidationService;
+
+        public SqlQueryReader(
+            ILogger logger,
+            IMessageService messageService,
+            ISqlValidationService sqlValidationService) : base(logger, messageService)
         {
             // Config the element
             Key = "SqlQueryReader";
@@ -26,6 +31,7 @@ namespace bS.Sked2.Extensions.Common.SqlServer
             RegisterInputProperties("SqlQuery", "SqL Query", DataType.String, true);
 
             RegisterOutputProperties("Table", "Rows imported from Sql Query", DataType.Table, true);
+            this.sqlValidationService = sqlValidationService;
         }
 
         public override void LoadEntity(IElementEntity entity)
@@ -50,9 +56,15 @@ namespace bS.Sked2.Extensions.Common.SqlServer
                 var connectionString = GetDataValue(EngineDataDirection.Input, "ConnectionString").Get<string>();
                 var sqlQuery = GetDataValue(EngineDataDirection.Input, "SqlQuery").Get<string>();
 
+                var sqlErrors = new List<string>();
+                if (!sqlValidationService.IsSQLQueryValid(sqlQuery, out sqlErrors))
+                { 
+                    AddMessage($"Error/s in the sql query provided: {string.Join("; ", sqlErrors)}", MessageSeverity.Error);
+                    return;
+                }
+
                 //Start connecting to SQL
-                using (SqlConnection sourceConnection =
-                  new SqlConnection(connectionString))
+                using (SqlConnection sourceConnection = new SqlConnection(connectionString))
                 {
                     sourceConnection.Open();
 

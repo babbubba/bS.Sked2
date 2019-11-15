@@ -14,6 +14,7 @@ using System.Data;
 using bS.Sked2.Service.Message;
 using bS.Sked2.Extensions.Common.SqlServer;
 using bS.Sked2.Extensions.Common;
+using bS.Sked2.Service.Validation;
 
 namespace bS.Sked2.Engine.Tests
 {
@@ -22,6 +23,7 @@ namespace bS.Sked2.Engine.Tests
     {
         private ILogger<Engine> logger;
         private IMessageService messageService;
+        private ISqlValidationService sqlValidationService;
         private Common commonModule;
         private Engine engine;
         private EngineJob job;
@@ -33,6 +35,7 @@ namespace bS.Sked2.Engine.Tests
             logger = Mock.Of<ILogger<Engine>>();
 
             messageService = new MessageService();
+            sqlValidationService = new SqlValidationService(logger);
             engine = new Engine(logger, messageService);
 
             commonModule = new Common(logger, messageService);
@@ -49,7 +52,7 @@ namespace bS.Sked2.Engine.Tests
             FlatFileReader flatFileReader = GetFlatFileReader();
             flatFileReader.ParentTask = task;
             engine.ExecuteElement(flatFileReader);
-            var resultFlatFileReader = flatFileReader.GetDataValue(EngineDataDirection.Output, "Table").Get<DataTable>();
+            var resultFlatFileReader = flatFileReader.GetDataValue(EngineDataDirection.Output, "Table")?.Get<DataTable>();
             Assert.IsNotNull(resultFlatFileReader);
         }
 
@@ -59,7 +62,7 @@ namespace bS.Sked2.Engine.Tests
             SqlQueryReader sqlQueryReader = GetSqlQueryReader();
             sqlQueryReader.ParentTask = task;
             engine.ExecuteElement(sqlQueryReader);
-            var resultSqlQueryReader = sqlQueryReader.GetDataValue(EngineDataDirection.Output, "Table").Get<DataTable>();
+            var resultSqlQueryReader = sqlQueryReader.GetDataValue(EngineDataDirection.Output, "Table")?.Get<DataTable>();
             Assert.IsNotNull(resultSqlQueryReader);
         }
 
@@ -127,7 +130,7 @@ namespace bS.Sked2.Engine.Tests
         }
         private SqlQueryReader GetSqlQueryReader()
         {
-            var sqlQueryReader = new SqlQueryReader(logger, messageService);
+            var sqlQueryReader = new SqlQueryReader(logger, messageService, sqlValidationService);
             sqlQueryReader.ParentModule = commonModule;
             sqlQueryReader.SetDataValue(EngineDataDirection.Input, "ConnectionString", new StringValue(@"Data Source=(localdb)\mssqllocaldb;Persist Security Info=True;User ID=sa;Password=gabe;Database=EPS_HR;"));
             sqlQueryReader.SetDataValue(EngineDataDirection.Input, "SqlQuery", new StringValue(@"
