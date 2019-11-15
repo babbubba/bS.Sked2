@@ -20,4 +20,10 @@
     <ProjectReference Include="..\bS.Sked2.Service\bS.Sked2.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestDataFiles\provincia-regione-sigla.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
