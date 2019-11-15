@@ -38,7 +38,7 @@ namespace bS.Sked2.Structure.Engine
 
         public void Init()
         {
-            instanceId = new Guid();
+            instanceId = Guid.NewGuid();
         }
     }
 }

@@ -41,22 +41,42 @@ namespace bS.Sked2.Engine.Objects
         /// </value>
         public bool HasCompleted => beginTime != null && !isPaused && endTime != null;
 
+        /// <summary>
+        /// Gets or sets the elements.
+        /// </summary>
+        /// <value>
+        /// The elements.
+        /// </value>
+        public IEngineElement[] Elements { get; set; }
+
+        /// <summary>
+        /// Determines whether this instance [can be executed].
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if this instance [can be executed]; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="NotImplementedException"></exception>
         public bool CanBeExecuted()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Pauses this instance.
+        /// </summary>
         public void Pause()
         {
             isPaused = true;
             AddMessage("Task execution paused.");
-
         }
 
+        /// <summary>
+        /// Starts this instance.
+        /// </summary>
         public void Start()
         {
             // Create the instance ID for this element
-            instanceId = new Guid();
+            instanceId = Guid.NewGuid();
 
             // Set the execution begin time
             beginTime = DateTime.Now;
@@ -65,6 +85,9 @@ namespace bS.Sked2.Engine.Objects
             AddMessage("Task execution started.");
         }
 
+        /// <summary>
+        /// Stops this instance.
+        /// </summary>
         public void Stop()
         {
             // It set paused value to false in case this element was paused previously

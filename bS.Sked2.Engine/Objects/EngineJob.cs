@@ -42,6 +42,9 @@ namespace bS.Sked2.Engine.Objects
         /// </value>
         public bool HasCompleted => beginTime != null && !isPaused && endTime != null;
 
+        public IEngineTask[] Tasks { get; set ; }
+        public IEngineTrigger[] Triggers { get; set; }
+
         public bool CanBeExecuted()
         {
             throw new NotImplementedException();
@@ -57,7 +60,7 @@ namespace bS.Sked2.Engine.Objects
         public void Start()
         {
             // Create the instance ID for this element
-            instanceId = new Guid();
+            instanceId = Guid.NewGuid();
 
             // Set the execution begin time
             beginTime = DateTime.Now;

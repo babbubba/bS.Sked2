@@ -1,4 +1,5 @@
-﻿using System;
+﻿using bS.Sked2.Structure.Engine.Events;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,6 +10,9 @@ namespace bS.Sked2.Structure.Engine
     /// </summary>
     public interface IEngineTrigger : IEngineComponent
     {
+        string Name { get; set; }
+
+
         /// <summary>
         /// Gets or sets the last execution time.
         /// </summary>
@@ -23,5 +27,19 @@ namespace bS.Sked2.Structure.Engine
         ///   <c>true</c> if this instance is enable; otherwise, <c>false</c>.
         /// </value>
         bool IsEnable { get; set; }
+
+        /// <summary>
+        /// Gets or sets the jobs related to this trigger.
+        /// </summary>
+        /// <value>
+        /// The jobs.
+        /// </value>
+        IEngineJob[] Jobs { get; set; }
+
+        /// <summary>
+        /// Occurs when [trigger fired].
+        /// </summary>
+        event EventHandler<TriggerEventArgs> TriggerFired;
+
     }
 }

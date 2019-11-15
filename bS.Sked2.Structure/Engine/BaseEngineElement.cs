@@ -310,7 +310,7 @@ namespace bS.Sked2.Structure.Engine
         public virtual void Start()
         {
             // Create the instance ID for this element
-            instanceId = new Guid();
+            instanceId = Guid.NewGuid();
 
             // Set the execution begin time
             beginTime = DateTime.Now;

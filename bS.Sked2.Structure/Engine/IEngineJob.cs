@@ -10,6 +10,9 @@ namespace bS.Sked2.Structure.Engine
     /// </summary>
     public interface IEngineJob : IStartable, IEngineComponent
     {
+        IEngineTask[] Tasks { get; set; }
+        IEngineTrigger[] Triggers { get; set; }
+
         bool FailIfAnyTaskHasError { get; set; }
         bool FailIfAnyTaskHasWarning { get; set; }
     }
