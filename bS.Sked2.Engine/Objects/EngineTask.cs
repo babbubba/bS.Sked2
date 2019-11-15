@@ -50,15 +50,44 @@ namespace bS.Sked2.Engine.Objects
         public IEngineElement[] Elements { get; set; }
 
         /// <summary>
+        /// Gets or sets the key.
+        /// </summary>
+        /// <value>
+        /// The key.
+        /// </value>
+        public string Key { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        /// <value>
+        /// The description.
+        /// </value>
+        public string Description { get; set; }
+
+
+        /// <summary>
         /// Determines whether this instance [can be executed].
         /// </summary>
         /// <returns>
         /// <c>true</c> if this instance [can be executed]; otherwise, <c>false</c>.
         /// </returns>
-        /// <exception cref="NotImplementedException"></exception>
         public bool CanBeExecuted()
         {
-            throw new NotImplementedException();
+            if (ParentJob?.InstanceID == null)
+            {
+                AddMessage("Error starting task. No related Job instance found.", MessageSeverity.Error);
+                return false;
+            }
+            return true;
         }
 
         /// <summary>

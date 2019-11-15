@@ -8,11 +8,13 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public IntValue()
         {
+            CanPersistInStorage = true;
             dataType = DataType.Int;
         }
 
         public IntValue(int value)
         {
+            CanPersistInStorage = true;
             dataType = DataType.Int;
             Set(value);
         }

@@ -8,11 +8,13 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public DateTimeValue()
         {
+            CanPersistInStorage = true;
             dataType = DataType.Datetime;
         }
 
         public DateTimeValue(DateTime value)
         {
+            CanPersistInStorage = true;
             dataType = DataType.Datetime;
             Set(value);
         }

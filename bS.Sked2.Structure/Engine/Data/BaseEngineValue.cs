@@ -23,7 +23,7 @@ namespace bS.Sked2.Structure.Engine.Data
         /// <value>
         ///   <c>true</c> if this instance can persist in storage; otherwise, <c>false</c>.
         /// </value>
-        public bool CanPersistInStorage => false;
+        public bool CanPersistInStorage { get; protected set; }
         /// <summary>
         /// Gets or sets a value indicating whether this instance is filled.
         /// </summary>

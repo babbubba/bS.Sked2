@@ -13,12 +13,14 @@ namespace bS.Sked2.Structure.Engine.Data
 
         public TableValue()
         {
+            CanPersistInStorage = false;
             dataType = DataType.Table;
             value = new DataTable("Table");
         }
 
         public TableValue(DataTable table)
         {
+            CanPersistInStorage = false;
             dataType = DataType.Table;
             Set(table);
         }

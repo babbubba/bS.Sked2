@@ -8,11 +8,13 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public DecimalValue()
         {
+            CanPersistInStorage = true;
             dataType = DataType.Decimal;
         }
 
         public DecimalValue(decimal value)
         {
+            CanPersistInStorage = true;
             dataType = DataType.Decimal;
             Set(value);
         }

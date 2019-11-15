@@ -8,11 +8,13 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public DoubleValue()
         {
+            CanPersistInStorage = true;
             dataType = DataType.Double;
         }
 
         public DoubleValue(double value)
         {
+            CanPersistInStorage = true;
             dataType = DataType.Double;
             Set(value);
         }

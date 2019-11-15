@@ -8,12 +8,14 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public CollectionValue()
         {
+            CanPersistInStorage = true;
             value = new List<IEngineData>();
             dataType = DataType.Collection;
         }
 
         public CollectionValue(IList<IEngineData> val)
         {
+            CanPersistInStorage = true;
             value = new List<IEngineData>();
             dataType = DataType.Collection;
             Set(val);
