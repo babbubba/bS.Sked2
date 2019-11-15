@@ -82,18 +82,7 @@ namespace bS.Sked2.Engine.Tests
         [TestMethod()]
         public void ExecuteSqlWriter()
         {
-            var dt = new DataTable("table");
-            dt.Columns.Add("Column1");
-            dt.Columns.Add("Column2");
-            dt.Columns.Add("Column3");
-            for (int i = 1; i < 11; i++)
-            {
-                var r = dt.NewRow();
-                r["Column1"] = $"Col1_Row{i}";
-                r["Column2"] = $"Col2_Row{i}";
-                r["Column3"] = $"Col3_Row{i}";
-                dt.Rows.Add(r);
-            }
+            DataTable dt = GetTestTable();
 
             var sqlWriter = new SqlWriter(logger, messageService);
             sqlWriter.ParentModule = commonModule;
@@ -109,6 +98,40 @@ namespace bS.Sked2.Engine.Tests
 
             engine.ExecuteElement(sqlWriter);
 
+        }
+
+        [TestMethod()]
+        public void ExecuteFlatFileWriter()
+        {
+            DataTable dt = GetTestTable();
+
+            var flatFileWriter = new FlatFileWriter(logger, messageService);
+            flatFileWriter.ParentModule = commonModule;
+            flatFileWriter.ParentTask = task;
+            flatFileWriter.SetDataValue(EngineDataDirection.Input, "CsvFilePath", new StringValue(@".\TestDataFiles\CsvCreated.csv"));
+            flatFileWriter.SetDataValue(EngineDataDirection.Input, "ColumnDelimiter", new CharValue(';'));
+            flatFileWriter.SetDataValue(EngineDataDirection.Input, "Table", new TableValue(dt));
+
+            engine.ExecuteElement(flatFileWriter);
+
+        }
+
+        private static DataTable GetTestTable()
+        {
+            var dt = new DataTable("table");
+            dt.Columns.Add("Column1");
+            dt.Columns.Add("Column2");
+            dt.Columns.Add("Column3");
+            for (int i = 1; i < 120; i++)
+            {
+                var r = dt.NewRow();
+                r["Column1"] = $"Col1_Row{i}";
+                r["Column2"] = $"Col2_Row{i}";
+                r["Column3"] = $"Col3_Row{i}";
+                dt.Rows.Add(r);
+            }
+
+            return dt;
         }
     }
 }
