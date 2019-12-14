@@ -13,7 +13,7 @@ namespace bS.Sked2.Engine.Objects
         protected DateTime? endTime;
         protected bool isPaused;
 
-        public EngineJob(ILogger logger, IMessageService messageService) : base(logger, messageService)
+        public EngineJob(ILogger<EngineJob> logger, IMessageService messageService) : base(logger, messageService)
         {
         }
 
@@ -42,8 +42,12 @@ namespace bS.Sked2.Engine.Objects
         /// </value>
         public bool HasCompleted => beginTime != null && !isPaused && endTime != null;
 
-        public IEngineTask[] Tasks { get; set ; }
+        public IEngineTask[] Tasks { get; set; }
         public IEngineTrigger[] Triggers { get; set; }
+        public string Key { get ; set ; }
+        public string Name { get; set; }
+
+        public string Description { get; set; }
 
         public bool CanBeExecuted()
         {

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="3.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\bS.Sked2.Engine\bS.Sked2.Engine.csproj" />
+    <ProjectReference Include="..\bS.Sked2.Model\bS.Sked2.Model.csproj" />
+    <ProjectReference Include="..\bS.Sked2.Service\bS.Sked2.Service.csproj" />
+    <ProjectReference Include="..\bS.Sked2.Shared\bS.Sked2.Shared.csproj" />
+    <ProjectReference Include="..\bS.Sked2.Structure\bS.Sked2.Structure.csproj" />
+  </ItemGroup>
+
+</Project>

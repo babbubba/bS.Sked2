@@ -14,7 +14,7 @@ namespace bS.Sked2.Engine.Objects
         protected DateTime? endTime;
         protected bool isPaused;
 
-        public EngineTask(ILogger logger, IMessageService messageService) : base(logger, messageService)
+        public EngineTask(ILogger<EngineTask> logger, IMessageService messageService) : base(logger, messageService)
         {
         }
 

@@ -16,7 +16,7 @@ namespace bS.Sked2.Structure.Engine
         /// <value>
         /// The key.
         /// </value>
-        string Key { get; }
+        string Key { get; set; }
 
         /// <summary>
         /// Gets or sets the name.
@@ -24,7 +24,7 @@ namespace bS.Sked2.Structure.Engine
         /// <value>
         /// The name.
         /// </value>
-        string Name { get; }
+        string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the description.

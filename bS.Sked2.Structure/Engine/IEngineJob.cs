@@ -10,6 +10,29 @@ namespace bS.Sked2.Structure.Engine
     /// </summary>
     public interface IEngineJob : IStartable, IEngineComponent
     {
+        /// <summary>
+        /// Gets or sets the key.
+        /// </summary>
+        /// <value>
+        /// The key.
+        /// </value>
+        string Key { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        /// <value>
+        /// The description.
+        /// </value>
+        string Description { get; set; }
         IEngineTask[] Tasks { get; set; }
         IEngineTrigger[] Triggers { get; set; }
 
