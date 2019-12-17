@@ -22,6 +22,8 @@ namespace bS.Sked2.Engine.Tests
     public class EngineTests
     {
         private ILogger<Engine> logger;
+        private ILogger<EngineJob> logger2;
+        private ILogger<EngineTask> logger3;
         private IMessageService messageService;
         private ISqlValidationService sqlValidationService;
         private Common commonModule;
@@ -33,6 +35,8 @@ namespace bS.Sked2.Engine.Tests
         public void Init()
         {
             logger = Mock.Of<ILogger<Engine>>();
+            logger2 = Mock.Of<ILogger<EngineJob>>();
+            logger3 = Mock.Of<ILogger<EngineTask>>();
 
             messageService = new MessageService();
             sqlValidationService = new SqlValidationService(logger);
@@ -40,9 +44,9 @@ namespace bS.Sked2.Engine.Tests
 
             commonModule = new Common(logger, messageService);
             commonModule.Init();
-            job = new EngineJob(logger, messageService);
+            job = new EngineJob(logger2, messageService);
             job.Start();
-            task = new EngineTask(logger, messageService);
+            task = new EngineTask(logger3, messageService);
             task.ParentJob = job;
             task.Start();
         }
@@ -93,7 +97,7 @@ namespace bS.Sked2.Engine.Tests
         [TestMethod()]
         public void ExecuteTask()
         {
-            task = new EngineTask(logger, messageService);
+            //task = new EngineTask(logger, messageService);
             task.ParentJob = job;
             task.Name = "Task di prova";
             task.Key = Guid.NewGuid().ToString();

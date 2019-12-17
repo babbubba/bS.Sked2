@@ -3,13 +3,12 @@ using bS.Sked2.Structure.Models;
 using FluentNHibernate.Mapping;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace bS.Sked2.Model
 {
-   
+    
 
-    public class JobEntry : IAuditableEntity, IEnableableEntity, ILogicallyDeletableEntity, IPersistentEntity, IJobEntry
+    public class TaskEntry : IAuditableEntity, IEnableableEntity, ILogicallyDeletableEntity, IPersistentEntity, ITaskEntry
     {
         public virtual Guid Id { get; set; }
         public virtual DateTime? CreationDate { get; set; }
@@ -24,23 +23,21 @@ namespace bS.Sked2.Model
         public virtual Guid? InstanceID { get; set; }
         public virtual DateTime? BeginTime { get; }
         public virtual DateTime? EndTime { get; }
-        public virtual bool FailIfAnyTaskHasError { get; set; }
-        public virtual bool FailIfAnyTaskHasWarning { get; set; }
+        public virtual bool FailIfAnyElementHasError { get; set; }
+        public virtual bool FailIfAnyElementHasWarning { get; set; }
         public virtual bool HasCompleted { get; set; }
         public virtual bool IsPaused { get; set; }
         public virtual bool IsRunning { get; set; }
+        public virtual IJobEntry ParentJob { get; set; }
         public virtual List<IMessageEntry> Messages { get; set; }
-
-        public virtual List<ITaskEntry> Tasks { get; set; }
-        public virtual List<ITriggerEntry> Triggers { get; set; }
+        public virtual List<IElementEntity> Elements { get; set; }
     }
 
-    class JobEntryMap : ClassMap<JobEntry>
+    class TaskEntryMap : ClassMap<TaskEntry>
     {
-        public JobEntryMap()
+        public TaskEntryMap()
         {
-            //DiscriminatorValue("FlatFileReader");
-            Table("Jobs");
+            Table("Tasks");
             Id(x => x.Id).GeneratedBy.GuidComb();
             Map(x => x.IsDeleted);
             Map(x => x.DeletionDate);
@@ -54,15 +51,14 @@ namespace bS.Sked2.Model
             Map(x => x.InstanceID);
             Map(x => x.BeginTime);
             Map(x => x.EndTime);
-            Map(x => x.FailIfAnyTaskHasError);
-            Map(x => x.FailIfAnyTaskHasWarning);
+            Map(x => x.FailIfAnyElementHasError);
+            Map(x => x.FailIfAnyElementHasWarning);
             Map(x => x.HasCompleted);
             Map(x => x.IsPaused);
             Map(x => x.IsRunning);
+            References<JobEntry>(x => x.ParentJob);
             HasMany<MessageEntry>(x => x.Messages);
-            HasMany<TaskEntry>(x => x.Tasks);
-            HasMany<TriggerEntry>(x => x.Triggers);
-
+            HasMany<ElementEntity>(x => x.Elements);
         }
     }
 }

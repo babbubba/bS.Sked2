@@ -1,4 +1,5 @@
 ﻿using bS.Sked2.Structure.Base;
+using bS.Sked2.Structure.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -41,6 +42,9 @@ namespace bS.Sked2.Structure.Engine
         /// The parent job.
         /// </value>
         IEngineJob ParentJob { get; set; }
+
+        void LoadFromEntity(ITaskEntry task);
+
         /// <summary>
         /// Gets or sets the elements.
         /// </summary>

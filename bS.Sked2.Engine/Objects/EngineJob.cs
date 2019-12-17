@@ -1,4 +1,5 @@
 ﻿using bS.Sked2.Structure.Engine;
+using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Service;
 using Microsoft.Extensions.Logging;
 using System;
@@ -52,6 +53,19 @@ namespace bS.Sked2.Engine.Objects
         public bool CanBeExecuted()
         {
             throw new NotImplementedException();
+        }
+
+        public void LoadFromEntity(IJobEntry jobEntry)
+        {
+            this.beginTime = jobEntry.BeginTime;
+            this.Description = jobEntry.Description;
+            this.endTime = jobEntry.EndTime;
+            this.FailIfAnyTaskHasError = jobEntry.FailIfAnyTaskHasError;
+            this.FailIfAnyTaskHasWarning = jobEntry.FailIfAnyTaskHasWarning;
+            this.instanceId = jobEntry.InstanceID;
+            this.isPaused = jobEntry.IsPaused;
+            this.Key = jobEntry.Key;
+            this.Name = jobEntry.Name;
         }
 
         public void Pause()

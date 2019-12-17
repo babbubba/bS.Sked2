@@ -1,4 +1,5 @@
 ﻿using bS.Sked2.Structure.Engine;
+using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Service;
 using bS.Sked2.Structure.Service.Messages;
 using Microsoft.Extensions.Logging;
@@ -88,6 +89,20 @@ namespace bS.Sked2.Engine.Objects
                 return false;
             }
             return true;
+        }
+
+        public void LoadFromEntity(ITaskEntry taskEntry)
+        {
+            this.beginTime = taskEntry.BeginTime;
+            this.Description = taskEntry.Description;
+            this.endTime = taskEntry.EndTime;
+            this.FailIfAnyElementHasError = taskEntry.FailIfAnyElementHasError;
+            this.FailIfAnyElementHasWarning = taskEntry.FailIfAnyElementHasWarning;
+            this.instanceId = taskEntry.InstanceID;
+            this.isPaused = taskEntry.IsPaused;
+            this.Key = taskEntry.Key;
+            this.Name = taskEntry.Name;
+            this.ParentJob.LoadFromEntity(taskEntry.ParentJob);
         }
 
         /// <summary>
