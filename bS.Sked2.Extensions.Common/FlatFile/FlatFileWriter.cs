@@ -1,5 +1,9 @@
-﻿using bS.Sked2.Structure.Base;
+﻿using bs.Data.Interfaces;
+using bS.Sked2.Engine.Objects;
+using bS.Sked2.Structure.Base;
 using bS.Sked2.Structure.Engine;
+using bS.Sked2.Structure.Models;
+using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
 using bS.Sked2.Structure.Service.Messages;
 using Microsoft.Extensions.Logging;
@@ -16,45 +20,33 @@ namespace bS.Sked2.Extensions.Common.FlatFile
     /// 
     /// </summary>
     /// <seealso cref="bS.Sked2.Structure.Engine.BaseEngineElement" />
-    public class FlatFileWriter : BaseEngineElement
+    public class FlatFileWriter : EngineElement
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FlatFileWriter"/> class.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="messageService">The message service.</param>
-        public FlatFileWriter(ILogger logger, IMessageService messageService) : base(logger, messageService)
-        {
-            // Config the element
-            Key = "FlatFileWriter";
-            Name = "Flat File Writer";
-            Description = "This elements write a flat file (like CSV) from a Table value.";
+        //public FlatFileWriter(ILogger logger, IMessageService messageService) : base(logger, messageService)
+        //{
+        //    // Config the element
+        //    Key = "FlatFileWriter";
+        //    Name = "Flat File Writer";
+        //    Description = "This elements write a flat file (like CSV) from a Table value.";
 
+        //    // Register element properties
+        //    RegisterInputProperties("CsvFilePath", "CSV file path", DataType.String, true);
+        //    RegisterInputProperties("ColumnDelimiter", "Column char delimiter", DataType.Char, true);
+        //    RegisterInputProperties("Table", "TableValue to write in flat file", DataType.Table, true);
+        //}
+
+        public FlatFileWriter(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<EngineElement> logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
+        {
             // Register element properties
             RegisterInputProperties("CsvFilePath", "CSV file path", DataType.String, true);
             RegisterInputProperties("ColumnDelimiter", "Column char delimiter", DataType.Char, true);
             RegisterInputProperties("Table", "TableValue to write in flat file", DataType.Table, true);
         }
 
-        /// <summary>
-        /// Loads the entity with filled parameters.
-        /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public override void LoadEntity(IElementEntity entity)
+        public override void LoadFromEntity(Guid EntityId)
         {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Saves the entity with filled parameters.
-        /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public override IElementEntity SaveEntity(IElementEntity entity)
-        {
-            throw new NotImplementedException();
+            elementEntry = engineRepository.GetElementById(EntityId);
+            // set data properties from entity!!!
         }
 
         /// <summary>

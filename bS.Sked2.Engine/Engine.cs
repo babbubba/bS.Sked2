@@ -13,13 +13,12 @@ namespace bS.Sked2.Engine
     public class Engine : IEngine
     {
         private readonly ILogger<Engine> logger;
-        private readonly IMessageService messageService;
 
-        public Engine(ILogger<Engine> logger, IMessageService messageService)
+        public Engine(ILogger<Engine> logger)
         {
             this.logger = logger;
-            this.messageService = messageService;
         }
+
         /// <summary>
         /// Executes the element.
         /// </summary>
@@ -36,10 +35,10 @@ namespace bS.Sked2.Engine
             // Check if element can be executed
             if (!element.CanBeExecuted())
             {
-                element.ParentTask.AddMessage($"The element '{element.Name}' cannot be executed.", MessageSeverity.Error);
+                element.AddMessage($"The element cannot be executed.", MessageSeverity.Error);
                 if (element.ParentTask.FailIfAnyElementHasError)
                 {
-                    throw new EngineException(logger, $"The element '{element.Name}'  cannot be executed. This task was aborted.");
+                    throw new EngineException(logger, $"The element cannot be executed. This task was aborted.");
                 }
                 else
                 {
@@ -55,21 +54,20 @@ namespace bS.Sked2.Engine
 
             if (element.HasErrors)
             {
-                element.ParentTask.AddMessage($"The element {element.Name} (id: {element.InstanceID}) was not executed cause one or more errors occurs.", MessageSeverity.Error);
+                element.AddMessage($"The element (instance: {element.InstanceID}) was not executed cause one or more errors occurs.", MessageSeverity.Error);
                 if (element.ParentTask.FailIfAnyElementHasError)
                 {
-                    throw new EngineException(logger, $"The element {element.Name} (id: {element.InstanceID}) was not executed cause one or more errors occurs. This task was aborted.");
+                    throw new EngineException(logger, $"The element (instance: {element.InstanceID}) was not executed cause one or more errors occurs. This task was aborted.");
                 }
             }
             else if (element.HasWarnings)
             {
-                element.ParentTask.AddMessage($"The element {element.Name} (id: {element.InstanceID}) was executed but one or more warning occurs.", MessageSeverity.Warning);
+                element.AddMessage($"The element (instance: {element.InstanceID}) was executed but one or more warning occurs.", MessageSeverity.Warning);
                 if (element.ParentTask.FailIfAnyElementHasWarning)
                 {
-                    throw new EngineException(logger, $"The element {element.Name} (id: {element.InstanceID}) was executed but one or more warning occurs. This task was aborted.");
+                    throw new EngineException(logger, $"The element (instance: {element.InstanceID}) was executed but one or more warning occurs. This task was aborted.");
                 }
             }
-
         }
 
         /// <summary>
@@ -92,10 +90,10 @@ namespace bS.Sked2.Engine
             // Check if task can be executed
             if (!task.CanBeExecuted())
             {
-                task.ParentJob.AddMessage($"The task '{task.Name}' cannot be executed.", MessageSeverity.Error);
+                task.AddMessage($"The task cannot be executed.", MessageSeverity.Error);
                 if (task.ParentJob.FailIfAnyTaskHasError)
                 {
-                    throw new EngineException(logger, $"The task '{task.Name}'  cannot be executed. This job was aborted.");
+                    throw new EngineException(logger, $"The task  cannot be executed. This job was aborted.");
                 }
                 else
                 {
@@ -107,11 +105,10 @@ namespace bS.Sked2.Engine
             task.Start();
 
             //Execute all active elements
-            foreach (var element in task.Elements)
-            {
-                element.ParentTask = task;
-                ExecuteElement(element);
-            }
+            //foreach (var element in task.Elements)
+            //{
+            //    ExecuteElement(element);
+            //}
 
             // Stop task
             task.Stop();

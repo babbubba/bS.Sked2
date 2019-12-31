@@ -1,4 +1,5 @@
 ﻿using bS.Sked2.Structure.Engine;
+using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Service.Messages;
 using System;
 using System.Collections.Generic;
@@ -15,15 +16,9 @@ namespace bS.Sked2.Structure.Service
         /// <param name="Message">The message.</param>
         /// <param name="severity">The severity.</param>
         /// <returns></returns>
-        IMessage CreateMessage(string Message, MessageSeverity severity);
-        /// <summary>
-        /// Creates the Engine Component related message.
-        /// </summary>
-        /// <param name="Message">The message.</param>
-        /// <param name="engineComponent">The engine component.</param>
-        /// <param name="severity">The severity.</param>
-        /// <returns></returns>
-        IMessage CreateMessage(string Message, IEngineComponent engineComponent, MessageSeverity severity);
+        IMessageEntry CreateMessage(string Message, MessageSeverity severity);
+       
+        IMessageEntry CreateMessage(string message, IInstanceEntry instance, MessageSeverity severity);
 
     }
 }

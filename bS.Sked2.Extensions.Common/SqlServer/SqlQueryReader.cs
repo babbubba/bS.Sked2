@@ -1,6 +1,9 @@
-﻿using bS.Sked2.Structure.Base;
+﻿using bs.Data.Interfaces;
+using bS.Sked2.Engine.Objects;
+using bS.Sked2.Structure.Base;
 using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Engine.Data;
+using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
 using bS.Sked2.Structure.Service.Messages;
 using Microsoft.Extensions.Logging;
@@ -12,36 +15,44 @@ using System.Text;
 
 namespace bS.Sked2.Extensions.Common.SqlServer
 {
-    public class SqlQueryReader : BaseEngineElement
+    public class SqlQueryReader : EngineElement
     {
         private readonly ISqlValidationService sqlValidationService;
 
-        public SqlQueryReader(
-            ILogger logger,
-            IMessageService messageService,
-            ISqlValidationService sqlValidationService) : base(logger, messageService)
+        public SqlQueryReader(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<EngineElement> logger, IMessageService messageService, ISqlValidationService sqlValidationService) : base(uow, enginRepo, logger, messageService )
         {
-            // Config the element
-            Key = "SqlQueryReader";
-            Name = "SQL Query Reader";
-            Description = "This elements read data form a SQL Server query and returns a Table value.";
+            this.sqlValidationService = sqlValidationService;
 
             // Register element properties
             RegisterInputProperties("ConnectionString", "Sql Server Connection String", DataType.String, true);
             RegisterInputProperties("SqlQuery", "SqL Query", DataType.String, true);
 
             RegisterOutputProperties("Table", "Rows imported from Sql Query", DataType.Table, true);
-            this.sqlValidationService = sqlValidationService;
         }
 
-        public override void LoadEntity(IElementEntity entity)
-        {
-            throw new NotImplementedException();
-        }
+        //public SqlQueryReader(
+        //    ILogger logger,
+        //    IMessageService messageService,
+        //    ISqlValidationService sqlValidationService) : base(logger, messageService)
+        //{
+        //    // Config the element
+        //    Key = "SqlQueryReader";
+        //    Name = "SQL Query Reader";
+        //    Description = "This elements read data form a SQL Server query and returns a Table value.";
 
-        public override IElementEntity SaveEntity(IElementEntity entity)
+        //    // Register element properties
+        //    RegisterInputProperties("ConnectionString", "Sql Server Connection String", DataType.String, true);
+        //    RegisterInputProperties("SqlQuery", "SqL Query", DataType.String, true);
+
+        //    RegisterOutputProperties("Table", "Rows imported from Sql Query", DataType.Table, true);
+        //    this.sqlValidationService = sqlValidationService;
+        //}
+
+     
+        public override void LoadFromEntity(Guid EntityId)
         {
-            throw new NotImplementedException();
+            elementEntry = engineRepository.GetElementById(EntityId);
+            // set data properties from entity!!!
         }
 
         public override void Start()

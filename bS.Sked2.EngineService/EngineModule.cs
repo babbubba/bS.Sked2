@@ -4,6 +4,7 @@ using bS.Sked2.Engine.Objects;
 using bS.Sked2.Model.Repositories;
 using bS.Sked2.Service.Message;
 using bS.Sked2.Structure.Engine;
+using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
 
 namespace bS.Sked2.EngineService

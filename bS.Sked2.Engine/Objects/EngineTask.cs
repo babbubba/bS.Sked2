@@ -1,5 +1,8 @@
-﻿using bS.Sked2.Structure.Engine;
+﻿using bs.Data.Interfaces;
+using bS.Sked2.Model.Repositories;
+using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Models;
+using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
 using bS.Sked2.Structure.Service.Messages;
 using Microsoft.Extensions.Logging;
@@ -11,69 +14,21 @@ namespace bS.Sked2.Engine.Objects
 {
     public class EngineTask : BaseEngineComponent, IEngineTask
     {
-        protected DateTime? beginTime;
-        protected DateTime? endTime;
-        protected bool isPaused;
+        private readonly IUnitOfWork uow;
+        private readonly IEngineRepository engineRepository;
+        private ITaskEntry taskEntry;
 
-        public EngineTask(ILogger<EngineTask> logger, IMessageService messageService) : base(logger, messageService)
+        public EngineTask(
+            IUnitOfWork uow,
+            IEngineRepository engineRepository,
+            ILogger<EngineTask> logger,
+            IMessageService messageService) : base(logger, messageService)
         {
+            this.uow = uow;
+            this.engineRepository = engineRepository;
         }
 
-        public IEngineJob ParentJob { get; set; }
-        public bool FailIfAnyElementHasError { get; set; }
-        public bool FailIfAnyElementHasWarning { get; set; }
-        public DateTime? BeginTime => beginTime;
-        public DateTime? EndTime => endTime;
-        public bool IsPaused => isPaused;
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is running.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is running; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsRunning => beginTime != null && !isPaused && endTime == null;
-
-        /// <summary>
-        /// Gets a value indicating whether this instance has completed.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance has completed; otherwise, <c>false</c>.
-        /// </value>
-        public bool HasCompleted => beginTime != null && !isPaused && endTime != null;
-
-        /// <summary>
-        /// Gets or sets the elements.
-        /// </summary>
-        /// <value>
-        /// The elements.
-        /// </value>
-        public IEngineElement[] Elements { get; set; }
-
-        /// <summary>
-        /// Gets or sets the key.
-        /// </summary>
-        /// <value>
-        /// The key.
-        /// </value>
-        public string Key { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
-        public string Description { get; set; }
-
+        public IJobEntry ParentJob { get => taskEntry.ParentJob; }
 
         /// <summary>
         /// Determines whether this instance [can be executed].
@@ -81,67 +36,74 @@ namespace bS.Sked2.Engine.Objects
         /// <returns>
         /// <c>true</c> if this instance [can be executed]; otherwise, <c>false</c>.
         /// </returns>
-        public bool CanBeExecuted()
+        public override bool CanBeExecuted()
         {
-            if (ParentJob?.InstanceID == null)
-            {
-                AddMessage("Error starting task. No related Job instance found.", MessageSeverity.Error);
-                return false;
-            }
+            // TODO: Add logic here if needed
             return true;
         }
 
-        public void LoadFromEntity(ITaskEntry taskEntry)
+        /// <summary>
+        /// Loads from entity.
+        /// </summary>
+        /// <param name="taskId">The job identifier.</param>
+        public override void LoadFromEntity(Guid taskId)
         {
-            this.beginTime = taskEntry.BeginTime;
-            this.Description = taskEntry.Description;
-            this.endTime = taskEntry.EndTime;
-            this.FailIfAnyElementHasError = taskEntry.FailIfAnyElementHasError;
-            this.FailIfAnyElementHasWarning = taskEntry.FailIfAnyElementHasWarning;
-            this.instanceId = taskEntry.InstanceID;
-            this.isPaused = taskEntry.IsPaused;
-            this.Key = taskEntry.Key;
-            this.Name = taskEntry.Name;
-            this.ParentJob.LoadFromEntity(taskEntry.ParentJob);
+            taskEntry = engineRepository.GetTaskById(taskId);
         }
 
         /// <summary>
         /// Pauses this instance.
         /// </summary>
-        public void Pause()
+        public override void Pause()
         {
-            isPaused = true;
+            uow.BeginTransaction();
+
+            instance.IsPaused = true;
+
             AddMessage("Task execution paused.");
+
+            uow.Commit();
         }
 
         /// <summary>
         /// Starts this instance.
         /// </summary>
-        public void Start()
+        public override void Start()
         {
+            uow.BeginTransaction();
+
             // Create the instance ID for this element
-            instanceId = Guid.NewGuid();
+            instance = engineRepository.CreateNewInstance();
 
             // Set the execution begin time
-            beginTime = DateTime.Now;
+            instance.BeginTime = DateTime.Now;
 
             // Add a message to notify the element started
             AddMessage("Task execution started.");
+
+            uow.Commit();
+
+            //TODO: Execute Task Logic
+
         }
 
         /// <summary>
         /// Stops this instance.
         /// </summary>
-        public void Stop()
+        public override void Stop()
         {
+            uow.BeginTransaction();
+
             // It set paused value to false in case this element was paused previously
-            isPaused = false;
+            instance.IsPaused = false;
 
             // Set this element finish time
-            endTime = DateTime.Now;
+            instance.EndTime = DateTime.Now;
 
             // Add a message to notify the element finish execution
-            AddMessage("Task execution finish.");
+            AddMessage("Job execution finish.");
+
+            uow.Commit();
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using bs.Data;
 using bs.Data.Interfaces;
+using bS.Sked2.Structure.Models;
+using bS.Sked2.Structure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,14 +16,26 @@ namespace bS.Sked2.Model.Repositories
 
         }
 
-        public JobEntry GetJobById(Guid Id)
+        public IJobEntry GetJobById(Guid Id)
         {
             return base.GetById<JobEntry>(Id);
         }
 
-        public TaskEntry GetTaskById(Guid Id)
+        public ITaskEntry GetTaskById(Guid Id)
         {
             return base.GetById<TaskEntry>(Id);
+        }
+
+        public IElementEntity GetElementById(Guid Id)
+        {
+            return base.GetById<ElementEntity>(Id);
+        }
+
+        public IInstanceEntry CreateNewInstance()
+        {
+            var newInstance = new InstanceEntry();
+            base.Create(newInstance);
+            return newInstance;
         }
     }
 }

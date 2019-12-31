@@ -16,20 +16,13 @@ namespace bS.Sked2.Model
         public virtual bool IsEnabled { get; set; }
         public virtual bool IsDeleted { get; set; }
         public virtual DateTime? DeletionDate { get; set; }
-
         public virtual string Key { get; set; }
         public virtual string Name { get; set; }
         public virtual string Description { get; set; }
-        public virtual Guid? InstanceID { get; set; }
-        public virtual DateTime? BeginTime { get; }
-        public virtual DateTime? EndTime { get; }
         public virtual bool FailIfAnyElementHasError { get; set; }
         public virtual bool FailIfAnyElementHasWarning { get; set; }
-        public virtual bool HasCompleted { get; set; }
-        public virtual bool IsPaused { get; set; }
-        public virtual bool IsRunning { get; set; }
         public virtual IJobEntry ParentJob { get; set; }
-        public virtual List<IMessageEntry> Messages { get; set; }
+        public virtual List<IInstanceEntry> Instances { get; set; }
         public virtual List<IElementEntity> Elements { get; set; }
     }
 
@@ -48,16 +41,10 @@ namespace bS.Sked2.Model
             Map(x => x.Key);
             Map(x => x.Name);
             Map(x => x.Description);
-            Map(x => x.InstanceID);
-            Map(x => x.BeginTime);
-            Map(x => x.EndTime);
             Map(x => x.FailIfAnyElementHasError);
             Map(x => x.FailIfAnyElementHasWarning);
-            Map(x => x.HasCompleted);
-            Map(x => x.IsPaused);
-            Map(x => x.IsRunning);
             References<JobEntry>(x => x.ParentJob);
-            HasMany<MessageEntry>(x => x.Messages);
+            HasMany<InstanceEntry>(x => x.Instances);
             HasMany<ElementEntity>(x => x.Elements);
         }
     }

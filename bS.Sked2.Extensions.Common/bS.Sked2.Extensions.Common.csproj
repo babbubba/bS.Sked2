@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\bS.Sked2.Engine\bS.Sked2.Engine.csproj" />
     <ProjectReference Include="..\bS.Sked2.Model\bS.Sked2.Model.csproj" />
     <ProjectReference Include="..\bS.Sked2.Shared\bS.Sked2.Shared.csproj" />
     <ProjectReference Include="..\bS.Sked2.Structure\bS.Sked2.Structure.csproj" />

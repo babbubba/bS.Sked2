@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\bS.Sked2.Model\bS.Sked2.Model.csproj" />
     <ProjectReference Include="..\bS.Sked2.Structure\bS.Sked2.Structure.csproj" />
   </ItemGroup>
 

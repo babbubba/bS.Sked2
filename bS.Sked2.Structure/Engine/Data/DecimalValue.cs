@@ -4,7 +4,7 @@ using System.Text;
 
 namespace bS.Sked2.Structure.Engine.Data
 {
-    class DecimalValue : BaseEngineValue
+    public class DecimalValue : BaseEngineValue
     {
         public DecimalValue()
         {

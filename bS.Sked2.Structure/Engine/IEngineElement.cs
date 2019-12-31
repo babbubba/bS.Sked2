@@ -1,4 +1,5 @@
 ﻿using bS.Sked2.Structure.Base;
+using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Service.Messages;
 using System;
 using System.Text;
@@ -10,39 +11,15 @@ namespace bS.Sked2.Structure.Engine
     /// </summary>
     /// <seealso cref="bS.Sked2.Structure.Base.IStartable" />
     /// <seealso cref="bS.Sked2.Structure.Engine.IEngineComponent" />
-    public interface IEngineElement : IStartable, IEngineComponent
+    public interface IEngineElement : IEngineComponent
     {
-        /// <summary>
-        /// Gets or sets the key.
-        /// </summary>
-        /// <value>
-        /// The key.
-        /// </value>
-        string Key { get;  }
-
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        string Name { get;  }
-
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
-        string Description { get;  }
-
         /// <summary>
         /// Gets the parent task.
         /// </summary>
         /// <value>
         /// The parent task.
         /// </value>
-        IEngineTask ParentTask { get; set; }
+        ITaskEntry ParentTask { get; }
 
         /// <summary>
         /// Gets the parent Engine Module.
@@ -85,19 +62,17 @@ namespace bS.Sked2.Structure.Engine
         /// <param name="value">The value.</param>
         void SetDataValue(EngineDataDirection direction, string propertyKey, IEngineData value);
 
-        /// <summary>
-        /// Loads the entity.
-        /// </summary>
-        /// <param name="entity">The entity.</param>
-        void LoadEntity(IElementEntity entity);
-        /// <summary>
-        /// Saves the entity.
-        /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        IElementEntity SaveEntity(IElementEntity entity);
-
-
+        ///// <summary>
+        ///// Loads the entity.
+        ///// </summary>
+        ///// <param name="entity">The entity.</param>
+        //void LoadEntity(IElementEntity entity);
+        ///// <summary>
+        ///// Saves the entity.
+        ///// </summary>
+        ///// <param name="entity">The entity.</param>
+        ///// <returns></returns>
+        //IElementEntity SaveEntity(IElementEntity entity);
 
     }
 }

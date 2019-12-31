@@ -9,63 +9,14 @@ namespace bS.Sked2.Structure.Engine
     /// <summary>
     /// Contiene uno o piu Elementi <see cref="IEngineElement"/> e rappresenta il flusso di esecuzione degli elementi stessi. Sostanzialmente rappresenta un compito finito.
     /// </summary>
-    public interface IEngineTask : IStartable, IEngineComponent
+    public interface IEngineTask : IEngineComponent
     {
         /// <summary>
-        /// Gets or sets the key.
+        /// Gets the parent task.
         /// </summary>
         /// <value>
-        /// The key.
+        /// The parent task.
         /// </value>
-        string Key { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
-        string Description { get; }
-
-        /// <summary>
-        /// Gets or sets the parent job.
-        /// </summary>
-        /// <value>
-        /// The parent job.
-        /// </value>
-        IEngineJob ParentJob { get; set; }
-
-        void LoadFromEntity(ITaskEntry task);
-
-        /// <summary>
-        /// Gets or sets the elements.
-        /// </summary>
-        /// <value>
-        /// The elements.
-        /// </value>
-        IEngineElement[] Elements { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [fail if any element has error].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [fail if any element has error]; otherwise, <c>false</c>.
-        /// </value>
-        bool FailIfAnyElementHasError { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether [fail if any element has warning].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [fail if any element has warning]; otherwise, <c>false</c>.
-        /// </value>
-        bool FailIfAnyElementHasWarning { get; set; }
+        IJobEntry ParentJob { get; }
     }
 }

@@ -9,30 +9,6 @@ namespace bS.Sked2.Structure.Engine
     /// </summary>
     public interface IEngineModule : IEngineComponent
     {
-        /// <summary>
-        /// Gets or sets the key.
-        /// </summary>
-        /// <value>
-        /// The key.
-        /// </value>
-        string Key { get; }
-
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        string Name { get; }
-
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
-        string Description { get; }
-
         void Init();
     }
 }

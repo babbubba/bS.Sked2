@@ -7,13 +7,13 @@ using System.Text;
 
 namespace bS.Sked2.Extensions.Common
 {
-    public class Common : BaseEngineModule
-    {
-        public Common(ILogger logger, IMessageService messageService) : base(logger, messageService)
-        {
-            Key = "Common";
-            Name = "Common Elements";
-            Description = "Common elements for generic using.";
-        }
-    }
+    //public class Common : BaseEngineModule
+    //{
+    //    public Common(ILogger logger, IMessageService messageService) : base(logger, messageService)
+    //    {
+    //        Key = "Common";
+    //        Name = "Common Elements";
+    //        Description = "Common elements for generic using.";
+    //    }
+    //}
 }
