@@ -31,11 +31,18 @@ namespace bS.Sked2.Model.Repositories
             return base.GetById<ElementEntity>(Id);
         }
 
+        public IModuleEntry GetModuleById(Guid Id)
+        {
+            return base.GetById<ModuleEntry>(Id);
+        }
+
         public IInstanceEntry CreateNewInstance()
         {
             var newInstance = new InstanceEntry();
             base.Create(newInstance);
             return newInstance;
         }
+
+      
     }
 }

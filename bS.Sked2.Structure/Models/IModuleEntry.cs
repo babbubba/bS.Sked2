@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace bS.Sked2.Structure.Models
 {
-    public interface IElementEntity
+    public interface IModuleEntry
     {
         DateTime? CreationDate { get; set; }
         DateTime? DeletionDate { get; set; }
@@ -15,7 +14,5 @@ namespace bS.Sked2.Structure.Models
         DateTime? LastUpdateDate { get; set; }
         List<IInstanceEntry> Instances { get; set; }
         string Name { get; set; }
-        ITaskEntry ParentTask { get; set; }
-        IModuleEntry ParentModule { get; set; }
     }
 }

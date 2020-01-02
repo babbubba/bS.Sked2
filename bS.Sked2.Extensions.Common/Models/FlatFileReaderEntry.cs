@@ -7,8 +7,15 @@ using System.Text;
 
 namespace bS.Sked2.Extensions.Common.Models
 {
-    public class FlatFileReaderEntity : ElementEntity
+    public class FlatFileReaderEntry : ElementEntity
     {
+        public FlatFileReaderEntry()
+        {
+            Key = "FlatFileReader";
+            Name = "Flat File Reader";
+            Description = "This elements read form a flat file (like CSV) and returns a Table value.";
+        }
+
         public virtual string SourceFilePath { get; set; }
         public virtual int? SkipStartingDataRows { get; set; }
         public virtual bool FirstRowHasHeader { get; set; }
@@ -17,7 +24,7 @@ namespace bS.Sked2.Extensions.Common.Models
 
     }
 
-    class FlatFileReaderEntityMap : SubclassMap<FlatFileReaderEntity>
+    class FlatFileReaderEntityMap : SubclassMap<FlatFileReaderEntry>
     {
         public FlatFileReaderEntityMap()
         {

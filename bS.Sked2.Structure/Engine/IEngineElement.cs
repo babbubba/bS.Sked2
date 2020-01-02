@@ -29,6 +29,8 @@ namespace bS.Sked2.Structure.Engine
         /// </value>
         IEngineModule ParentModule { get; set; }
 
+        string Key { get; }
+
         /// <summary>
         /// Registers the input properties.
         /// </summary>

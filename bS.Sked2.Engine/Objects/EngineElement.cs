@@ -38,8 +38,9 @@ namespace bS.Sked2.Engine.Objects
         /// </summary>
         protected IList<IEngineElementProperty> outputProperties;
 
-        public ITaskEntry ParentTask { get => elementEntry.ParentTask;  }
+        public ITaskEntry ParentTask { get => elementEntry.ParentTask; }
         public IEngineModule ParentModule { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public abstract string Key { get; }
 
         /// <summary>
         /// Determines whether this instance [can be executed].
@@ -189,8 +190,6 @@ namespace bS.Sked2.Engine.Objects
                     op.Value = value;
                     break;
             }
-
-
         }
 
     

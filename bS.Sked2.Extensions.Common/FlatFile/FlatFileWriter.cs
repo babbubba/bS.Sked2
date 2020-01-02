@@ -1,7 +1,9 @@
 ﻿using bs.Data.Interfaces;
 using bS.Sked2.Engine.Objects;
+using bS.Sked2.Extensions.Common.Models;
 using bS.Sked2.Structure.Base;
 using bS.Sked2.Structure.Engine;
+using bS.Sked2.Structure.Engine.Data;
 using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
@@ -22,18 +24,6 @@ namespace bS.Sked2.Extensions.Common.FlatFile
     /// <seealso cref="bS.Sked2.Structure.Engine.BaseEngineElement" />
     public class FlatFileWriter : EngineElement
     {
-        //public FlatFileWriter(ILogger logger, IMessageService messageService) : base(logger, messageService)
-        //{
-        //    // Config the element
-        //    Key = "FlatFileWriter";
-        //    Name = "Flat File Writer";
-        //    Description = "This elements write a flat file (like CSV) from a Table value.";
-
-        //    // Register element properties
-        //    RegisterInputProperties("CsvFilePath", "CSV file path", DataType.String, true);
-        //    RegisterInputProperties("ColumnDelimiter", "Column char delimiter", DataType.Char, true);
-        //    RegisterInputProperties("Table", "TableValue to write in flat file", DataType.Table, true);
-        //}
 
         public FlatFileWriter(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<EngineElement> logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
@@ -43,10 +33,16 @@ namespace bS.Sked2.Extensions.Common.FlatFile
             RegisterInputProperties("Table", "TableValue to write in flat file", DataType.Table, true);
         }
 
+        public override string Key => "FlatFileWriter";
+
         public override void LoadFromEntity(Guid EntityId)
         {
             elementEntry = engineRepository.GetElementById(EntityId);
-            // set data properties from entity!!!
+            var entity = (FlatFileWriterEntry)elementEntry;
+
+            // set data properties from entity
+            SetDataValue(EngineDataDirection.Input, "SourceFilePath", new StringValue(entity.TargetFilePath));
+            SetDataValue(EngineDataDirection.Input, "ColumnDelimiter", new CharValue(entity.ColumnDelimiter.ToCharArray().FirstOrDefault()));
         }
 
         /// <summary>

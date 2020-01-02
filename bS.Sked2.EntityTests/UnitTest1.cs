@@ -33,7 +33,7 @@ namespace bS.Sked2.EntityTests
 
             #region Create Entity
             uOW.BeginTransaction();
-            var entityToCreate = new FlatFileReaderEntity
+            var entityToCreate = new FlatFileReaderEntry
             {
                 ColumnDelimiter = ";",
                 FirstRowHasHeader = true,

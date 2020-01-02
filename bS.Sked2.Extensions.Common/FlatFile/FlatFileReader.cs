@@ -1,6 +1,7 @@
 ﻿using bs.Data.Interfaces;
 using bS.Sked2.Engine.Objects;
 using bS.Sked2.Extensions.Common.FlatFile.Helper;
+using bS.Sked2.Extensions.Common.Models;
 using bS.Sked2.Shared;
 using bS.Sked2.Structure.Base;
 using bS.Sked2.Structure.Engine;
@@ -23,27 +24,6 @@ namespace bS.Sked2.Extensions.Common.FlatFile
     /// <seealso cref="bS.Sked2.Structure.Engine.BaseEngineElement" />
     public class FlatFileReader : EngineElement
     {
-        ///// <summary>
-        ///// Initializes a new instance of the <see cref="FlatFileReader" /> class.
-        ///// </summary>
-        ///// <param name="logger">The logger.</param>
-        ///// <param name="messageService">The message service.</param>
-        //public FlatFileReader(ILogger logger, IMessageService messageService) : base(logger, messageService)
-        //{
-        //    // Config the element
-        //    Key = "FlatFileReader";
-        //    Name = "Flat File Reader";
-        //    Description = "This elements read form a flat file (like CSV) and returns a Table value.";
-
-        //    // Register element properties
-        //    RegisterInputProperties("SourceFilePath", "Source file path", DataType.String, true);
-        //    RegisterInputProperties("SkipStartingDataRows", "Starting row to skip", DataType.Int);
-        //    RegisterInputProperties("FirstRowHasHeader", "Using first row as header", DataType.Bool, true);
-        //    RegisterInputProperties("ColumnDelimiter", "Column char delimiter", DataType.Char, true);
-        //    RegisterInputProperties("LimitToRows", "Limit result rows", DataType.Int);
-
-        //    RegisterOutputProperties("Table", "Rows imported from flat file", DataType.Table, true);
-        //}
 
         public FlatFileReader(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<EngineElement> logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
@@ -56,10 +36,18 @@ namespace bS.Sked2.Extensions.Common.FlatFile
             RegisterOutputProperties("Table", "Rows imported from flat file", DataType.Table, true);
         }
 
+        public override string Key => "FlatFileReader";
+
         public override void LoadFromEntity(Guid EntityId)
         {
             elementEntry = engineRepository.GetElementById(EntityId);
-            // set data properties from entity!!!
+            var entity = (FlatFileReaderEntry)elementEntry;
+            
+            // set data properties from entity
+            SetDataValue(EngineDataDirection.Input, "SourceFilePath", new StringValue(entity.SourceFilePath));
+            SetDataValue(EngineDataDirection.Input, "SkipStartingDataRows", new IntValue(entity.SkipStartingDataRows??0));
+            SetDataValue(EngineDataDirection.Input, "FirstRowHasHeader", new BoolValue(entity.FirstRowHasHeader));
+            SetDataValue(EngineDataDirection.Input, "ColumnDelimiter", new CharValue(entity.ColumnDelimiter.ToCharArray().FirstOrDefault()));
         }
 
         /// <summary>
