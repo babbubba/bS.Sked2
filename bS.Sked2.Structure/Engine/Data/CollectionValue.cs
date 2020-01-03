@@ -13,8 +13,6 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public override DataType DataType => DataType.Collection;
 
-        public override string StoragePrefixValue => "!*COLLECTION#";
-
         public override bool CanPersistInStorage => true;
     
         public CollectionValue()

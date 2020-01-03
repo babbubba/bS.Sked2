@@ -12,8 +12,6 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public override DataType DataType => DataType.DictionaryEntry;
 
-        public override string StoragePrefixValue => "!*DICTIONARYENTRY#";
-
         public override bool CanPersistInStorage => true;
         public DictionaryEntryValue()
         {

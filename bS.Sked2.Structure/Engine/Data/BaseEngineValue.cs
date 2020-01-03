@@ -19,8 +19,6 @@ namespace bS.Sked2.Structure.Engine.Data
         protected object value;
 
         public abstract DataType DataType { get; }
-        public abstract string StoragePrefixValue { get; }
-
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance can persist in storage.

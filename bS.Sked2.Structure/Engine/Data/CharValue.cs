@@ -11,8 +11,6 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public override DataType DataType => DataType.Char;
 
-        public override string StoragePrefixValue => "!*CHAR#";
-
         public override bool CanPersistInStorage => true;
         public CharValue()
         {

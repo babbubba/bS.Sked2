@@ -11,8 +11,6 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public override DataType DataType => DataType.Bool;
 
-        public override string StoragePrefixValue => "!*BOOL#";
-
         public override bool CanPersistInStorage => true;
 
         public BoolValue()

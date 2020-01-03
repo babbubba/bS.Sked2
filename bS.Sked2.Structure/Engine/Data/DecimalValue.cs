@@ -12,8 +12,6 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public override DataType DataType => DataType.Decimal;
 
-        public override string StoragePrefixValue => "!*DECIMAL#";
-
         public override bool CanPersistInStorage => true;
         public DecimalValue()
         {

@@ -12,8 +12,6 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public override DataType DataType => DataType.Double;
 
-        public override string StoragePrefixValue => "!*DOUBLE#";
-
         public override bool CanPersistInStorage => true;
         public DoubleValue()
         {

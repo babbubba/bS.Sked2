@@ -12,8 +12,6 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public override DataType DataType => DataType.Datetime;
 
-        public override string StoragePrefixValue => "!*DATETIME#";
-
         public override bool CanPersistInStorage => true;
         public DateTimeValue()
         {

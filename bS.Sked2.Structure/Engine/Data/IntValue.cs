@@ -12,8 +12,6 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public override DataType DataType => DataType.Int;
 
-        public override string StoragePrefixValue => "!*INT#";
-
         public override bool CanPersistInStorage => true;
         public IntValue()
         {

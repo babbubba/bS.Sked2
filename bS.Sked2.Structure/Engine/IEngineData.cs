@@ -38,8 +38,6 @@ namespace bS.Sked2.Structure.Engine
         /// </value>
         public bool IsValid { get; set; }
 
-        public string StoragePrefixValue { get; }
-
         /// <summary>
         /// Sets the value.
         /// </summary>
@@ -51,7 +49,16 @@ namespace bS.Sked2.Structure.Engine
         /// <returns></returns>
         public T Get<T>();
 
+        /// <summary>
+        /// Convert to string the value so it can persist on database.
+        /// </summary>
+        /// <returns></returns>
         public string WriteToStringValue();
+
+        /// <summary>
+        /// Reads from string the converted value so it can be read from database.
+        /// </summary>
+        /// <param name="stringValue">The string value.</param>
         public void ReadFromStringValue(string stringValue);
     }
 

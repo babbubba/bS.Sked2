@@ -16,8 +16,6 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public override DataType DataType => DataType.Table;
 
-        public override string StoragePrefixValue => "!*TABLE#";
-
         public override bool CanPersistInStorage => true;
 
         public TableValue()

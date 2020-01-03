@@ -24,13 +24,23 @@ namespace bS.Sked2.Structure.Engine.Data.Tests
             collection.AddValue(new StringValue("abcdef"));
             collection.AddValue(new DictionaryEntryValue("chiave","valore"));
 
+       
+
             var str = collection.WriteToStringValue();
 
             var collection2 = new CollectionValue();
 
             collection2.ReadFromStringValue(str);
 
-          
+            var mappings = new CollectionValue();
+            mappings.AddValue(new DictionaryEntryValue("Column1", "3"));
+            mappings.AddValue(new DictionaryEntryValue("Column2", "1"));
+            mappings.AddValue(new DictionaryEntryValue("Column3", "2"));
+            var strMapping = mappings.WriteToStringValue();
+            var coll2 = new CollectionValue();
+            coll2.ReadFromStringValue(strMapping);
+
+
         }
     }
 }
