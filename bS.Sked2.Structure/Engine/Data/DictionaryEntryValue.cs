@@ -1,24 +1,48 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace bS.Sked2.Structure.Engine.Data
 {
     public class DictionaryEntryValue : BaseEngineValue
     {
+        public override DataType DataType => DataType.DictionaryEntry;
+
+        public override string StoragePrefixValue => "!*DICTIONARYENTRY#";
+
+        public override bool CanPersistInStorage => true;
         public DictionaryEntryValue()
         {
-            CanPersistInStorage = true;
-            dataType = DataType.DictionaryEntry;
-        }
 
+        }
         public DictionaryEntryValue(string key, string value)
         {
-            CanPersistInStorage = true;
             var entry = new DictionaryEntry(key, value);
-            dataType = DataType.DictionaryEntry;
             Set(entry);
+        }
+
+        //public override string WriteToStringValue()
+        //{
+        //    var sb = new StringBuilder();
+        //    sb.Append(StoragePrefixValue);
+        //    sb.Append(((DictionaryEntry)value).Key);
+        //    sb.Append("|!§@#");
+        //    sb.Append(((DictionaryEntry)value).Value?.ToString()??"");
+        //    return sb.ToString();
+        //}
+
+        public override void ReadFromStringValue(string stringValue)
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(DictionaryEntry));
+            StringReader sr = new StringReader(stringValue);
+            using (XmlReader writer = XmlReader.Create(sr))
+            {
+                value = xmlSerializer.Deserialize(writer);
+            }
         }
     }
 }

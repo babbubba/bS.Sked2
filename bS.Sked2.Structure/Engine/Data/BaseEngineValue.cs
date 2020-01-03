@@ -3,6 +3,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace bS.Sked2.Structure.Engine.Data
 {
@@ -13,9 +17,10 @@ namespace bS.Sked2.Structure.Engine.Data
     public abstract class BaseEngineValue : IEngineData
     {
         protected object value;
-        protected DataType dataType;
 
-        public DataType DataType => dataType;
+        public abstract DataType DataType { get; }
+        public abstract string StoragePrefixValue { get; }
+
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance can persist in storage.
@@ -23,14 +28,14 @@ namespace bS.Sked2.Structure.Engine.Data
         /// <value>
         ///   <c>true</c> if this instance can persist in storage; otherwise, <c>false</c>.
         /// </value>
-        public bool CanPersistInStorage { get; protected set; }
+        public abstract bool CanPersistInStorage { get;}
         /// <summary>
         /// Gets or sets a value indicating whether this instance is filled.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance is filled; otherwise, <c>false</c>.
         /// </value>
-        public bool IsFilled { get; set; }
+        public bool IsFilled => this.value != null;
         /// <summary>
         /// Returns true if ... is valid.
         /// </summary>
@@ -73,7 +78,7 @@ namespace bS.Sked2.Structure.Engine.Data
         /// </exception>
         private void CheckType<T>()
         {
-            switch (dataType)
+            switch (DataType)
             {
                 case DataType.Int:
                     if (typeof(T) != typeof(int) && typeof(T) != typeof(int?))
@@ -146,10 +151,36 @@ namespace bS.Sked2.Structure.Engine.Data
         {
             CheckType<T>();
             this.value = value;
-            IsValid = this.value != null;
-            IsFilled = true;
         }
 
+        public virtual string WriteToStringValue()
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(value.GetType());
+            StringBuilder sb = new StringBuilder();
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                Indent = true,
+                OmitXmlDeclaration = true,
+                IndentChars = "  ",
+                NewLineChars = "\n",
+                NewLineHandling = NewLineHandling.Replace
+            };
+            using (XmlWriter writer = XmlWriter.Create(sb, settings))
+            {
+                xmlSerializer.Serialize(writer, value);
+            }
+            return sb.ToString();
+        }
 
+        public abstract void ReadFromStringValue(string stringValue);
+        //{
+            //XmlSerializer xmlSerializer = new XmlSerializer(value.GetType());
+            //StringReader sr = new StringReader(stringValue);
+     
+            //using (XmlReader writer = XmlReader.Create(sr))
+            //{
+            //   value = xmlSerializer.Deserialize(writer);
+            //}
+        //}
     }
 }

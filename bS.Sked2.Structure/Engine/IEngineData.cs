@@ -29,7 +29,7 @@ namespace bS.Sked2.Structure.Engine
         /// <value>
         ///   <c>true</c> if this instance is filled; otherwise, <c>false</c>.
         /// </value>
-        public bool IsFilled { get; set; }
+        public bool IsFilled { get;}
         /// <summary>
         /// Returns true if ... is valid.
         /// </summary>
@@ -37,6 +37,9 @@ namespace bS.Sked2.Structure.Engine
         ///   <c>true</c> if this instance is valid; otherwise, <c>false</c>.
         /// </value>
         public bool IsValid { get; set; }
+
+        public string StoragePrefixValue { get; }
+
         /// <summary>
         /// Sets the value.
         /// </summary>
@@ -47,6 +50,9 @@ namespace bS.Sked2.Structure.Engine
         /// </summary>
         /// <returns></returns>
         public T Get<T>();
+
+        public string WriteToStringValue();
+        public void ReadFromStringValue(string stringValue);
     }
 
     public enum DataType

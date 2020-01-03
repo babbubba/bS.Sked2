@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
+using System.IO;
 using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace bS.Sked2.Structure.Engine.Data
 {
@@ -10,18 +14,18 @@ namespace bS.Sked2.Structure.Engine.Data
     /// <seealso cref="bS.Sked2.Structure.Engine.Data.BaseEngineValue" />
     public class TableValue : BaseEngineValue
     {
+        public override DataType DataType => DataType.Table;
+
+        public override string StoragePrefixValue => "!*TABLE#";
+
+        public override bool CanPersistInStorage => true;
 
         public TableValue()
         {
-            CanPersistInStorage = false;
-            dataType = DataType.Table;
-            value = new DataTable("Table");
-        }
 
+        }
         public TableValue(DataTable table)
         {
-            CanPersistInStorage = false;
-            dataType = DataType.Table;
             Set(table);
         }
 
@@ -37,6 +41,35 @@ namespace bS.Sked2.Structure.Engine.Data
             {
                 var val = value as DataTable;
                 return val?.Rows?.Count ?? 0;
+            }
+        }
+
+        //public override string WriteToStringValue()
+        //{
+        //    var sb = new StringBuilder();
+        //    sb.Append(StoragePrefixValue);
+        //    using (var sw = new StringWriter())
+        //    {
+        //        ((DataTable)value).WriteXml(sw);
+        //        sb.Append(sw.ToString());
+        //    }
+        //    return sb.ToString();
+        //}
+
+        //public override void ReadFromStringValue(string stringValue)
+        //{
+        //    base.ReadFromStringValue(stringValue);
+        //    string val = stringValue.Remove(0, StoragePrefixValue.Length);
+        //    var sw = new StringReader(val);
+        //    ((DataTable)value).ReadXml(sw);
+        //}
+        public override void ReadFromStringValue(string stringValue)
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(DataTable));
+            StringReader sr = new StringReader(stringValue);
+            using (XmlReader writer = XmlReader.Create(sr))
+            {
+                value = xmlSerializer.Deserialize(writer);
             }
         }
     }

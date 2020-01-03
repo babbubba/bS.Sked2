@@ -1,5 +1,6 @@
 ﻿using bs.Data.Interfaces;
 using bS.Sked2.Engine.Objects;
+using bS.Sked2.Extensions.Common.Models;
 using bS.Sked2.Structure.Base;
 using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Engine.Data;
@@ -30,29 +31,16 @@ namespace bS.Sked2.Extensions.Common.SqlServer
             RegisterOutputProperties("Table", "Rows imported from Sql Query", DataType.Table, true);
         }
 
-        //public SqlQueryReader(
-        //    ILogger logger,
-        //    IMessageService messageService,
-        //    ISqlValidationService sqlValidationService) : base(logger, messageService)
-        //{
-        //    // Config the element
-        //    Key = "SqlQueryReader";
-        //    Name = "SQL Query Reader";
-        //    Description = "This elements read data form a SQL Server query and returns a Table value.";
+        public override string Key => "SqlQueryReader";
 
-        //    // Register element properties
-        //    RegisterInputProperties("ConnectionString", "Sql Server Connection String", DataType.String, true);
-        //    RegisterInputProperties("SqlQuery", "SqL Query", DataType.String, true);
-
-        //    RegisterOutputProperties("Table", "Rows imported from Sql Query", DataType.Table, true);
-        //    this.sqlValidationService = sqlValidationService;
-        //}
-
-     
         public override void LoadFromEntity(Guid EntityId)
         {
             elementEntry = engineRepository.GetElementById(EntityId);
-            // set data properties from entity!!!
+            var entity = (SqlQueryReaderEntry)elementEntry;
+
+            // set data properties from entity
+            SetDataValue(EngineDataDirection.Input, "ConnectionString", new StringValue(entity.ConnectionString));
+            SetDataValue(EngineDataDirection.Input, "SqlQuery", new StringValue(entity.SqlQuery));
         }
 
         public override void Start()
