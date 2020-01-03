@@ -60,6 +60,8 @@ namespace bS.Sked2.Structure.Engine
         /// </summary>
         /// <param name="stringValue">The string value.</param>
         public void ReadFromStringValue(string stringValue);
+
+        //public void DeserializeValueFromString<T>(string stringValue);
     }
 
     public enum DataType

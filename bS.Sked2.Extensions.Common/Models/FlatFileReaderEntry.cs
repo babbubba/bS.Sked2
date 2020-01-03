@@ -17,10 +17,10 @@ namespace bS.Sked2.Extensions.Common.Models
         }
 
         public virtual string SourceFilePath { get; set; }
-        public virtual int? SkipStartingDataRows { get; set; }
-        public virtual bool FirstRowHasHeader { get; set; }
+        public virtual string SkipStartingDataRows { get; set; }
+        public virtual string FirstRowHasHeader { get; set; }
         public virtual string ColumnDelimiter { get; set; }
-        public virtual int? LimitToRows { get; set; }
+        public virtual string LimitToRows { get; set; }
 
     }
 

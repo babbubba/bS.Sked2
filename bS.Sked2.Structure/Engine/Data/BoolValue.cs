@@ -1,4 +1,5 @@
-﻿using System;
+﻿using bS.Sked2.Shared;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -24,21 +25,7 @@ namespace bS.Sked2.Structure.Engine.Data
 
         public override void ReadFromStringValue(string stringValue)
         {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(bool));
-            StringReader sr = new StringReader(stringValue);
-
-            using (XmlReader writer = XmlReader.Create(sr))
-            {
-                value = xmlSerializer.Deserialize(writer);
-            }
+            DeserializeValueFromString<bool>(stringValue);
         }
-        //XmlSerializer xmlSerializer = new XmlSerializer(value.GetType());
-        //StringReader sr = new StringReader(stringValue);
-
-        //using (XmlReader writer = XmlReader.Create(sr))
-        //{
-        //   value = xmlSerializer.Deserialize(writer);
-        //}
-
     }
 }

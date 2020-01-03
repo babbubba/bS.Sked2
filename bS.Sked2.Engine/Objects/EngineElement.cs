@@ -192,7 +192,25 @@ namespace bS.Sked2.Engine.Objects
             }
         }
 
-    
+        public void SetDataValueIfEmpty(EngineDataDirection direction, string propertyKey, IEngineData value)
+        {
+            switch (direction)
+            {
+                case EngineDataDirection.Input:
+                    var ip = inputProperties.SingleOrDefault(p => p.Key == propertyKey);
+                    if (ip == null) throw new EngineException(logger, $"No input property with key {propertyKey} has been registered for this element.");
+                   if(!ip.Value.IsFilled) ip.Value = value;
+                    break;
+                case EngineDataDirection.Output:
+                    var op = outputProperties.SingleOrDefault(p => p.Key == propertyKey);
+
+                    if (op == null) throw new EngineException(logger, $"No output property with key {propertyKey} has been registered for this element.");
+                    if (!op.Value.IsFilled) op.Value = value;
+                    break;
+            }
+        }
+
+
         /// <summary>
         /// Pauses this instance.
         /// </summary>

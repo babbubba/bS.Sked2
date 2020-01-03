@@ -24,7 +24,10 @@ namespace bS.Sked2.Extensions.Common.FlatFile
     /// <seealso cref="bS.Sked2.Structure.Engine.BaseEngineElement" />
     public class FlatFileReader : EngineElement
     {
-
+        StringValue sourceFilePath;
+        IntValue skipStartingDataRows;
+        BoolValue firstRowHasHeader;
+        CharValue columnDelimiter;
         public FlatFileReader(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<EngineElement> logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
             RegisterInputProperties("SourceFilePath", "Source file path", DataType.String, true);
@@ -42,12 +45,25 @@ namespace bS.Sked2.Extensions.Common.FlatFile
         {
             elementEntry = engineRepository.GetElementById(EntityId);
             var entity = (FlatFileReaderEntry)elementEntry;
-            
+
+            sourceFilePath = new StringValue();
+            sourceFilePath.ReadFromStringValue(entity.SourceFilePath);
+
+            skipStartingDataRows = new IntValue();
+            skipStartingDataRows.ReadFromStringValue(entity.SkipStartingDataRows);
+
+            firstRowHasHeader = new BoolValue();
+            firstRowHasHeader.ReadFromStringValue(entity.FirstRowHasHeader);
+
+            columnDelimiter = new CharValue();
+            columnDelimiter.ReadFromStringValue(entity.ColumnDelimiter);
+
+
             // set data properties from entity
-            SetDataValue(EngineDataDirection.Input, "SourceFilePath", new StringValue(entity.SourceFilePath));
-            SetDataValue(EngineDataDirection.Input, "SkipStartingDataRows", new IntValue(entity.SkipStartingDataRows??0));
-            SetDataValue(EngineDataDirection.Input, "FirstRowHasHeader", new BoolValue(entity.FirstRowHasHeader));
-            SetDataValue(EngineDataDirection.Input, "ColumnDelimiter", new CharValue(entity.ColumnDelimiter.ToCharArray().FirstOrDefault()));
+            SetDataValueIfEmpty(EngineDataDirection.Input, "SourceFilePath", sourceFilePath);
+            SetDataValueIfEmpty(EngineDataDirection.Input, "SkipStartingDataRows", skipStartingDataRows);
+            SetDataValueIfEmpty(EngineDataDirection.Input, "FirstRowHasHeader", firstRowHasHeader);
+            SetDataValueIfEmpty(EngineDataDirection.Input, "ColumnDelimiter", columnDelimiter);
         }
 
         /// <summary>

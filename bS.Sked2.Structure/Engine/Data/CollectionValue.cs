@@ -13,6 +13,8 @@ namespace bS.Sked2.Structure.Engine.Data
     {
         public override DataType DataType => DataType.Collection;
 
+        public new bool IsFilled => (value != null && Count() > 0);
+
         public override bool CanPersistInStorage => true;
     
         public CollectionValue()
@@ -36,8 +38,15 @@ namespace bS.Sked2.Structure.Engine.Data
             ((List<IEngineData>)value).Remove(val);
         }
 
+        public int Count()
+        {
+            return ((List<IEngineData>)value).Count;
+        }
+
         public override string WriteToStringValue()
         {
+            if (Count() == 0) return "EMPTY";
+
             var xmlDoc = new XmlDocument();
             var rootNode = xmlDoc.CreateElement("Collection");
             rootNode.SetAttribute("Count", ((List<IEngineData>)value).Count.ToString());
@@ -72,6 +81,11 @@ namespace bS.Sked2.Structure.Engine.Data
 
         public override void ReadFromStringValue(string stringValue)
         {
+            if (stringValue == "EMPTY")
+            {
+                value = new List<IEngineData>();
+                return;
+            }
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(stringValue);
 

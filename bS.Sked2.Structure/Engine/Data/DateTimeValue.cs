@@ -24,13 +24,7 @@ namespace bS.Sked2.Structure.Engine.Data
 
         public override void ReadFromStringValue(string stringValue)
         {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(DateTime));
-            StringReader sr = new StringReader(stringValue);
-
-            using (XmlReader writer = XmlReader.Create(sr))
-            {
-                value = xmlSerializer.Deserialize(writer);
-            }
+            DeserializeValueFromString<DateTime>(stringValue);
         }
     }
 }

@@ -153,6 +153,7 @@ namespace bS.Sked2.Structure.Engine.Data
 
         public virtual string WriteToStringValue()
         {
+            if (value == null) return "NULL";
             XmlSerializer xmlSerializer = new XmlSerializer(value.GetType());
             StringBuilder sb = new StringBuilder();
             XmlWriterSettings settings = new XmlWriterSettings
@@ -171,14 +172,17 @@ namespace bS.Sked2.Structure.Engine.Data
         }
 
         public abstract void ReadFromStringValue(string stringValue);
-        //{
-            //XmlSerializer xmlSerializer = new XmlSerializer(value.GetType());
-            //StringReader sr = new StringReader(stringValue);
      
-            //using (XmlReader writer = XmlReader.Create(sr))
-            //{
-            //   value = xmlSerializer.Deserialize(writer);
-            //}
-        //}
+        internal  void DeserializeValueFromString<T>(string stringValue)
+        {
+            if (stringValue == "NULL") return;
+
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+            StringReader sr = new StringReader(stringValue);
+            using (XmlReader writer = XmlReader.Create(sr))
+            {
+                value = xmlSerializer.Deserialize(writer);
+            }
+        }
     }
 }

@@ -11,35 +11,43 @@ namespace bS.Sked2.Structure.Engine.Data.Tests
         [TestMethod()]
         public void TestDataValues()
         {
-
             var collection = new CollectionValue();
             collection.AddValue(new BoolValue(true));
             collection.AddValue(new BoolValue(false));
+            collection.AddValue(new BoolValue());
             collection.AddValue(new CharValue('a'));
             collection.AddValue(new CharValue('b'));
+            collection.AddValue(new CharValue());
             collection.AddValue(new DateTimeValue(DateTime.Now));
+            collection.AddValue(new DateTimeValue());
             collection.AddValue(new DecimalValue(12.345m));
             collection.AddValue(new DoubleValue(123.45678901));
+            collection.AddValue(new DoubleValue());
             collection.AddValue(new IntValue(1234));
+            collection.AddValue(new IntValue());
             collection.AddValue(new StringValue("abcdef"));
-            collection.AddValue(new DictionaryEntryValue("chiave","valore"));
+            collection.AddValue(new StringValue());
+            collection.AddValue(new DictionaryEntryValue("chiave", "valore"));
+            collection.AddValue(new DictionaryEntryValue());
 
-       
+            var collectionSTR = collection.WriteToStringValue();
+            var collection_bis = new CollectionValue();
+            collection_bis.ReadFromStringValue(collectionSTR);
 
-            var str = collection.WriteToStringValue();
+            var emptyCoolection = new CollectionValue();
+            var emptyCoolectionSTR = emptyCoolection.WriteToStringValue();
+            var emptyCoolection_bis = new CollectionValue();
+            emptyCoolection_bis.ReadFromStringValue(emptyCoolectionSTR);
 
-            var collection2 = new CollectionValue();
+            //var ssss = new StringValue();
+            //var sxxxxx =ssss.WriteToStringValue();
+            //var sssss = new StringValue();
+            //sssss.ReadFromStringValue(sxxxxx);
 
-            collection2.ReadFromStringValue(str);
-
-            var mappings = new CollectionValue();
-            mappings.AddValue(new DictionaryEntryValue("Column1", "3"));
-            mappings.AddValue(new DictionaryEntryValue("Column2", "1"));
-            mappings.AddValue(new DictionaryEntryValue("Column3", "2"));
-            var strMapping = mappings.WriteToStringValue();
-            var coll2 = new CollectionValue();
-            coll2.ReadFromStringValue(strMapping);
-
+            //var s123 = new StringValue("abcdef");
+            //var s123STR = s123.WriteToStringValue();
+            //var s123_bis = new StringValue();
+            //s123_bis.ReadFromStringValue(s123STR);
 
         }
     }

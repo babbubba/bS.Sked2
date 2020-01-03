@@ -64,17 +64,6 @@ namespace bS.Sked2.Structure.Engine
         /// <param name="value">The value.</param>
         void SetDataValue(EngineDataDirection direction, string propertyKey, IEngineData value);
 
-        ///// <summary>
-        ///// Loads the entity.
-        ///// </summary>
-        ///// <param name="entity">The entity.</param>
-        //void LoadEntity(IElementEntity entity);
-        ///// <summary>
-        ///// Saves the entity.
-        ///// </summary>
-        ///// <param name="entity">The entity.</param>
-        ///// <returns></returns>
-        //IElementEntity SaveEntity(IElementEntity entity);
-
+        void SetDataValueIfEmpty(EngineDataDirection direction, string propertyKey, IEngineData value);
     }
 }
