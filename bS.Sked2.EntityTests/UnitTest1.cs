@@ -35,11 +35,11 @@ namespace bS.Sked2.EntityTests
             uOW.BeginTransaction();
             var entityToCreate = new FlatFileReaderEntry
             {
-                ColumnDelimiter = ";",
-                FirstRowHasHeader = true,
-                SourceFilePath = @"c:\temp",
-                LimitToRows = 0,
-                SkipStartingDataRows = 0
+                ColumnDelimiter = "<char>;</char>",
+                FirstRowHasHeader = "<boolean>true</boolean>",
+                SourceFilePath = @"<string>c:\temp</string>",
+                LimitToRows = "<int>0</int>",
+                SkipStartingDataRows = "<int>0</int>"
             };
             repository.Create(entityToCreate);
             uOW.Commit();
