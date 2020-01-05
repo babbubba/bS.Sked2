@@ -278,6 +278,9 @@ namespace bS.Sked2.Engine.Objects
             // Set the execution begin time
             instance.BeginTime = DateTime.Now;
 
+            // Add current instance to entry
+            elementEntry.Instances.Add(instance);
+
             // Add a message to notify the element started
             AddMessage("Element execution started.");
 

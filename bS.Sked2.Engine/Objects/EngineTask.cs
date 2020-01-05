@@ -78,6 +78,9 @@ namespace bS.Sked2.Engine.Objects
             // Set the execution begin time
             instance.BeginTime = DateTime.Now;
 
+            // Add current instance to entry
+            taskEntry.Instances.Add(instance);
+
             // Add a message to notify the element started
             AddMessage("Task execution started.");
 

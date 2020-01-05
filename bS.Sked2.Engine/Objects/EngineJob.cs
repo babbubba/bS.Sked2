@@ -1,32 +1,28 @@
 ﻿using bs.Data.Interfaces;
-using bS.Sked2.Model.Repositories;
 using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace bS.Sked2.Engine.Objects
 {
     public class EngineJob : BaseEngineComponent, IEngineJob
     {
-        private readonly IUnitOfWork uow;
         private readonly IEngineRepository engineRepository;
+        private readonly IUnitOfWork uow;
         private IJobEntry jobEntry;
+
         public EngineJob(
             IUnitOfWork uow,
             IEngineRepository enginRepo,
-            ILogger<EngineJob> logger, 
+            ILogger<EngineJob> logger,
             IMessageService messageService) : base(logger, messageService)
         {
             this.uow = uow;
             this.engineRepository = enginRepo;
         }
-
 
         /// <summary>
         /// Determines whether this instance [can be executed].
@@ -76,13 +72,15 @@ namespace bS.Sked2.Engine.Objects
             // Set the execution begin time
             instance.BeginTime = DateTime.Now;
 
+            // Add current instance to entry
+            jobEntry.Instances.Add(instance);
+
             // Add a message to notify the element started
             AddMessage("Job execution started.");
 
             uow.Commit();
 
             //TODO: Execute Job Logic
-            
         }
 
         /// <summary>
