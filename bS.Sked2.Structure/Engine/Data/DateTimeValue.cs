@@ -11,6 +11,8 @@ namespace bS.Sked2.Structure.Engine.Data
     public class DateTimeValue : BaseEngineValue
     {
         public override DataType DataType => DataType.Datetime;
+        public static DataType DataTypeConst => DataType.Datetime;
+
 
         public override bool CanPersistInStorage => true;
         public DateTimeValue()

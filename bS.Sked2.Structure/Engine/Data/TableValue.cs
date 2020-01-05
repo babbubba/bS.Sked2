@@ -15,6 +15,8 @@ namespace bS.Sked2.Structure.Engine.Data
     public class TableValue : BaseEngineValue
     {
         public override DataType DataType => DataType.Table;
+        public static DataType DataTypeConst => DataType.Table;
+
 
         public override bool CanPersistInStorage => true;
 

@@ -74,5 +74,19 @@ namespace bS.Sked2.Shared
                 .Where(p => implementedInterface.IsAssignableFrom(p));
             return types;
         }
+
+
+        /// <summary>
+        /// Gets the types implementing interface or base class.
+        /// </summary>
+        /// <typeparam name="TInterface">The type of the interface or base class that types implement.</typeparam>
+        /// <returns></returns>
+        public static IEnumerable<Type> GetTypesImplementingInterface<TInterface>()
+        {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a=> !a.FullName.Contains("Microsoft"));
+            var types = assemblies.SelectMany(a=> a.GetTypes())
+                .Where(a => typeof(TInterface).IsAssignableFrom(a));
+            return types;
+        }
     }
 }

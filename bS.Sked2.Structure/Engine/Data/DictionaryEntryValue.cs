@@ -11,6 +11,8 @@ namespace bS.Sked2.Structure.Engine.Data
     public class DictionaryEntryValue : BaseEngineValue
     {
         public override DataType DataType => DataType.DictionaryEntry;
+        public static DataType DataTypeConst => DataType.DictionaryEntry;
+
 
         public override bool CanPersistInStorage => true;
         public DictionaryEntryValue()

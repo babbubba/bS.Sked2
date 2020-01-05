@@ -12,6 +12,8 @@ namespace bS.Sked2.Structure.Engine.Data
     public class CollectionValue : BaseEngineValue
     {
         public override DataType DataType => DataType.Collection;
+        public static DataType DataTypeConst => DataType.Collection;
+
 
         public new bool IsFilled => (value != null && Count() > 0);
 

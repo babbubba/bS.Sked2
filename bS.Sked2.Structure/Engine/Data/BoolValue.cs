@@ -11,6 +11,7 @@ namespace bS.Sked2.Structure.Engine.Data
     public class BoolValue : BaseEngineValue
     {
         public override DataType DataType => DataType.Bool;
+        public static DataType DataTypeConst => DataType.Bool;
 
         public override bool CanPersistInStorage => true;
 

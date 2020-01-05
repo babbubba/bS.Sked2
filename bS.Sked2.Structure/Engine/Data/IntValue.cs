@@ -11,6 +11,8 @@ namespace bS.Sked2.Structure.Engine.Data
    public  class IntValue : BaseEngineValue
     {
         public override DataType DataType => DataType.Int;
+        public static DataType DataTypeConst => DataType.Int;
+
 
         public override bool CanPersistInStorage => true;
         public IntValue()

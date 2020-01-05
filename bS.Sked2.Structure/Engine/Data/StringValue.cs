@@ -10,6 +10,8 @@ namespace bS.Sked2.Structure.Engine.Data
     public class StringValue : BaseEngineValue
     {
         public override DataType DataType => DataType.String;
+        public static DataType DataTypeConst => DataType.String;
+
 
         public override bool CanPersistInStorage => true;
         public StringValue()

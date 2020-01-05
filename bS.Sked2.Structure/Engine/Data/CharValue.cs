@@ -10,6 +10,8 @@ namespace bS.Sked2.Structure.Engine.Data
     public class CharValue : BaseEngineValue
     {
         public override DataType DataType => DataType.Char;
+        public static DataType DataTypeConst => DataType.Char;
+
 
         public override bool CanPersistInStorage => true;
         public CharValue()

@@ -11,6 +11,8 @@ namespace bS.Sked2.Structure.Engine.Data
     public class DecimalValue : BaseEngineValue
     {
         public override DataType DataType => DataType.Decimal;
+        public static DataType DataTypeConst => DataType.Decimal;
+
 
         public override bool CanPersistInStorage => true;
         public DecimalValue()

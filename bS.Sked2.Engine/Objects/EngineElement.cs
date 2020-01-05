@@ -76,41 +76,51 @@ namespace bS.Sked2.Engine.Objects
                 throw new EngineException(logger, $"Cannot add property for this element. The property with key {key} still exists.");
             }
 
-            // Init default value
+          
+
+
             inputProperties.Add(new ElementProperty(key, description, dataType, mandatory));
-            switch (dataType)
-            {
-                case DataType.Int:
-                    SetDataValue(EngineDataDirection.Input, key, new IntValue());
-                    break;
-                case DataType.Bool:
-                    SetDataValue(EngineDataDirection.Input, key, new BoolValue());
-                    break;
-                case DataType.Decimal:
-                    SetDataValue(EngineDataDirection.Input, key, new DecimalValue());
-                    break;
-                case DataType.Double:
-                    SetDataValue(EngineDataDirection.Input, key, new DoubleValue());
-                    break;
-                case DataType.Char:
-                    SetDataValue(EngineDataDirection.Input, key, new CharValue());
-                    break;
-                case DataType.String:
-                    SetDataValue(EngineDataDirection.Input, key, new StringValue());
-                    break;
-                case DataType.Datetime:
-                    SetDataValue(EngineDataDirection.Input, key, new DateTimeValue());
-                    break;
-                case DataType.Table:
-                    SetDataValue(EngineDataDirection.Input, key, new TableValue());
-                    break;
-                case DataType.DictionaryEntry:
-                    SetDataValue(EngineDataDirection.Input, key, new DictionaryEntryValue());
-                    break;
-                case DataType.Collection:
-                    SetDataValue(EngineDataDirection.Input, key, new CollectionValue());
-                    break;
-            }
+
+            // Init default value
+
+            var engineDataType = AssembliesExtensions.GetTypesImplementingInterface<IEngineData>()
+              .FirstOrDefault(ed=> (DataType)ed.GetProperty("DataTypeConst").GetValue(ed) == dataType);
+
+            SetDataValue(EngineDataDirection.Input, key, (IEngineData)Activator.CreateInstance(engineDataType));
+
+            //switch (dataType)
+            //{
+            //    case DataType.Int:
+            //        SetDataValue(EngineDataDirection.Input, key, new IntValue());
+            //        break;
+            //    case DataType.Bool:
+            //        SetDataValue(EngineDataDirection.Input, key, new BoolValue());
+            //        break;
+            //    case DataType.Decimal:
+            //        SetDataValue(EngineDataDirection.Input, key, new DecimalValue());
+            //        break;
+            //    case DataType.Double:
+            //        SetDataValue(EngineDataDirection.Input, key, new DoubleValue());
+            //        break;
+            //    case DataType.Char:
+            //        SetDataValue(EngineDataDirection.Input, key, new CharValue());
+            //        break;
+            //    case DataType.String:
+            //        SetDataValue(EngineDataDirection.Input, key, new StringValue());
+            //        break;
+            //    case DataType.Datetime:
+            //        SetDataValue(EngineDataDirection.Input, key, new DateTimeValue());
+            //        break;
+            //    case DataType.Table:
+            //        SetDataValue(EngineDataDirection.Input, key, new TableValue());
+            //        break;
+            //    case DataType.DictionaryEntry:
+            //        SetDataValue(EngineDataDirection.Input, key, new DictionaryEntryValue());
+            //        break;
+            //    case DataType.Collection:
+            //        SetDataValue(EngineDataDirection.Input, key, new CollectionValue());
+            //        break;
+            //}
 
         }
 
@@ -137,6 +147,14 @@ namespace bS.Sked2.Engine.Objects
             }
 
             outputProperties.Add(new ElementProperty(key, description, dataType, mandatory));
+            // Init default value
+
+            var engineDataType = AssembliesExtensions.GetTypesImplementingInterface<IEngineData>()
+              .FirstOrDefault(ed => (DataType)ed.GetProperty("DataTypeConst").GetValue(ed) == dataType);
+
+            SetDataValue(EngineDataDirection.Output, key, (IEngineData)Activator.CreateInstance(engineDataType));
+
+
         }
 
         /// <summary>
