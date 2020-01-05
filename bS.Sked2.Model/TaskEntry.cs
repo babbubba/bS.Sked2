@@ -6,27 +6,31 @@ using System.Collections.Generic;
 
 namespace bS.Sked2.Model
 {
-    
-
     public class TaskEntry : IAuditableEntity, IEnableableEntity, ILogicallyDeletableEntity, IPersistentEntity, ITaskEntry
     {
-        public virtual Guid Id { get; set; }
+        public TaskEntry()
+        {
+            Instances = new List<IInstanceEntry>();
+            Elements = new List<IElementEntity>();
+        }
+
         public virtual DateTime? CreationDate { get; set; }
-        public virtual DateTime? LastUpdateDate { get; set; }
-        public virtual bool IsEnabled { get; set; }
-        public virtual bool IsDeleted { get; set; }
         public virtual DateTime? DeletionDate { get; set; }
-        public virtual string Key { get; set; }
-        public virtual string Name { get; set; }
         public virtual string Description { get; set; }
+        public virtual IList<IElementEntity> Elements { get; set; }
         public virtual bool FailIfAnyElementHasError { get; set; }
         public virtual bool FailIfAnyElementHasWarning { get; set; }
+        public virtual Guid Id { get; set; }
+        public virtual IList<IInstanceEntry> Instances { get; set; }
+        public virtual bool IsDeleted { get; set; }
+        public virtual bool IsEnabled { get; set; }
+        public virtual string Key { get; set; }
+        public virtual DateTime? LastUpdateDate { get; set; }
+        public virtual string Name { get; set; }
         public virtual IJobEntry ParentJob { get; set; }
-        public virtual List<IInstanceEntry> Instances { get; set; }
-        public virtual List<IElementEntity> Elements { get; set; }
     }
 
-    class TaskEntryMap : ClassMap<TaskEntry>
+    internal class TaskEntryMap : ClassMap<TaskEntry>
     {
         public TaskEntryMap()
         {

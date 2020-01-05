@@ -45,6 +45,8 @@ namespace bS.Sked2.Engine.Objects
         {
             this.uow = uow;
             this.engineRepository = enginRepo;
+            inputProperties = new List<IEngineElementProperty>();
+            outputProperties = new List<IEngineElementProperty>();
         }
 
         /// <summary>
@@ -281,12 +283,10 @@ namespace bS.Sked2.Engine.Objects
             // Add current instance to entry
             elementEntry.Instances.Add(instance);
 
-            // Add a message to notify the element started
-            AddMessage("Element execution started.");
-
             uow.Commit();
 
-            //TODO: Execute Job Logic
+            // Add a message to notify the element started
+            AddMessage("Element execution started.");
         }
 
         /// <summary>
@@ -302,10 +302,9 @@ namespace bS.Sked2.Engine.Objects
             // instance this element finish time
             instance.EndTime = DateTime.Now;
 
+            uow.Commit();
             // Add a message to notify the element finish execution
             AddMessage("Element execution finish.");
-
-            uow.Commit();
         }
     }
 }

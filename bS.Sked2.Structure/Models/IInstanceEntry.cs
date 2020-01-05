@@ -7,7 +7,7 @@ namespace bS.Sked2.Structure.Models
     public interface IInstanceEntry
     {
         Guid Id { get; set; }
-        List<IMessageEntry> Messages { get; set; }
+        IList<IMessageEntry> Messages { get; set; }
         DateTime? BeginTime { get; set; }
         DateTime? EndTime { get; set; }
         bool IsPaused { get; set; }

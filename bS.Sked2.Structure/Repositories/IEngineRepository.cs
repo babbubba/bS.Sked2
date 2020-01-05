@@ -11,5 +11,7 @@ namespace bS.Sked2.Structure.Repositories
         IElementEntity GetElementById(Guid Id);
         IModuleEntry GetModuleById(Guid Id);
         IInstanceEntry CreateNewInstance();
+        void CreateElement(IElementEntity entityToCreate);
+        void CreateTask(ITaskEntry taskEntry);
     }
 }

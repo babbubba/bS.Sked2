@@ -16,9 +16,11 @@ namespace bS.Sked2.Structure.Service
         /// <param name="Message">The message.</param>
         /// <param name="severity">The severity.</param>
         /// <returns></returns>
-        IMessageEntry CreateMessage(string Message, MessageSeverity severity);
+        //IMessageEntry CreateMessage(string Message, MessageSeverity severity);
        
         IMessageEntry CreateMessage(string message, IInstanceEntry instance, MessageSeverity severity);
+
+        void SaveMessage(IMessageEntry message);
 
     }
 }

@@ -43,6 +43,14 @@ namespace bS.Sked2.Model.Repositories
             return newInstance;
         }
 
-      
+        public void CreateElement(IElementEntity entityToCreate)
+        {
+            base.Create((ElementEntity)entityToCreate);
+        }
+
+        public void CreateTask(ITaskEntry taskEntry)
+        {
+            base.Create((TaskEntry)taskEntry);
+        }
     }
 }

@@ -9,12 +9,15 @@ namespace bS.Sked2.Model
 {
     public class InstanceEntry: IInstanceEntry, IPersistentEntity
     {
+        public InstanceEntry()
+        {
+            Messages = new List<IMessageEntry>();
+        }
         public virtual Guid Id { get; set; }
-
-        public virtual List<IMessageEntry> Messages { get; set; }
-        public DateTime? BeginTime { get; set; }
-        public DateTime? EndTime { get; set; }
-        public bool IsPaused { get; set; }
+        public virtual IList<IMessageEntry> Messages { get; set; }
+        public virtual DateTime? BeginTime { get; set; }
+        public virtual DateTime? EndTime { get; set; }
+        public virtual bool IsPaused { get; set; }
     }
 
     class InstanceEntryMap : ClassMap<InstanceEntry>
@@ -23,7 +26,7 @@ namespace bS.Sked2.Model
         {
             Table("Instances");
             Id(x => x.Id).GeneratedBy.GuidComb();
-            HasMany<MessageEntry>(x => x.Messages);
+            HasMany<MessageEntry>(x => x.Messages).Cascade.AllDeleteOrphan();
             Map(x => x.BeginTime);
             Map(x => x.EndTime);
             Map(x => x.IsPaused);

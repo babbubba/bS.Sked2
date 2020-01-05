@@ -13,7 +13,7 @@ namespace bS.Sked2.Structure.Models
         bool IsEnabled { get; set; }
         string Key { get; set; }
         DateTime? LastUpdateDate { get; set; }
-        List<IInstanceEntry> Instances { get; set; }
+        IList<IInstanceEntry> Instances { get; set; }
         string Name { get; set; }
         ITaskEntry ParentTask { get; set; }
         IModuleEntry ParentModule { get; set; }

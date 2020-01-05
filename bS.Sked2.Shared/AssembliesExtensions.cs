@@ -83,7 +83,7 @@ namespace bS.Sked2.Shared
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.FullName.Contains("Microsoft"));
             var types = assemblies.SelectMany(a => a.GetTypes())
-                .Where(a => typeof(TInterface).IsAssignableFrom(a));
+                .Where(a => typeof(TInterface).IsAssignableFrom(a) && !a.IsAbstract && !a.IsInterface);
             return types;
         }
     }

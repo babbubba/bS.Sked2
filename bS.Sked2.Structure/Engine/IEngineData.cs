@@ -48,6 +48,7 @@ namespace bS.Sked2.Structure.Engine
         /// </summary>
         /// <returns></returns>
         public T Get<T>();
+        public Nullable<T> GetNullable<T>() where T : struct;
 
         /// <summary>
         /// Convert to string the value so it can persist on database.

@@ -19,6 +19,10 @@ namespace bS.Sked2.Model
     /// <seealso cref="bs.Data.Interfaces.BaseEntities.IPersistentEntity" />
     public class ElementEntity : IAuditableEntity, IEnableableEntity, ILogicallyDeletableEntity, IPersistentEntity, IElementEntity
     {
+        public ElementEntity()
+        {
+            Instances = new List<IInstanceEntry>();
+        }
         public virtual bool IsDeleted { get; set; }
         public virtual DateTime? DeletionDate { get; set; }
         public virtual Guid Id { get; set; }
@@ -27,7 +31,7 @@ namespace bS.Sked2.Model
         public virtual DateTime? LastUpdateDate { get; set; }
         public virtual string Description { get; set; }
         public virtual string Key { get; set; }
-        public virtual List<IInstanceEntry> Instances { get; set; }
+        public virtual IList<IInstanceEntry> Instances { get; set; }
         public virtual string Name { get; set; }
         public virtual ITaskEntry ParentTask { get; set; }
         public virtual IModuleEntry ParentModule { get; set; }

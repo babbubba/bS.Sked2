@@ -19,7 +19,7 @@ namespace bS.Sked2.Structure.Engine
         {
             this.logger = logger;
             this.messageService = messageService;
-            instance.Messages = new List<IMessageEntry>();
+            //instance.Messages = new List<IMessageEntry>();
         }
         
         public Guid? InstanceID => instance?.Id;
@@ -32,7 +32,9 @@ namespace bS.Sked2.Structure.Engine
         /// <param name="severity">The severity.</param>
         public void AddMessage(string message, MessageSeverity severity = MessageSeverity.Info)
         {
-            instance.Messages.Add(messageService.CreateMessage(message, instance, severity));
+            var messageEntity = messageService.CreateMessage(message, instance, severity);
+            messageService.SaveMessage(messageEntity);
+            instance.Messages.Add(messageEntity);
         }
 
         /// <summary>

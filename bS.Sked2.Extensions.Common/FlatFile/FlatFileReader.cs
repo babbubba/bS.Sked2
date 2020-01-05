@@ -77,10 +77,10 @@ namespace bS.Sked2.Extensions.Common.FlatFile
             {
                 // Get parameters
                 var sourceFilePath = GetDataValue(EngineDataDirection.Input, "SourceFilePath").Get<string>();
-                var skipStartingDataRows = GetDataValue(EngineDataDirection.Input, "SkipStartingDataRows").Get<int?>();
+                var skipStartingDataRows = GetDataValue(EngineDataDirection.Input, "SkipStartingDataRows").GetNullable<int>();
                 var firstRowHasHeader = GetDataValue(EngineDataDirection.Input, "FirstRowHasHeader").Get<bool>();
                 var columnDelimiter = GetDataValue(EngineDataDirection.Input, "ColumnDelimiter").Get<char>();
-                var limitToRows = GetDataValue(EngineDataDirection.Input, "LimitToRows").Get<int?>();
+                var limitToRows = GetDataValue(EngineDataDirection.Input, "LimitToRows").GetNullable<int>();
 
                 //Start parsing file
                 AddMessage("Configuring parser to read file", MessageSeverity.Debug);

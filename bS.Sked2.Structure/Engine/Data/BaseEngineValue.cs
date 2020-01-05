@@ -53,6 +53,13 @@ namespace bS.Sked2.Structure.Engine.Data
             return (T)Convert.ChangeType(value, typeof(T));
         }
 
+        public Nullable<T> GetNullable<T>() where T: struct
+        {
+            CheckType<T>();
+            if (value == null) return null;
+            return (T)Convert.ChangeType(value, typeof(T));
+        }
+
         /// <summary>
         /// Checks the type.
         /// </summary>
