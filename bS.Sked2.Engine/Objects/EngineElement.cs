@@ -10,15 +10,33 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace bS.Sked2.Engine.Objects
 {
     public abstract class EngineElement : BaseEngineComponent, IEngineElement
     {
-        private readonly IUnitOfWork uow;
         protected readonly IEngineRepository engineRepository;
         protected IElementEntity elementEntry;
+
+        /// <summary>
+        /// The input properties
+        /// </summary>
+        protected IList<IEngineElementProperty> inputProperties;
+
+        /// <summary>
+        /// The output properties
+        /// </summary>
+        protected IList<IEngineElementProperty> outputProperties;
+
+        private readonly IUnitOfWork uow;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EngineElement"/> class.
+        /// </summary>
+        /// <param name="uow">The uow.</param>
+        /// <param name="enginRepo">The engin repo.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="messageService">The message service.</param>
         public EngineElement(
             IUnitOfWork uow,
             IEngineRepository enginRepo,
@@ -30,17 +48,14 @@ namespace bS.Sked2.Engine.Objects
         }
 
         /// <summary>
-        /// The input properties
+        /// Gets the key.
         /// </summary>
-        protected IList<IEngineElementProperty> inputProperties;
-        /// <summary>
-        /// The output properties
-        /// </summary>
-        protected IList<IEngineElementProperty> outputProperties;
-
-        public ITaskEntry ParentTask { get => elementEntry.ParentTask; }
-        public IEngineModule ParentModule { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        /// <value>
+        /// The key.
+        /// </value>
         public abstract string Key { get; }
+        public IModuleEntry ParentModule { get => elementEntry.ParentModule; }
+        public ITaskEntry ParentTask { get => elementEntry.ParentTask; }
 
         /// <summary>
         /// Determines whether this instance [can be executed].
@@ -52,6 +67,47 @@ namespace bS.Sked2.Engine.Objects
         {
             // TODO: Add logic here if needed
             return true;
+        }
+
+        /// <summary>
+        /// Gets the data value.
+        /// </summary>
+        /// <param name="direction">The direction.</param>
+        /// <param name="propertyKey">The property key.</param>
+        /// <returns></returns>
+        /// <exception cref="EngineException">No input property with key {propertyKey} has been registered for this element.
+        /// or
+        /// No output property with key {propertyKey} has been registered for this element.</exception>
+        public IEngineData GetDataValue(EngineDataDirection direction, string propertyKey)
+        {
+            switch (direction)
+            {
+                case EngineDataDirection.Input:
+                    var ip = inputProperties.SingleOrDefault(p => p.Key == propertyKey);
+                    if (ip == null) throw new EngineException(logger, $"No input property with key {propertyKey} has been registered for this element.");
+                    return ip.Value;
+
+                case EngineDataDirection.Output:
+                    var op = outputProperties.SingleOrDefault(p => p.Key == propertyKey);
+
+                    if (op == null) throw new EngineException(logger, $"No output property with key {propertyKey} has been registered for this element.");
+                    return op.Value;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Pauses this instance.
+        /// </summary>
+        public override void Pause()
+        {
+            uow.BeginTransaction();
+
+            instance.IsPaused = true;
+
+            AddMessage("Element execution paused.");
+
+            uow.Commit();
         }
 
         /// <summary>
@@ -76,15 +132,12 @@ namespace bS.Sked2.Engine.Objects
                 throw new EngineException(logger, $"Cannot add property for this element. The property with key {key} still exists.");
             }
 
-          
-
-
             inputProperties.Add(new ElementProperty(key, description, dataType, mandatory));
 
             // Init default value
 
             var engineDataType = AssembliesExtensions.GetTypesImplementingInterface<IEngineData>()
-              .FirstOrDefault(ed=> (DataType)ed.GetProperty("DataTypeConst").GetValue(ed) == dataType);
+              .FirstOrDefault(ed => (DataType)ed.GetProperty("DataTypeConst").GetValue(ed) == dataType);
 
             SetDataValue(EngineDataDirection.Input, key, (IEngineData)Activator.CreateInstance(engineDataType));
 
@@ -121,7 +174,6 @@ namespace bS.Sked2.Engine.Objects
             //        SetDataValue(EngineDataDirection.Input, key, new CollectionValue());
             //        break;
             //}
-
         }
 
         /// <summary>
@@ -153,34 +205,6 @@ namespace bS.Sked2.Engine.Objects
               .FirstOrDefault(ed => (DataType)ed.GetProperty("DataTypeConst").GetValue(ed) == dataType);
 
             SetDataValue(EngineDataDirection.Output, key, (IEngineData)Activator.CreateInstance(engineDataType));
-
-
-        }
-
-        /// <summary>
-        /// Gets the data value.
-        /// </summary>
-        /// <param name="direction">The direction.</param>
-        /// <param name="propertyKey">The property key.</param>
-        /// <returns></returns>
-        /// <exception cref="EngineException">No input property with key {propertyKey} has been registered for this element.
-        /// or
-        /// No output property with key {propertyKey} has been registered for this element.</exception>
-        public IEngineData GetDataValue(EngineDataDirection direction, string propertyKey)
-        {
-            switch (direction)
-            {
-                case EngineDataDirection.Input:
-                    var ip = inputProperties.SingleOrDefault(p => p.Key == propertyKey);
-                    if (ip == null) throw new EngineException(logger, $"No input property with key {propertyKey} has been registered for this element.");
-                    return ip.Value;
-                case EngineDataDirection.Output:
-                    var op = outputProperties.SingleOrDefault(p => p.Key == propertyKey);
-
-                    if (op == null) throw new EngineException(logger, $"No output property with key {propertyKey} has been registered for this element.");
-                    return op.Value;
-            }
-            return null;
         }
 
         /// <summary>
@@ -201,6 +225,7 @@ namespace bS.Sked2.Engine.Objects
                     if (ip == null) throw new EngineException(logger, $"No input property with key {propertyKey} has been registered for this element.");
                     ip.Value = value;
                     break;
+
                 case EngineDataDirection.Output:
                     var op = outputProperties.SingleOrDefault(p => p.Key == propertyKey);
 
@@ -210,6 +235,17 @@ namespace bS.Sked2.Engine.Objects
             }
         }
 
+        /// <summary>
+        /// Sets the data value if empty.
+        /// </summary>
+        /// <param name="direction">The direction.</param>
+        /// <param name="propertyKey">The property key.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="EngineException">
+        /// No input property with key {propertyKey} has been registered for this element.
+        /// or
+        /// No output property with key {propertyKey} has been registered for this element.
+        /// </exception>
         public void SetDataValueIfEmpty(EngineDataDirection direction, string propertyKey, IEngineData value)
         {
             switch (direction)
@@ -217,8 +253,9 @@ namespace bS.Sked2.Engine.Objects
                 case EngineDataDirection.Input:
                     var ip = inputProperties.SingleOrDefault(p => p.Key == propertyKey);
                     if (ip == null) throw new EngineException(logger, $"No input property with key {propertyKey} has been registered for this element.");
-                   if(!ip.Value.IsFilled) ip.Value = value;
+                    if (!ip.Value.IsFilled) ip.Value = value;
                     break;
+
                 case EngineDataDirection.Output:
                     var op = outputProperties.SingleOrDefault(p => p.Key == propertyKey);
 
@@ -227,23 +264,6 @@ namespace bS.Sked2.Engine.Objects
                     break;
             }
         }
-
-
-        /// <summary>
-        /// Pauses this instance.
-        /// </summary>
-        public override void Pause()
-        {
-            uow.BeginTransaction();
-
-            instance.IsPaused = true;
-
-            AddMessage("Element execution paused.");
-
-            uow.Commit();
-        }
-
-     
 
         /// <summary>
         /// Starts this instance.
@@ -264,7 +284,6 @@ namespace bS.Sked2.Engine.Objects
             uow.Commit();
 
             //TODO: Execute Job Logic
-
         }
 
         /// <summary>

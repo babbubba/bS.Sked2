@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace bS.Sked2.Shared
@@ -47,9 +46,9 @@ namespace bS.Sked2.Shared
 
             // Filter the only assemblies that implements specified interface in some class
             var desiredAssemblies = (from a in allAssemblies
-                                      from t in a.GetTypes()
-                                      where implementedInterface.IsAssignableFrom(t) && t.IsClass
-                                      select a).Distinct();
+                                     from t in a.GetTypes()
+                                     where implementedInterface.IsAssignableFrom(t) && t.IsClass
+                                     select a).Distinct();
 
             // Avoid to load same assemblies more than one time
             foreach (var assembly in desiredAssemblies)
@@ -75,7 +74,6 @@ namespace bS.Sked2.Shared
             return types;
         }
 
-
         /// <summary>
         /// Gets the types implementing interface or base class.
         /// </summary>
@@ -83,8 +81,8 @@ namespace bS.Sked2.Shared
         /// <returns></returns>
         public static IEnumerable<Type> GetTypesImplementingInterface<TInterface>()
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a=> !a.FullName.Contains("Microsoft"));
-            var types = assemblies.SelectMany(a=> a.GetTypes())
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.FullName.Contains("Microsoft"));
+            var types = assemblies.SelectMany(a => a.GetTypes())
                 .Where(a => typeof(TInterface).IsAssignableFrom(a));
             return types;
         }

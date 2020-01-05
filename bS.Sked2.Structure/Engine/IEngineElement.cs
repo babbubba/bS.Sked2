@@ -1,8 +1,4 @@
-﻿using bS.Sked2.Structure.Base;
-using bS.Sked2.Structure.Models;
-using bS.Sked2.Structure.Service.Messages;
-using System;
-using System.Text;
+﻿using bS.Sked2.Structure.Models;
 
 namespace bS.Sked2.Structure.Engine
 {
@@ -13,6 +9,16 @@ namespace bS.Sked2.Structure.Engine
     /// <seealso cref="bS.Sked2.Structure.Engine.IEngineComponent" />
     public interface IEngineElement : IEngineComponent
     {
+        string Key { get; }
+
+        /// <summary>
+        /// Gets the parent Engine Module.
+        /// </summary>
+        /// <value>
+        /// The parent module.
+        /// </value>
+        IModuleEntry ParentModule { get; }
+
         /// <summary>
         /// Gets the parent task.
         /// </summary>
@@ -22,14 +28,12 @@ namespace bS.Sked2.Structure.Engine
         ITaskEntry ParentTask { get; }
 
         /// <summary>
-        /// Gets the parent Engine Module.
+        /// Gets the data value.
         /// </summary>
-        /// <value>
-        /// The parent module.
-        /// </value>
-        IEngineModule ParentModule { get; set; }
-
-        string Key { get; }
+        /// <param name="direction">The direction.</param>
+        /// <param name="propertyKey">The property key.</param>
+        /// <returns></returns>
+        IEngineData GetDataValue(EngineDataDirection direction, string propertyKey);
 
         /// <summary>
         /// Registers the input properties.
@@ -49,13 +53,6 @@ namespace bS.Sked2.Structure.Engine
         /// <param name="mandatory">if set to <c>true</c> [mandatory].</param>
         void RegisterOutputProperties(string key, string description, DataType dataType, bool mandatory = false);
 
-        /// <summary>
-        /// Gets the data value.
-        /// </summary>
-        /// <param name="direction">The direction.</param>
-        /// <param name="propertyKey">The property key.</param>
-        /// <returns></returns>
-        IEngineData GetDataValue(EngineDataDirection direction, string propertyKey);
         /// <summary>
         /// Sets the data value.
         /// </summary>
