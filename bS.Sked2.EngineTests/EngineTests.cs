@@ -29,21 +29,13 @@ namespace bS.Sked2.Engine.Tests
     [TestClass()]
     public class EngineTests
     {
-        private IUnitOfWork uow;
-        private IUnitOfWork messageUow;
-        private IEngineRepository engineRepository;
-        private MessageRepository messageRepository;
-        private ILogger<Engine> engineLogger;
-        private ILogger<EngineElement> engineElementLogger;
-        private ILogger<EngineTask> engineTaskLogger;
-        private IMessageService messageService;
-        private ISqlValidationService sqlValidationService;
-        private Common commonModule;
-        private Engine engine;
         private static IServiceProvider serviceProvider;
 
-        private static IUnitOfWork CreateUnitOfWork_Sqlite()
+        [TestInitialize]
+        public void Init()
         {
+            var services = new ServiceCollection();
+
             var dbContext = new DbContext
             {
                 ConnectionString = "Data Source=.\\bs.Data.Test.db;Version=3;BinaryGuid=False;",
@@ -53,48 +45,29 @@ namespace bS.Sked2.Engine.Tests
                 LookForEntitiesDllInCurrentDirectoryToo = true,
                 EntitiesFileNameScannerPatterns = new string[] { "bS.Sked2.Extensions.*.dll", "bS.Sked2.Model.dll" }
             };
-            var uOW = new UnitOfWork(dbContext);
-            return uOW;
-        }
 
-        [TestInitialize]
-        public void Init()
-        {
-            var services = new ServiceCollection();
+            services.AddSingleton(Mock.Of<ILogger<Engine>>());
+            services.AddSingleton(Mock.Of<ILogger<EngineElement>>());
+            services.AddSingleton(Mock.Of<ILogger<EngineTask>>());
 
-            engineLogger = Mock.Of<ILogger<Engine>>();
-            engineElementLogger = Mock.Of<ILogger<EngineElement>>();
-            engineTaskLogger = Mock.Of<ILogger<EngineTask>>();
+            services.AddSingleton<IDbContext>(dbContext);
 
-           
+            services.AddSingleton<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IEngineRepository, EngineRepository>();
+            services.AddSingleton<IMessageRepository, MessageRepository>();
 
 
-            sqlValidationService = new SqlValidationService(engineLogger);
-            engine = new Engine(engineLogger);
+            services.AddSingleton<IMessageService, MessageService>();
+            services.AddSingleton<ISqlValidationService,SqlValidationService>();
+            services.AddSingleton<IEngine,Engine>();
+            services.AddSingleton<IEngineTask, EngineTask>();
+            //IEngineTask
 
-            uow = CreateUnitOfWork_Sqlite();
-            //messageUow = CreateUnitOfWork_Sqlite();
-
-            engineRepository = new EngineRepository(uow);
-            messageRepository = new MessageRepository(uow);
-
-            messageService = new MessageService(uow, messageRepository);
-
-            services.AddSingleton(engineLogger);
-            services.AddSingleton(engineElementLogger);
-            services.AddSingleton(engineTaskLogger);
-            services.AddSingleton(sqlValidationService);
-            services.AddSingleton(engine);
-            services.AddSingleton(uow);
-            services.AddSingleton(engineRepository);
-            services.AddSingleton(messageRepository);
-            services.AddSingleton(messageService);
-
-            services.AddSingleton<EngineLink>();
-            services.AddSingleton<FlatFileReader>();
-            services.AddSingleton<FlatFileWriter>();
-            services.AddSingleton<SqlQueryReader>();
-            services.AddSingleton<SqlTableWriter>();
+            services.AddTransient<EngineLink>();
+            services.AddTransient<FlatFileReader>();
+            services.AddTransient<FlatFileWriter>();
+            services.AddTransient<SqlQueryReader>();
+            services.AddTransient<SqlTableWriter>();
 
             serviceProvider = services.BuildServiceProvider();
 
@@ -103,6 +76,11 @@ namespace bS.Sked2.Engine.Tests
         [TestMethod()]
         public void ExecuteFlatFileReader()
         {
+
+            var uow = serviceProvider.GetService<IUnitOfWork>();
+            var engineRepository = serviceProvider.GetService<IEngineRepository>();
+            var engine = serviceProvider.GetService<IEngine>();
+
             //Create entities to test
             uow.BeginTransaction();
 
@@ -118,7 +96,7 @@ namespace bS.Sked2.Engine.Tests
             uow.Commit();
 
             // Create Engine element for execution
-            var flatFileReader = new FlatFileReader(uow, engineRepository, engineElementLogger, messageService);
+            var flatFileReader = serviceProvider.GetService<FlatFileReader>();
 
             // Load the entity in the engine  element
             flatFileReader.LoadFromEntity(elementFlatileReaderEntry.Id);
@@ -134,6 +112,11 @@ namespace bS.Sked2.Engine.Tests
         [TestMethod()]
         public void TestLinkElement()
         {
+            var uow = serviceProvider.GetService<IUnitOfWork>();
+            var engineRepository = serviceProvider.GetService<IEngineRepository>();
+            var engine = serviceProvider.GetService<IEngine>();
+
+
             //Create entities to test
             uow.BeginTransaction();
 
@@ -167,7 +150,7 @@ namespace bS.Sked2.Engine.Tests
 
             uow.Commit();
 
-            var engineTask = new EngineTask(uow, engineRepository, engineTaskLogger, messageService, engine, serviceProvider);
+            var engineTask = serviceProvider.GetService<IEngineTask>();
             engineTask.LoadFromEntity(taskEntry.Id);
 
             engine.ExecuteTask(engineTask);
