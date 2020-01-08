@@ -8,6 +8,7 @@ namespace bS.Sked2.Structure.Models
     /// </summary>
     public interface IElementEntry
     {
+        Guid Id { get; set; }
         /// <summary>
         /// Gets or sets the creation date.
         /// </summary>

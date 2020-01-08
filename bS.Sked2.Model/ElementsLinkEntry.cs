@@ -15,6 +15,18 @@ namespace bS.Sked2.Model
             Key = "ElementsLink";
             Name = "ElementsLink";
             Description = "This element is the link between two different elements.";
+            Mappings = new List<IElementsMappingEntry>();
+
+        }
+        public ElementsLinkEntry(IElementEntry previuousElement, IElementEntry nextElement)
+        {
+            Key = "ElementsLink";
+            Name = "ElementsLink";
+            Description = "This element is the link between two different elements.";
+
+            Previuous = previuousElement;
+            Next = nextElement;
+            Mappings = new List<IElementsMappingEntry>();
         }
 
         public virtual IList<IElementsMappingEntry> Mappings { get; set; }
@@ -30,7 +42,7 @@ namespace bS.Sked2.Model
             DiscriminatorValue("ElementsLinkEntry");
             References<ElementEntry>(x => x.Previuous);
             References<ElementEntry>(x => x.Next);
-            HasMany<ElementsMappingEntry>(X => X.Mappings);
+            HasMany<ElementsMappingEntry>(X => X.Mappings).Cascade.AllDeleteOrphan();
         }
     }
 }

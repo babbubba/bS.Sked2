@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,7 @@ namespace bS.Sked2.Structure.Engine
 {
     public interface IEngine
     {
+        ILogger<IEngine> Logger { get; }
         /// <summary>
         /// Executes the job.
         /// </summary>

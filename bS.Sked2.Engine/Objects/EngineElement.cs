@@ -300,5 +300,20 @@ namespace bS.Sked2.Engine.Objects
             // Add a message to notify the element finish execution
             AddMessage("Element execution finish.");
         }
+
+        public override void LoadFromEntity(Guid EntityId)
+        {
+            elementEntry = engineRepository.GetElementById(EntityId);
+
+            foreach (var inputProperty in elementEntry.InputProperties)
+            {
+                SetDataValueIfEmpty(EngineDataDirection.Input, inputProperty.Key, inputProperty.DataType, inputProperty.Value);
+            }
+
+            foreach (var outputProperty in elementEntry.OutputProperties)
+            {
+                SetDataValueIfEmpty(EngineDataDirection.Output, outputProperty.Key, outputProperty.DataType, outputProperty.Value);
+            }
+        }
     }
 }

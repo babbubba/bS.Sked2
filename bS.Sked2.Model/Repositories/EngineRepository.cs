@@ -52,5 +52,11 @@ namespace bS.Sked2.Model.Repositories
         {
             base.Create((TaskEntry)taskEntry);
         }
+
+        //public void CreateLinkElement(IElementsLinkEntry linkElement)
+        //{
+        //    base.Create((ElementsLinkEntry)linkElement);
+
+        //}
     }
 }

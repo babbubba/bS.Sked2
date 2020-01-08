@@ -22,6 +22,7 @@ using bs.Data;
 using bS.Sked2.Extensions.Common.Models;
 using bS.Sked2.Model;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace bS.Sked2.Engine.Tests
 {
@@ -34,10 +35,12 @@ namespace bS.Sked2.Engine.Tests
         private MessageRepository messageRepository;
         private ILogger<Engine> engineLogger;
         private ILogger<EngineElement> engineElementLogger;
+        private ILogger<EngineTask> engineTaskLogger;
         private IMessageService messageService;
         private ISqlValidationService sqlValidationService;
         private Common commonModule;
         private Engine engine;
+        private static IServiceProvider serviceProvider;
 
         private static IUnitOfWork CreateUnitOfWork_Sqlite()
         {
@@ -57,11 +60,14 @@ namespace bS.Sked2.Engine.Tests
         [TestInitialize]
         public void Init()
         {
+            var services = new ServiceCollection();
+
             engineLogger = Mock.Of<ILogger<Engine>>();
             engineElementLogger = Mock.Of<ILogger<EngineElement>>();
-            
-            //logger2 = Mock.Of<ILogger<EngineJob>>();
-            //logger3 = Mock.Of<ILogger<EngineTask>>();
+            engineTaskLogger = Mock.Of<ILogger<EngineTask>>();
+
+           
+
 
             sqlValidationService = new SqlValidationService(engineLogger);
             engine = new Engine(engineLogger);
@@ -74,22 +80,122 @@ namespace bS.Sked2.Engine.Tests
 
             messageService = new MessageService(uow, messageRepository);
 
+            services.AddSingleton(engineLogger);
+            services.AddSingleton(engineElementLogger);
+            services.AddSingleton(engineTaskLogger);
+            services.AddSingleton(sqlValidationService);
+            services.AddSingleton(engine);
+            services.AddSingleton(uow);
+            services.AddSingleton(engineRepository);
+            services.AddSingleton(messageRepository);
+            services.AddSingleton(messageService);
 
-            //commonModule = new Common(engineLogger, messageService, uow, engineRepository );
-            //commonModule.Init();
-            //job = new EngineJob(logger2, messageService);
-            //job.Start();
-            //task = new EngineTask(logger3, messageService);
-            //task.ParentJob = job;
-            //task.Start();
+            services.AddSingleton<EngineLink>();
+            services.AddSingleton<FlatFileReader>();
+            services.AddSingleton<FlatFileWriter>();
+            services.AddSingleton<SqlQueryReader>();
+            services.AddSingleton<SqlTableWriter>();
+
+            serviceProvider = services.BuildServiceProvider();
+
         }
+
         [TestMethod()]
         public void ExecuteFlatFileReader()
         {
-            #region Create Entity
+            //Create entities to test
             uow.BeginTransaction();
 
-            var taskEntry = new TaskEntry
+            TaskEntry taskEntry = GetTaskEntry();
+            engineRepository.CreateTask(taskEntry);
+
+            FlatFileReaderEntry elementFlatileReaderEntry = GetFlatFileReaderEntry();
+            elementFlatileReaderEntry.ParentTask = taskEntry;
+            engineRepository.CreateElement(elementFlatileReaderEntry);
+
+            taskEntry.Elements.Add(elementFlatileReaderEntry);
+
+            uow.Commit();
+
+            // Create Engine element for execution
+            var flatFileReader = new FlatFileReader(uow, engineRepository, engineElementLogger, messageService);
+
+            // Load the entity in the engine  element
+            flatFileReader.LoadFromEntity(elementFlatileReaderEntry.Id);
+
+            // Execute
+            engine.ExecuteElement(flatFileReader);
+
+            // Check the result
+            var resultFlatFileReader = flatFileReader.GetDataValue(EngineDataDirection.Output, "Table")?.Get<DataTable>();
+            Assert.IsNotNull(resultFlatFileReader);
+        }
+
+        [TestMethod()]
+        public void TestLinkElement()
+        {
+            //Create entities to test
+            uow.BeginTransaction();
+
+            TaskEntry taskEntry = GetTaskEntry();
+            engineRepository.CreateTask(taskEntry);
+
+            //first
+            var elementFlatileReaderEntry = GetFlatFileReaderEntry();
+            elementFlatileReaderEntry.ParentTask = taskEntry;
+            engineRepository.CreateElement(elementFlatileReaderEntry);
+
+            //second
+            var elementFlatFileWriterEntry = GetFlatFileWriterEntry();
+            elementFlatFileWriterEntry.ParentTask = taskEntry;
+            engineRepository.CreateElement(elementFlatFileWriterEntry);
+
+            //link
+            var linkElement = new ElementsLinkEntry(elementFlatileReaderEntry, elementFlatFileWriterEntry);
+            linkElement.ParentTask = taskEntry;
+            linkElement.Mappings.Add(new ElementsMappingEntry
+            {
+                InputPropertyKey = "Table",
+                OutputPropertyKey = "Table",
+                ParentLink = linkElement
+            });
+            engineRepository.CreateElement(linkElement);
+
+            taskEntry.Elements.Add(elementFlatileReaderEntry);
+            taskEntry.Elements.Add(linkElement);
+            taskEntry.Elements.Add(elementFlatFileWriterEntry);
+
+            uow.Commit();
+
+            var engineTask = new EngineTask(uow, engineRepository, engineTaskLogger, messageService, engine, serviceProvider);
+            engineTask.LoadFromEntity(taskEntry.Id);
+
+            engine.ExecuteTask(engineTask);
+
+        }
+
+            private static FlatFileReaderEntry GetFlatFileReaderEntry()
+        {
+            var elementFlatileReaderEntry = new FlatFileReaderEntry();
+            elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "ColumnDelimiter").Value = "<char>44</char>";
+            elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "FirstRowHasHeader").Value = "<boolean>false</boolean>";
+            elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "SourceFilePath").Value = @"<string>.\TestDataFiles\provincia-regione-sigla.csv</string>";
+            return elementFlatileReaderEntry;
+        }
+
+
+        private static FlatFileWriterEntry GetFlatFileWriterEntry()
+        {
+            var elementFlatileWriterEntry = new FlatFileWriterEntry();
+            elementFlatileWriterEntry.InputProperties.FirstOrDefault(x => x.Key == "ColumnDelimiter").Value = "<char>44</char>";
+            //elementFlatileWriterEntry.InputProperties.FirstOrDefault(x => x.Key == "Table").Value = "<boolean>false</boolean>";
+            elementFlatileWriterEntry.InputProperties.FirstOrDefault(x => x.Key == "TargetFilePath").Value = @"<string>.\TestDataFiles\provincia-regione-sigla.output.csv</string>";
+            return elementFlatileWriterEntry;
+        }
+
+        private static TaskEntry GetTaskEntry()
+        {
+            return new TaskEntry
             {
                 FailIfAnyElementHasError = true,
                 FailIfAnyElementHasWarning = false,
@@ -97,29 +203,6 @@ namespace bS.Sked2.Engine.Tests
                 Key = "TaskTest",
                 Name = "Task di prova"
             };
-
-            engineRepository.CreateTask(taskEntry);
-            var elementFlatileReaderEntry = new FlatFileReaderEntry
-            {
-                ParentTask = taskEntry
-            };
-            elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "ColumnDelimiter").Value = "<char>44</char>";
-            elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "FirstRowHasHeader").Value = "<boolean>false</boolean>";
-            elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "SourceFilePath").Value = @"<string>.\TestDataFiles\provincia-regione-sigla.csv</string>";
-
-            engineRepository.CreateElement(elementFlatileReaderEntry);
-
-            taskEntry.Elements.Add(elementFlatileReaderEntry);
-
-            uow.Commit();
-            #endregion
-
-            //FlatFileReader flatFileReader = GetFlatFileReader();
-            var flatFileReader = new FlatFileReader(uow, engineRepository, engineElementLogger, messageService);
-            flatFileReader.LoadFromEntity(elementFlatileReaderEntry.Id);
-            engine.ExecuteElement(flatFileReader);
-            var resultFlatFileReader = flatFileReader.GetDataValue(EngineDataDirection.Output, "Table")?.Get<DataTable>();
-            Assert.IsNotNull(resultFlatFileReader);
         }
 
         //[TestMethod()]

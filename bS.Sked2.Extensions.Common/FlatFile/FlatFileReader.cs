@@ -24,10 +24,6 @@ namespace bS.Sked2.Extensions.Common.FlatFile
     /// <seealso cref="bS.Sked2.Structure.Engine.BaseEngineElement" />
     public class FlatFileReader : EngineElement
     {
-        StringValue sourceFilePath;
-        IntValue skipStartingDataRows;
-        BoolValue firstRowHasHeader;
-        CharValue columnDelimiter;
         public FlatFileReader(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<EngineElement> logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
             RegisterInputProperties("SourceFilePath", "Source file path", DataType.String, true);
@@ -40,23 +36,7 @@ namespace bS.Sked2.Extensions.Common.FlatFile
         }
 
         public override string Key => "FlatFileReader";
-
-        public override void LoadFromEntity(Guid EntityId)
-        {
-            elementEntry = engineRepository.GetElementById(EntityId);
-            var entity = (FlatFileReaderEntry)elementEntry;
-
-            foreach (var inputProperty in entity.InputProperties)
-            {
-                SetDataValueIfEmpty(EngineDataDirection.Input, inputProperty.Key, inputProperty.DataType, inputProperty.Value);
-            }
-
-            foreach (var outputProperty in entity.OutputProperties)
-            {
-                SetDataValueIfEmpty(EngineDataDirection.Output, outputProperty.Key, outputProperty.DataType, outputProperty.Value);
-            }
-
-        }
+        public static string KeyConst => "FlatFileReader";
 
         /// <summary>
         /// Starts this instance. In derived class you have to execute this base before your overrided code.

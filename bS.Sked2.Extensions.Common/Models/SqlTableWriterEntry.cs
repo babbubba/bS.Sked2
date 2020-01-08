@@ -1,4 +1,5 @@
 ﻿using bS.Sked2.Model;
+using bS.Sked2.Structure.Engine;
 using FluentNHibernate.Mapping;
 
 namespace bS.Sked2.Extensions.Common.Models
@@ -10,11 +11,12 @@ namespace bS.Sked2.Extensions.Common.Models
             Key = "SqlTableWriter";
             Name = "SQL Table Writer";
             Description = "This elements insert TableValue to a SQL Server table.";
-        }
 
-        public virtual string ConnectionString { get; set; }
-        public virtual string SqlTable { get; set; }
-        public virtual string ColumnsMapping { get; set; }
+            InputProperties.Add(new ElementPropertyEntry("ConnectionString", "Sql Server Connection String", DataType.String, true));
+            InputProperties.Add(new ElementPropertyEntry("SqlTable", "Sql destination table", DataType.String, true));
+            InputProperties.Add(new ElementPropertyEntry("ColumnsMapping", "Columns Mapping", DataType.Collection));
+            InputProperties.Add(new ElementPropertyEntry("SourceTable", "Source Table Value", DataType.Table, true));
+        }
     }
 
     class SqlTableWriterEntryMap : SubclassMap<SqlTableWriterEntry>
@@ -22,9 +24,6 @@ namespace bS.Sked2.Extensions.Common.Models
         public SqlTableWriterEntryMap()
         {
             DiscriminatorValue("SqlTableWriter");
-            Map(x => x.ConnectionString);
-            Map(x => x.SqlTable);
-            Map(x => x.ColumnsMapping);
         }
     }
 }

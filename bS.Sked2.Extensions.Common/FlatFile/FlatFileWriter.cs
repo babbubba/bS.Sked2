@@ -28,22 +28,14 @@ namespace bS.Sked2.Extensions.Common.FlatFile
         public FlatFileWriter(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<EngineElement> logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
             // Register element properties
-            RegisterInputProperties("CsvFilePath", "CSV file path", DataType.String, true);
-            RegisterInputProperties("ColumnDelimiter", "Column char delimiter", DataType.Char, true);
-            RegisterInputProperties("Table", "TableValue to write in flat file", DataType.Table, true);
+            RegisterInputProperties("TargetFilePath", "", DataType.String, true);
+            RegisterInputProperties("ColumnDelimiter", "", DataType.Char, true);
+            RegisterInputProperties("Table", "", DataType.Table, true);
         }
 
         public override string Key => "FlatFileWriter";
+        public static string KeyConst => "FlatFileWriter";
 
-        public override void LoadFromEntity(Guid EntityId)
-        {
-            elementEntry = engineRepository.GetElementById(EntityId);
-            var entity = (FlatFileWriterEntry)elementEntry;
-
-            // set data properties from entity
-            SetDataValue(EngineDataDirection.Input, "SourceFilePath", new StringValue(entity.TargetFilePath));
-            SetDataValue(EngineDataDirection.Input, "ColumnDelimiter", new CharValue(entity.ColumnDelimiter.ToCharArray().FirstOrDefault()));
-        }
 
         /// <summary>
         /// Starts this instance. In derived class you have to execute this base before your overrided code.
@@ -55,7 +47,7 @@ namespace bS.Sked2.Extensions.Common.FlatFile
             try
             {
                 // Get parameters
-                var csvFilePath = GetDataValue(EngineDataDirection.Input, "CsvFilePath").Get<string>();
+                var csvFilePath = GetDataValue(EngineDataDirection.Input, "TargetFilePath").Get<string>();
                 var columnDelimiter = GetDataValue(EngineDataDirection.Input, "ColumnDelimiter").Get<char>();
                 var dt = GetDataValue(EngineDataDirection.Input, "Table").Get<DataTable>();
 

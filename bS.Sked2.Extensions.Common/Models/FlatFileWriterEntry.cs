@@ -1,4 +1,5 @@
 ﻿using bS.Sked2.Model;
+using bS.Sked2.Structure.Engine;
 using FluentNHibernate.Mapping;
 
 namespace bS.Sked2.Extensions.Common.Models
@@ -10,10 +11,11 @@ namespace bS.Sked2.Extensions.Common.Models
             Key = "FlatFileWriter";
             Name = "Flat File Writer";
             Description = "This elements write a flat file (like CSV) from a Table value.";
-        }
 
-        public virtual string TargetFilePath { get; set; }
-        public virtual string ColumnDelimiter { get; set; }
+            InputProperties.Add(new ElementPropertyEntry("TargetFilePath", "Target file path", DataType.String, true));
+            InputProperties.Add(new ElementPropertyEntry("ColumnDelimiter", "Column char delimite", DataType.Char, true));
+            InputProperties.Add(new ElementPropertyEntry("Table", "Table Value to write in flat file", DataType.Table, true));
+        }
     }
 
     class FlatFileWriterEntryMap : SubclassMap<FlatFileWriterEntry>
@@ -21,8 +23,6 @@ namespace bS.Sked2.Extensions.Common.Models
         public FlatFileWriterEntryMap()
         {
             DiscriminatorValue("FlatFileWriter");
-            Map(x => x.TargetFilePath);
-            Map(x => x.ColumnDelimiter);
         }
     }
 }

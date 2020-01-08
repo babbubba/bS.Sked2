@@ -43,26 +43,28 @@ namespace bS.Sked2.Extensions.Common.SqlServer
         }
 
         public override string Key => "SqlTableWriter";
+        public static string KeyConst => "SqlTableWriter";
 
 
-        public override void LoadFromEntity(Guid EntityId)
-        {
-            elementEntry = engineRepository.GetElementById(EntityId);
-            // set data properties from entity!!!
-            //SqlTableWriterEntry
-            var entity = (SqlTableWriterEntry)elementEntry;
 
-            // set data properties from entity
-            SetDataValue(EngineDataDirection.Input, "ConnectionString", new StringValue(entity.ConnectionString));
-            SetDataValue(EngineDataDirection.Input, "SqlTable", new StringValue(entity.SqlTable));
-            var columnsMapping = new List<IEngineData>();
-            foreach (var row in entity.ColumnsMapping.Split("|!*&$%!|"))
-            {
-                var cells = row.Split("|!@#§!|");
-                columnsMapping.Add( new DictionaryEntryValue(cells[0], cells[1]));
-            }
-            SetDataValue(EngineDataDirection.Input, "ColumnsMapping", new CollectionValue(columnsMapping));
-        }
+        //public override void LoadFromEntity(Guid EntityId)
+        //{
+        //    elementEntry = engineRepository.GetElementById(EntityId);
+        //    // set data properties from entity!!!
+        //    //SqlTableWriterEntry
+        //    var entity = (SqlTableWriterEntry)elementEntry;
+
+        //    // set data properties from entity
+        //    SetDataValue(EngineDataDirection.Input, "ConnectionString", new StringValue(entity.ConnectionString));
+        //    SetDataValue(EngineDataDirection.Input, "SqlTable", new StringValue(entity.SqlTable));
+        //    var columnsMapping = new List<IEngineData>();
+        //    foreach (var row in entity.ColumnsMapping.Split("|!*&$%!|"))
+        //    {
+        //        var cells = row.Split("|!@#§!|");
+        //        columnsMapping.Add( new DictionaryEntryValue(cells[0], cells[1]));
+        //    }
+        //    SetDataValue(EngineDataDirection.Input, "ColumnsMapping", new CollectionValue(columnsMapping));
+        //}
 
         public override void Start()
         {

@@ -32,16 +32,18 @@ namespace bS.Sked2.Extensions.Common.SqlServer
         }
 
         public override string Key => "SqlQueryReader";
+        public static string KeyConst => "SqlQueryReader";
 
-        public override void LoadFromEntity(Guid EntityId)
-        {
-            elementEntry = engineRepository.GetElementById(EntityId);
-            var entity = (SqlQueryReaderEntry)elementEntry;
 
-            // set data properties from entity
-            SetDataValue(EngineDataDirection.Input, "ConnectionString", new StringValue(entity.ConnectionString));
-            SetDataValue(EngineDataDirection.Input, "SqlQuery", new StringValue(entity.SqlQuery));
-        }
+        //public override void LoadFromEntity(Guid EntityId)
+        //{
+        //    elementEntry = engineRepository.GetElementById(EntityId);
+        //    var entity = (SqlQueryReaderEntry)elementEntry;
+
+        //    // set data properties from entity
+        //    SetDataValue(EngineDataDirection.Input, "ConnectionString", new StringValue(entity.ConnectionString));
+        //    SetDataValue(EngineDataDirection.Input, "SqlQuery", new StringValue(entity.SqlQuery));
+        //}
 
         public override void Start()
         {

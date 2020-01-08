@@ -19,6 +19,8 @@ namespace bS.Sked2.Engine
             this.logger = logger;
         }
 
+        public ILogger<IEngine> Logger => this.logger;
+
         /// <summary>
         /// Executes the element.
         /// </summary>
@@ -103,15 +105,26 @@ namespace bS.Sked2.Engine
 
             // Execute task
             task.Start();
-
-            //Execute all active elements
-            //foreach (var element in task.Elements)
-            //{
-            //    ExecuteElement(element);
-            //}
-
+                      
             // Stop task
             task.Stop();
+
+            if (task.HasErrors)
+            {
+                task.AddMessage($"The task (instance: {task.InstanceID}) was not executed cause one or more errors occurs.", MessageSeverity.Error);
+                if (task.ParentJob.FailIfAnyTaskHasError)
+                {
+                    throw new EngineException(logger, $"The task (instance: {task.InstanceID}) was not executed cause one or more errors occurs. This job was aborted.");
+                }
+            }
+            else if (task.HasWarnings)
+            {
+                task.AddMessage($"The task (instance: {task.InstanceID}) was executed but one or more warning occurs.", MessageSeverity.Warning);
+                if (task.ParentJob.FailIfAnyTaskHasWarning)
+                {
+                    throw new EngineException(logger, $"The task (instance: {task.InstanceID}) was executed but one or more warning occurs. This job was aborted.");
+                }
+            }
         }
     }
 }

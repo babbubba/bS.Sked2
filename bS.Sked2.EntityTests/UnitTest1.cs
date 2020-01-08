@@ -4,6 +4,7 @@ using bs.Data.Interfaces.BaseEntities;
 using bS.Sked2.Extensions.Common.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 
 namespace bS.Sked2.EntityTests
 {
@@ -33,14 +34,12 @@ namespace bS.Sked2.EntityTests
 
             #region Create Entity
             uOW.BeginTransaction();
-            var entityToCreate = new FlatFileReaderEntry
-            {
-                ColumnDelimiter = "<char>;</char>",
-                FirstRowHasHeader = "<boolean>true</boolean>",
-                SourceFilePath = @"<string>c:\temp</string>",
-                LimitToRows = "<int>0</int>",
-                SkipStartingDataRows = "<int>0</int>"
-            };
+            var entityToCreate = new FlatFileReaderEntry();
+
+            entityToCreate.InputProperties.FirstOrDefault(x => x.Key == "ColumnDelimiter").Value = "<char>44</char>";
+            entityToCreate.InputProperties.FirstOrDefault(x => x.Key == "FirstRowHasHeader").Value = "<boolean>false</boolean>";
+            entityToCreate.InputProperties.FirstOrDefault(x => x.Key == "SourceFilePath").Value = @"<string>.\TestDataFiles\provincia-regione-sigla.csv</string>";
+
             repository.Create(entityToCreate);
             uOW.Commit();
             #endregion
