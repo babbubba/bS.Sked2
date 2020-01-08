@@ -26,9 +26,9 @@ namespace bS.Sked2.Model.Repositories
             return base.GetById<TaskEntry>(Id);
         }
 
-        public IElementEntity GetElementById(Guid Id)
+        public IElementEntry GetElementById(Guid Id)
         {
-            return base.GetById<ElementEntity>(Id);
+            return base.GetById<ElementEntry>(Id);
         }
 
         public IModuleEntry GetModuleById(Guid Id)
@@ -43,9 +43,9 @@ namespace bS.Sked2.Model.Repositories
             return newInstance;
         }
 
-        public void CreateElement(IElementEntity entityToCreate)
+        public void CreateElement(IElementEntry entityToCreate)
         {
-            base.Create((ElementEntity)entityToCreate);
+            base.Create((ElementEntry)entityToCreate);
         }
 
         public void CreateTask(ITaskEntry taskEntry)

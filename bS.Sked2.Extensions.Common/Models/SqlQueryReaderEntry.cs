@@ -3,7 +3,7 @@ using FluentNHibernate.Mapping;
 
 namespace bS.Sked2.Extensions.Common.Models
 {
-    public class SqlQueryReaderEntry : ElementEntity
+    public class SqlQueryReaderEntry : ElementEntry
     {
         public SqlQueryReaderEntry()
         {

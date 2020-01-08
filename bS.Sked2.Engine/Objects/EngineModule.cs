@@ -11,7 +11,7 @@ using System.Text;
 
 namespace bS.Sked2.Engine.Objects
 {
-    public abstract class EngineModule : BaseEngineComponent, IEngineComponent, IEngineModule
+    public abstract class EngineModule : BaseEngineComponent, IEngineFlowComponent, IEngineModule
     {
         protected readonly IUnitOfWork uow;
         protected readonly IEngineRepository engineRepository;

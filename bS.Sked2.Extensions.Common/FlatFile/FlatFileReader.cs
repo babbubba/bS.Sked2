@@ -46,24 +46,16 @@ namespace bS.Sked2.Extensions.Common.FlatFile
             elementEntry = engineRepository.GetElementById(EntityId);
             var entity = (FlatFileReaderEntry)elementEntry;
 
-            sourceFilePath = new StringValue();
-            sourceFilePath.ReadFromStringValue(entity.SourceFilePath);
+            foreach (var inputProperty in entity.InputProperties)
+            {
+                SetDataValueIfEmpty(EngineDataDirection.Input, inputProperty.Key, inputProperty.DataType, inputProperty.Value);
+            }
 
-            skipStartingDataRows = new IntValue();
-            skipStartingDataRows.ReadFromStringValue(entity.SkipStartingDataRows);
+            foreach (var outputProperty in entity.OutputProperties)
+            {
+                SetDataValueIfEmpty(EngineDataDirection.Output, outputProperty.Key, outputProperty.DataType, outputProperty.Value);
+            }
 
-            firstRowHasHeader = new BoolValue();
-            firstRowHasHeader.ReadFromStringValue(entity.FirstRowHasHeader);
-
-            columnDelimiter = new CharValue();
-            columnDelimiter.ReadFromStringValue(entity.ColumnDelimiter);
-
-
-            // set data properties from entity
-            SetDataValueIfEmpty(EngineDataDirection.Input, "SourceFilePath", sourceFilePath);
-            SetDataValueIfEmpty(EngineDataDirection.Input, "SkipStartingDataRows", skipStartingDataRows);
-            SetDataValueIfEmpty(EngineDataDirection.Input, "FirstRowHasHeader", firstRowHasHeader);
-            SetDataValueIfEmpty(EngineDataDirection.Input, "ColumnDelimiter", columnDelimiter);
         }
 
         /// <summary>
@@ -101,6 +93,7 @@ namespace bS.Sked2.Extensions.Common.FlatFile
                 parser.Dispose();
 
                 AddMessage($"Parsing file completed. {table.RowCount} read.", MessageSeverity.Debug);
+                uow.Commit();                
             }
             catch (Exception e)
             {

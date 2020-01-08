@@ -9,7 +9,7 @@ namespace bS.Sked2.Structure.Engine
     /// <summary>
     /// Contiene uno o piu Elementi <see cref="IEngineElement"/> e rappresenta il flusso di esecuzione degli elementi stessi. Sostanzialmente rappresenta un compito finito.
     /// </summary>
-    public interface IEngineTask : IEngineComponent
+    public interface IEngineTask : IEngineFlowComponent
     {
         /// <summary>
         /// Gets the parent task.

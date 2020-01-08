@@ -21,6 +21,7 @@ using bS.Sked2.Model.Repositories;
 using bs.Data;
 using bS.Sked2.Extensions.Common.Models;
 using bS.Sked2.Model;
+using System.Linq;
 
 namespace bS.Sked2.Engine.Tests
 {
@@ -90,25 +91,22 @@ namespace bS.Sked2.Engine.Tests
 
             var taskEntry = new TaskEntry
             {
-                 FailIfAnyElementHasError = true,
-                  FailIfAnyElementHasWarning = false,
-                   IsEnabled = true,
-                    Key = "TaskTest",
-                     Name = "Task di prova"
+                FailIfAnyElementHasError = true,
+                FailIfAnyElementHasWarning = false,
+                IsEnabled = true,
+                Key = "TaskTest",
+                Name = "Task di prova"
             };
 
             engineRepository.CreateTask(taskEntry);
-
-
             var elementFlatileReaderEntry = new FlatFileReaderEntry
             {
-                ColumnDelimiter = "<char>59</char>",
-                FirstRowHasHeader = "<boolean>true</boolean>",
-                SourceFilePath = @"<string>c:\temp</string>",
-                LimitToRows = "<int>0</int>",
-                SkipStartingDataRows = "<int>0</int>",
                 ParentTask = taskEntry
             };
+            elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "ColumnDelimiter").Value = "<char>44</char>";
+            elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "FirstRowHasHeader").Value = "<boolean>false</boolean>";
+            elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "SourceFilePath").Value = @"<string>.\TestDataFiles\provincia-regione-sigla.csv</string>";
+
             engineRepository.CreateElement(elementFlatileReaderEntry);
 
             taskEntry.Elements.Add(elementFlatileReaderEntry);
@@ -116,9 +114,9 @@ namespace bS.Sked2.Engine.Tests
             uow.Commit();
             #endregion
 
-            FlatFileReader flatFileReader = GetFlatFileReader();
+            //FlatFileReader flatFileReader = GetFlatFileReader();
+            var flatFileReader = new FlatFileReader(uow, engineRepository, engineElementLogger, messageService);
             flatFileReader.LoadFromEntity(elementFlatileReaderEntry.Id);
-            //2e9e40c3-54cd-486e-a250-ab39015ed5ca
             engine.ExecuteElement(flatFileReader);
             var resultFlatFileReader = flatFileReader.GetDataValue(EngineDataDirection.Output, "Table")?.Get<DataTable>();
             Assert.IsNotNull(resultFlatFileReader);
@@ -187,14 +185,14 @@ namespace bS.Sked2.Engine.Tests
             return dt;
         }
 
-        private FlatFileReader GetFlatFileReader()
-        {
-            var flatFileReader = new FlatFileReader(uow, engineRepository, engineElementLogger, messageService);
-            flatFileReader.SetDataValue(EngineDataDirection.Input, "SourceFilePath", new StringValue(@".\TestDataFiles\provincia-regione-sigla.csv"));
-            flatFileReader.SetDataValue(EngineDataDirection.Input, "FirstRowHasHeader", new BoolValue(false));
-            flatFileReader.SetDataValue(EngineDataDirection.Input, "ColumnDelimiter", new CharValue(','));
-            return flatFileReader;
-        }
+        //private FlatFileReader GetFlatFileReader()
+        //{
+        //    var flatFileReader = new FlatFileReader(uow, engineRepository, engineElementLogger, messageService);
+        //    flatFileReader.SetDataValue(EngineDataDirection.Input, "SourceFilePath", new StringValue(@".\TestDataFiles\provincia-regione-sigla.csv"));
+        //    flatFileReader.SetDataValue(EngineDataDirection.Input, "FirstRowHasHeader", new BoolValue(false));
+        //    flatFileReader.SetDataValue(EngineDataDirection.Input, "ColumnDelimiter", new CharValue(','));
+        //    return flatFileReader;
+        //}
         //private SqlQueryReader GetSqlQueryReader()
         //{
         //    var sqlQueryReader = new SqlQueryReader(uow, engineRepository, engineElementLogger, messageService);

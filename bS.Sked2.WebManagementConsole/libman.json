@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jsPlumb@2.12.8",
+      "files": [ "js/jsplumb.js", "js/jsplumb.min.js", "css/jsplumbtoolkit-defaults.css", "css/jsplumbtoolkit-defaults.min.css"],
+      "destination": "wwwroot/lib/jsplumb/dist/"
+    }
+  ]
+}

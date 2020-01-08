@@ -16,7 +16,7 @@ namespace bS.Sked2.Engine.Objects
     public abstract class EngineElement : BaseEngineComponent, IEngineElement
     {
         protected readonly IEngineRepository engineRepository;
-        protected IElementEntity elementEntry;
+        protected IElementEntry elementEntry;
 
         /// <summary>
         /// The input properties
@@ -28,7 +28,7 @@ namespace bS.Sked2.Engine.Objects
         /// </summary>
         protected IList<IEngineElementProperty> outputProperties;
 
-        private readonly IUnitOfWork uow;
+        protected readonly IUnitOfWork uow;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EngineElement"/> class.
@@ -91,7 +91,6 @@ namespace bS.Sked2.Engine.Objects
 
                 case EngineDataDirection.Output:
                     var op = outputProperties.SingleOrDefault(p => p.Key == propertyKey);
-
                     if (op == null) throw new EngineException(logger, $"No output property with key {propertyKey} has been registered for this element.");
                     return op.Value;
             }
@@ -142,40 +141,6 @@ namespace bS.Sked2.Engine.Objects
               .FirstOrDefault(ed => (DataType)ed.GetProperty("DataTypeConst").GetValue(ed) == dataType);
 
             SetDataValue(EngineDataDirection.Input, key, (IEngineData)Activator.CreateInstance(engineDataType));
-
-            //switch (dataType)
-            //{
-            //    case DataType.Int:
-            //        SetDataValue(EngineDataDirection.Input, key, new IntValue());
-            //        break;
-            //    case DataType.Bool:
-            //        SetDataValue(EngineDataDirection.Input, key, new BoolValue());
-            //        break;
-            //    case DataType.Decimal:
-            //        SetDataValue(EngineDataDirection.Input, key, new DecimalValue());
-            //        break;
-            //    case DataType.Double:
-            //        SetDataValue(EngineDataDirection.Input, key, new DoubleValue());
-            //        break;
-            //    case DataType.Char:
-            //        SetDataValue(EngineDataDirection.Input, key, new CharValue());
-            //        break;
-            //    case DataType.String:
-            //        SetDataValue(EngineDataDirection.Input, key, new StringValue());
-            //        break;
-            //    case DataType.Datetime:
-            //        SetDataValue(EngineDataDirection.Input, key, new DateTimeValue());
-            //        break;
-            //    case DataType.Table:
-            //        SetDataValue(EngineDataDirection.Input, key, new TableValue());
-            //        break;
-            //    case DataType.DictionaryEntry:
-            //        SetDataValue(EngineDataDirection.Input, key, new DictionaryEntryValue());
-            //        break;
-            //    case DataType.Collection:
-            //        SetDataValue(EngineDataDirection.Input, key, new CollectionValue());
-            //        break;
-            //}
         }
 
         /// <summary>
@@ -224,15 +189,20 @@ namespace bS.Sked2.Engine.Objects
             {
                 case EngineDataDirection.Input:
                     var ip = inputProperties.SingleOrDefault(p => p.Key == propertyKey);
+                    var ipE = elementEntry?.InputProperties?.SingleOrDefault(p => p.Key == propertyKey);
+
                     if (ip == null) throw new EngineException(logger, $"No input property with key {propertyKey} has been registered for this element.");
                     ip.Value = value;
+                   if(ipE!=null) ipE.Value = ip.Value.WriteToStringValue();
                     break;
 
                 case EngineDataDirection.Output:
                     var op = outputProperties.SingleOrDefault(p => p.Key == propertyKey);
+                    var opE = elementEntry?.OutputProperties?.SingleOrDefault(p => p.Key == propertyKey);
 
                     if (op == null) throw new EngineException(logger, $"No output property with key {propertyKey} has been registered for this element.");
                     op.Value = value;
+                    if (opE != null) opE.Value = op.Value.WriteToStringValue();
                     break;
             }
         }
@@ -254,17 +224,41 @@ namespace bS.Sked2.Engine.Objects
             {
                 case EngineDataDirection.Input:
                     var ip = inputProperties.SingleOrDefault(p => p.Key == propertyKey);
+                    var ipE = elementEntry.InputProperties.SingleOrDefault(p => p.Key == propertyKey);
+
                     if (ip == null) throw new EngineException(logger, $"No input property with key {propertyKey} has been registered for this element.");
-                    if (!ip.Value.IsFilled) ip.Value = value;
+                    if (!ip.Value.IsFilled)
+                    {
+                        ip.Value = value;
+                        ipE.Value = ip.Value.WriteToStringValue();
+                    }
                     break;
 
                 case EngineDataDirection.Output:
                     var op = outputProperties.SingleOrDefault(p => p.Key == propertyKey);
+                    var opE = elementEntry.OutputProperties.SingleOrDefault(p => p.Key == propertyKey);
 
                     if (op == null) throw new EngineException(logger, $"No output property with key {propertyKey} has been registered for this element.");
-                    if (!op.Value.IsFilled) op.Value = value;
+                    if (!op.Value.IsFilled)
+                    {
+                        op.Value = value;
+                        opE.Value = op.Value.WriteToStringValue();
+                    }
                     break;
             }
+        }
+
+        public void SetDataValueIfEmpty(EngineDataDirection direction, string propertyKey, DataType dataType, string persistingValue)
+        {
+
+            var engineDataType = AssembliesExtensions.GetTypesImplementingInterface<IEngineData>()
+            .FirstOrDefault(ed => (DataType)ed.GetProperty("DataTypeConst").GetValue(ed) == dataType);
+
+            var engineDataValue = (IEngineData)Activator.CreateInstance(engineDataType);
+
+            engineDataValue.ReadFromStringValue(persistingValue);
+
+            SetDataValueIfEmpty(direction, propertyKey, engineDataValue);
         }
 
         /// <summary>

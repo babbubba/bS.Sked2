@@ -10,7 +10,7 @@ namespace bS.Sked2.Structure.Models
 
         DateTime? DeletionDate { get; set; }
         string Description { get; set; }
-        IList<IElementEntity> Elements { get; set; }
+        IList<IElementEntry> Elements { get; set; }
 
         //DateTime? EndTime { get; set; }
         bool FailIfAnyElementHasError { get; set; }

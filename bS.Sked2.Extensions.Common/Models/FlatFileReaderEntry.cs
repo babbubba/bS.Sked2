@@ -1,5 +1,6 @@
 ﻿using bs.Data.Interfaces.BaseEntities;
 using bS.Sked2.Model;
+using bS.Sked2.Structure.Engine;
 using FluentNHibernate.Mapping;
 using System;
 using System.Collections.Generic;
@@ -7,21 +8,22 @@ using System.Text;
 
 namespace bS.Sked2.Extensions.Common.Models
 {
-    public class FlatFileReaderEntry : ElementEntity
+    public class FlatFileReaderEntry : ElementEntry
     {
         public FlatFileReaderEntry()
         {
             Key = "FlatFileReader";
             Name = "Flat File Reader";
             Description = "This elements read form a flat file (like CSV) and returns a Table value.";
+
+            InputProperties.Add(new ElementPropertyEntry("SourceFilePath", "Source file path", DataType.String, true));
+            InputProperties.Add(new ElementPropertyEntry("SkipStartingDataRows", "Starting row to skip", DataType.Int));
+            InputProperties.Add(new ElementPropertyEntry("FirstRowHasHeader", "Use first row as header", DataType.Bool, true));
+            InputProperties.Add(new ElementPropertyEntry("ColumnDelimiter", "Column char delimiter", DataType.Char, true));
+            InputProperties.Add(new ElementPropertyEntry("LimitToRows", "Limit result to rows number", DataType.Int));
+
+            OutputProperties.Add(new ElementPropertyEntry("Table", "Rows imported from flat file", DataType.Table, true));
         }
-
-        public virtual string SourceFilePath { get; set; }
-        public virtual string SkipStartingDataRows { get; set; }
-        public virtual string FirstRowHasHeader { get; set; }
-        public virtual string ColumnDelimiter { get; set; }
-        public virtual string LimitToRows { get; set; }
-
     }
 
     class FlatFileReaderEntityMap : SubclassMap<FlatFileReaderEntry>
@@ -29,11 +31,6 @@ namespace bS.Sked2.Extensions.Common.Models
         public FlatFileReaderEntityMap()
         {
             DiscriminatorValue("FlatFileReader");
-            Map(x => x.SourceFilePath);
-            Map(x => x.SkipStartingDataRows);
-            Map(x => x.FirstRowHasHeader);
-            Map(x => x.ColumnDelimiter);
-            Map(x => x.LimitToRows);
         }
     }
 }

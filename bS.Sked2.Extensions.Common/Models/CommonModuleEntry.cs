@@ -3,7 +3,7 @@ using FluentNHibernate.Mapping;
 
 namespace bS.Sked2.Extensions.Common.Models
 {
-    public class CommonModuleEntry : ElementEntity
+    public class CommonModuleEntry : ElementEntry
     {
         public CommonModuleEntry()
         {

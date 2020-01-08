@@ -3,7 +3,7 @@ using FluentNHibernate.Mapping;
 
 namespace bS.Sked2.Extensions.Common.Models
 {
-    public class FlatFileWriterEntry : ElementEntity
+    public class FlatFileWriterEntry : ElementEntry
     {
         public FlatFileWriterEntry()
         {

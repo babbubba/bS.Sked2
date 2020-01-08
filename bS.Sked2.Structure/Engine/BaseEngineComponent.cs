@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace bS.Sked2.Structure.Engine
 {
-    public abstract class BaseEngineComponent : IEngineComponent
+    public abstract class BaseEngineComponent : IEngineFlowComponent
     {
         protected ILogger logger;
         protected IMessageService messageService;

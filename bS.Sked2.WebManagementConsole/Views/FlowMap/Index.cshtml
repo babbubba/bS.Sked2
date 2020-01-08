@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Flusso</h1>
+
+<div id="map-container" style="height:300px;border-width:1px">
+    <div id="uno">UNO DIV</div>
+    <div id="due">DUE DIV</div>
+</div>
+
+@section Scripts
+{
+
+    <script src="~/lib/jsplumb/dist/js/jsplumb.js"></script>
+    <script>
+        jsPlumb.ready(function () {
+            // your jsPlumb related init code goes here
+            jsPlumb.setContainer(document.getElementById("map-container"));
+            jsPlumb.connect({ source:uno, target:due });
+        });
+    </script>
+}

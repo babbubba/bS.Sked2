@@ -11,13 +11,13 @@ namespace bS.Sked2.Model
         public TaskEntry()
         {
             Instances = new List<IInstanceEntry>();
-            Elements = new List<IElementEntity>();
+            Elements = new List<IElementEntry>();
         }
 
         public virtual DateTime? CreationDate { get; set; }
         public virtual DateTime? DeletionDate { get; set; }
         public virtual string Description { get; set; }
-        public virtual IList<IElementEntity> Elements { get; set; }
+        public virtual IList<IElementEntry> Elements { get; set; }
         public virtual bool FailIfAnyElementHasError { get; set; }
         public virtual bool FailIfAnyElementHasWarning { get; set; }
         public virtual Guid Id { get; set; }
@@ -49,7 +49,7 @@ namespace bS.Sked2.Model
             Map(x => x.FailIfAnyElementHasWarning);
             References<JobEntry>(x => x.ParentJob);
             HasMany<InstanceEntry>(x => x.Instances);
-            HasMany<ElementEntity>(x => x.Elements);
+            HasMany<ElementEntry>(x => x.Elements);
         }
     }
 }

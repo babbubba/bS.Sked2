@@ -1,4 +1,5 @@
 ﻿using bS.Sked2.Structure.Models;
+using System.Collections.Generic;
 
 namespace bS.Sked2.Structure.Engine
 {
@@ -6,8 +7,8 @@ namespace bS.Sked2.Structure.Engine
     /// E' l'elemento che rappresenta una operazione specifica in un Task. Ogni elemento viene eseguito dal suo specifico modulo <see cref="IEngineModule" />.
     /// </summary>
     /// <seealso cref="bS.Sked2.Structure.Base.IStartable" />
-    /// <seealso cref="bS.Sked2.Structure.Engine.IEngineComponent" />
-    public interface IEngineElement : IEngineComponent
+    /// <seealso cref="bS.Sked2.Structure.Engine.IEngineFlowComponent" />
+    public interface IEngineElement : IEngineFlowComponent
     {
         string Key { get; }
 
@@ -62,5 +63,7 @@ namespace bS.Sked2.Structure.Engine
         void SetDataValue(EngineDataDirection direction, string propertyKey, IEngineData value);
 
         void SetDataValueIfEmpty(EngineDataDirection direction, string propertyKey, IEngineData value);
+
+       
     }
 }

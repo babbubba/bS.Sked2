@@ -5,12 +5,13 @@ using System.Text;
 
 namespace bS.Sked2.Structure.Engine
 {
-    public interface IEngineComponent
+    /// <summary>Base interface for all elements, tasks, jobs, links and components.</summary>
+    public interface IEngineFlowComponent
     {
         Guid? InstanceID { get; }
 
         /// <summary>
-        /// Adds the message.
+        /// Adds an execution message in the related istance.
         /// </summary>
         /// <param name="Message">The message.</param>
         /// <param name="severity">The severity (Optional: default is Info).</param>

@@ -17,11 +17,13 @@ namespace bS.Sked2.Model
     /// <seealso cref="bs.Data.Interfaces.BaseEntities.IEnableableEntity" />
     /// <seealso cref="bs.Data.Interfaces.BaseEntities.ILogicallyDeletableEntity" />
     /// <seealso cref="bs.Data.Interfaces.BaseEntities.IPersistentEntity" />
-    public class ElementEntity : IAuditableEntity, IEnableableEntity, ILogicallyDeletableEntity, IPersistentEntity, IElementEntity
+    public class ElementEntry : IAuditableEntity, IEnableableEntity, ILogicallyDeletableEntity, IPersistentEntity, IElementEntry
     {
-        public ElementEntity()
+        public ElementEntry()
         {
             Instances = new List<IInstanceEntry>();
+            InputProperties = new List<IElementPropertyEntry>();
+            OutputProperties = new List<IElementPropertyEntry>();
         }
         public virtual bool IsDeleted { get; set; }
         public virtual DateTime? DeletionDate { get; set; }
@@ -35,9 +37,12 @@ namespace bS.Sked2.Model
         public virtual string Name { get; set; }
         public virtual ITaskEntry ParentTask { get; set; }
         public virtual IModuleEntry ParentModule { get; set; }
+
+        public virtual IList<IElementPropertyEntry> InputProperties { get; set; }
+        public virtual IList<IElementPropertyEntry> OutputProperties { get; set; }
     }
 
-    class ElementEntityMap : ClassMap<ElementEntity>
+    class ElementEntityMap : ClassMap<ElementEntry>
     {
         public ElementEntityMap()
         {
@@ -57,6 +62,9 @@ namespace bS.Sked2.Model
             HasMany<InstanceEntry>(x => x.Instances);
             References<TaskEntry>(x => x.ParentTask);
             References<ModuleEntry>(x => x.ParentModule);
+            HasMany<ElementPropertyEntry>(x => x.InputProperties).Cascade.AllDeleteOrphan();
+            HasMany<ElementPropertyEntry>(x => x.OutputProperties).Cascade.AllDeleteOrphan();
+
         }
     }
 }
