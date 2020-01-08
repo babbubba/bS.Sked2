@@ -13,6 +13,6 @@ namespace bS.Sked2.Structure.Repositories
         IInstanceEntry CreateNewInstance();
         void CreateElement(IElementEntry entityToCreate);
         void CreateTask(ITaskEntry taskEntry);
-        //void CreateLinkElement(IElementsLinkEntry linkElement);
+        void CreateJob(IJobEntry jobEntry);
     }
 }

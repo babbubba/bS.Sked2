@@ -13,7 +13,7 @@ namespace bS.Sked2.Engine.Objects
 {
     public class EngineLink : EngineElement, IEngineLink
     {
-        public EngineLink(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<EngineElement> logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
+        public EngineLink(IUnitOfWork uow, IEngineRepository enginRepo, ILogger logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
             
         }

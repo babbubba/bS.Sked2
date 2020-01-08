@@ -53,6 +53,12 @@ namespace bS.Sked2.Model.Repositories
             base.Create((TaskEntry)taskEntry);
         }
 
+        public void CreateJob(IJobEntry jobEntry)
+        {
+            base.Create((JobEntry)jobEntry);
+
+        }
+
         //public void CreateLinkElement(IElementsLinkEntry linkElement)
         //{
         //    base.Create((ElementsLinkEntry)linkElement);

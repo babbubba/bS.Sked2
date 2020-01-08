@@ -7,12 +7,12 @@ namespace bS.Sked2.Structure.Engine
 {
     public interface IEngine
     {
-        ILogger<IEngine> Logger { get; }
         /// <summary>
         /// Executes the job.
         /// </summary>
         /// <param name="job">The job.</param>
         void ExecuteJob(IEngineJob job);
+        void ExecuteJob(Guid jobId);
         /// <summary>
         /// Executes the task.
         /// </summary>
@@ -23,5 +23,10 @@ namespace bS.Sked2.Structure.Engine
         /// </summary>
         /// <param name="element">The element.</param>
         void ExecuteElement(IEngineElement element);
+
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
+        void Init();
     }
 }

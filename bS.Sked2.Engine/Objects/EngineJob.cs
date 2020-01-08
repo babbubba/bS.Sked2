@@ -3,25 +3,33 @@ using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 
 namespace bS.Sked2.Engine.Objects
 {
     public class EngineJob : BaseEngineComponent, IEngineJob
     {
         private readonly IEngineRepository engineRepository;
+        private readonly IServiceProvider serviceProvider;
+        private readonly IEngine engine;
         private readonly IUnitOfWork uow;
         private IJobEntry jobEntry;
 
         public EngineJob(
             IUnitOfWork uow,
             IEngineRepository enginRepo,
-            ILogger<EngineJob> logger,
-            IMessageService messageService) : base(logger, messageService)
+            ILogger logger,
+            IMessageService messageService,
+            IServiceProvider serviceProvider,
+            IEngine engine) : base(logger, messageService)
         {
             this.uow = uow;
             this.engineRepository = enginRepo;
+            this.serviceProvider = serviceProvider;
+            this.engine = engine;
         }
 
         /// <summary>
@@ -54,9 +62,10 @@ namespace bS.Sked2.Engine.Objects
 
             instance.IsPaused = true;
 
+            uow.Commit();
+
             AddMessage("Job execution paused.");
 
-            uow.Commit();
         }
 
         /// <summary>
@@ -75,12 +84,24 @@ namespace bS.Sked2.Engine.Objects
             // Add current instance to entry
             jobEntry.Instances.Add(instance);
 
+            uow.Commit();
+
             // Add a message to notify the element started
             AddMessage("Job execution started.");
 
-            uow.Commit();
+            // Creating the engine tasks flow
+            var engineTasksFlow = new List<IEngineTask>();
+            foreach (var taskEntry in jobEntry.Tasks)
+            {
+                var engineTask = serviceProvider.GetService<IEngineTask>();
+                engineTask.LoadFromEntity(taskEntry.Id);
+                engineTasksFlow.Add(engineTask);
+            }
 
-            //TODO: Execute Job Logic
+            foreach (var engineTask in engineTasksFlow)
+            {
+                engine.ExecuteTask(engineTask);
+            }
         }
 
         /// <summary>
@@ -96,10 +117,10 @@ namespace bS.Sked2.Engine.Objects
             // Set this element finish time
             instance.EndTime = DateTime.Now;
 
+            uow.Commit();
+
             // Add a message to notify the element finish execution
             AddMessage("Job execution finish.");
-
-            uow.Commit();
         }
     }
 }

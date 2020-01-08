@@ -25,7 +25,7 @@ namespace bS.Sked2.Extensions.Common.FlatFile
     public class FlatFileWriter : EngineElement
     {
 
-        public FlatFileWriter(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<EngineElement> logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
+        public FlatFileWriter(IUnitOfWork uow, IEngineRepository enginRepo, ILogger logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
             // Register element properties
             RegisterInputProperties("TargetFilePath", "", DataType.String, true);

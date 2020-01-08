@@ -6,10 +6,12 @@
 
   <ItemGroup>
     <PackageReference Include="bs.Data" Version="1.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\bS.Sked2.Model\bS.Sked2.Model.csproj" />
+    <ProjectReference Include="..\bS.Sked2.Service\bS.Sked2.Service.csproj" />
     <ProjectReference Include="..\bS.Sked2.Structure\bS.Sked2.Structure.csproj" />
   </ItemGroup>
 

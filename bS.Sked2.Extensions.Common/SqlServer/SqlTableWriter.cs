@@ -33,7 +33,7 @@ namespace bS.Sked2.Extensions.Common.SqlServer
         //    RegisterInputProperties("SourceTable", "Source TableValue", DataType.Table, true);
         //}
 
-        public SqlTableWriter(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<EngineElement> logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
+        public SqlTableWriter(IUnitOfWork uow, IEngineRepository enginRepo, ILogger logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
             // Register element properties
             RegisterInputProperties("ConnectionString", "Sql Server Connection String", DataType.String, true);

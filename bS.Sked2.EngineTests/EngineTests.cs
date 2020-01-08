@@ -30,17 +30,18 @@ namespace bS.Sked2.Engine.Tests
     public class EngineTests
     {
         private static IServiceProvider serviceProvider;
+        private IDbContext dbContext;
 
         [TestInitialize]
         public void Init()
         {
             var services = new ServiceCollection();
 
-            var dbContext = new DbContext
+            dbContext = new DbContext
             {
                 ConnectionString = "Data Source=.\\bs.Data.Test.db;Version=3;BinaryGuid=False;",
                 DatabaseEngineType = "sqlite",
-                Create = true,
+                Create = false,
                 Update = true,
                 LookForEntitiesDllInCurrentDirectoryToo = true,
                 EntitiesFileNameScannerPatterns = new string[] { "bS.Sked2.Extensions.*.dll", "bS.Sked2.Model.dll" }
@@ -58,19 +59,17 @@ namespace bS.Sked2.Engine.Tests
 
 
             services.AddSingleton<IMessageService, MessageService>();
-            services.AddSingleton<ISqlValidationService,SqlValidationService>();
-            services.AddSingleton<IEngine,Engine>();
+            services.AddSingleton<ISqlValidationService, SqlValidationService>();
+            services.AddSingleton<IEngine, Engine>();
             services.AddSingleton<IEngineTask, EngineTask>();
-            //IEngineTask
 
-            services.AddTransient<EngineLink>();
-            services.AddTransient<FlatFileReader>();
-            services.AddTransient<FlatFileWriter>();
-            services.AddTransient<SqlQueryReader>();
-            services.AddTransient<SqlTableWriter>();
+            //services.AddTransient<EngineLink>();
+            //services.AddTransient<FlatFileReader>();
+            //services.AddTransient<FlatFileWriter>();
+            //services.AddTransient<SqlQueryReader>();
+            //services.AddTransient<SqlTableWriter>();
 
             serviceProvider = services.BuildServiceProvider();
-
         }
 
         [TestMethod()]
@@ -80,6 +79,8 @@ namespace bS.Sked2.Engine.Tests
             var uow = serviceProvider.GetService<IUnitOfWork>();
             var engineRepository = serviceProvider.GetService<IEngineRepository>();
             var engine = serviceProvider.GetService<IEngine>();
+
+            engine.Init();
 
             //Create entities to test
             uow.BeginTransaction();
@@ -114,14 +115,23 @@ namespace bS.Sked2.Engine.Tests
         {
             var uow = serviceProvider.GetService<IUnitOfWork>();
             var engineRepository = serviceProvider.GetService<IEngineRepository>();
-            var engine = serviceProvider.GetService<IEngine>();
+            //var engine = serviceProvider.GetService<IEngine>();
+            var engine = new Engine(Mock.Of<ILogger<Engine>>(), dbContext);
+            engine.Init();
 
 
             //Create entities to test
             uow.BeginTransaction();
 
+            //Job
+            JobEntry jobEntry = GetJobEntry();
+            engineRepository.CreateJob(jobEntry);
+
+            //Task
             TaskEntry taskEntry = GetTaskEntry();
+            taskEntry.ParentJob = jobEntry;
             engineRepository.CreateTask(taskEntry);
+            
 
             //first
             var elementFlatileReaderEntry = GetFlatFileReaderEntry();
@@ -148,12 +158,14 @@ namespace bS.Sked2.Engine.Tests
             taskEntry.Elements.Add(linkElement);
             taskEntry.Elements.Add(elementFlatFileWriterEntry);
 
+            jobEntry.Tasks.Add(taskEntry);
             uow.Commit();
 
-            var engineTask = serviceProvider.GetService<IEngineTask>();
-            engineTask.LoadFromEntity(taskEntry.Id);
+            //   var engineTask = serviceProvider.GetService<IEngineTask>();
+            //  engineTask.LoadFromEntity(taskEntry.Id);
 
-            engine.ExecuteTask(engineTask);
+            //  engine.ExecuteTask(engineTask);
+            engine.ExecuteJob(jobEntry.Id);
 
         }
 
@@ -171,7 +183,6 @@ namespace bS.Sked2.Engine.Tests
         {
             var elementFlatileWriterEntry = new FlatFileWriterEntry();
             elementFlatileWriterEntry.InputProperties.FirstOrDefault(x => x.Key == "ColumnDelimiter").Value = "<char>44</char>";
-            //elementFlatileWriterEntry.InputProperties.FirstOrDefault(x => x.Key == "Table").Value = "<boolean>false</boolean>";
             elementFlatileWriterEntry.InputProperties.FirstOrDefault(x => x.Key == "TargetFilePath").Value = @"<string>.\TestDataFiles\provincia-regione-sigla.output.csv</string>";
             return elementFlatileWriterEntry;
         }
@@ -188,77 +199,19 @@ namespace bS.Sked2.Engine.Tests
             };
         }
 
-        //[TestMethod()]
-        //public void ExecuteSqlQueryReader()
-        //{
-        //    SqlQueryReader sqlQueryReader = GetSqlQueryReader();
-        //    sqlQueryReader.ParentTask = task;
-        //    engine.ExecuteElement(sqlQueryReader);
-        //    var resultSqlQueryReader = sqlQueryReader.GetDataValue(EngineDataDirection.Output, "Table")?.Get<DataTable>();
-        //    Assert.IsNotNull(resultSqlQueryReader);
-        //}
-
-
-        //[TestMethod()]
-        //public void ExecuteSqlWriter()
-        //{
-        //    SqlTableWriter sqlWriter = GetSqlWriter();
-        //    sqlWriter.ParentTask = task;
-        //    engine.ExecuteElement(sqlWriter);
-        //}
-
-
-        //[TestMethod()]
-        //public void ExecuteFlatFileWriter()
-        //{
-        //    DataTable dt = GetTestTable();
-        //    var flatFileWriter = new FlatFileWriter(engineLogger, messageService);
-        //    flatFileWriter.ParentModule = commonModule;
-        //    flatFileWriter.ParentTask = task;
-        //    flatFileWriter.SetDataValue(EngineDataDirection.Input, "CsvFilePath", new StringValue(@".\TestDataFiles\CsvCreated.csv"));
-        //    flatFileWriter.SetDataValue(EngineDataDirection.Input, "ColumnDelimiter", new CharValue(';'));
-        //    flatFileWriter.SetDataValue(EngineDataDirection.Input, "Table", new TableValue(dt));
-
-        //    engine.ExecuteElement(flatFileWriter);
-        //}
-
-        //[TestMethod()]
-        //public void ExecuteTask()
-        //{
-        //    //task = new EngineTask(logger, messageService);
-        //    task.ParentJob = job;
-        //    task.Name = "Task di prova";
-        //    task.Key = Guid.NewGuid().ToString();
-        //    task.Elements = new IEngineElement[] { GetFlatFileReader(), GetSqlQueryReader(), GetSqlWriter() };
-        //    engine.ExecuteTask(task);
-        //}
-
-        private static DataTable GetTestTable()
+        private static JobEntry GetJobEntry()
         {
-            var dt = new DataTable("table");
-            dt.Columns.Add("Column1");
-            dt.Columns.Add("Column2");
-            dt.Columns.Add("Column3");
-            for (int i = 1; i < 120; i++)
+            return new JobEntry
             {
-                var r = dt.NewRow();
-                r["Column1"] = $"Col1_Row{i}";
-                r["Column2"] = $"Col2_Row{i}";
-                r["Column3"] = $"Col3_Row{i}";
-                dt.Rows.Add(r);
-            }
-
-            return dt;
+                FailIfAnyTaskHasError = true,
+                FailIfAnyTaskHasWarning = false,
+                IsEnabled = true,
+                Key = "JobTest",
+                Name = "Job di prova"
+            };
         }
 
-        //private FlatFileReader GetFlatFileReader()
-        //{
-        //    var flatFileReader = new FlatFileReader(uow, engineRepository, engineElementLogger, messageService);
-        //    flatFileReader.SetDataValue(EngineDataDirection.Input, "SourceFilePath", new StringValue(@".\TestDataFiles\provincia-regione-sigla.csv"));
-        //    flatFileReader.SetDataValue(EngineDataDirection.Input, "FirstRowHasHeader", new BoolValue(false));
-        //    flatFileReader.SetDataValue(EngineDataDirection.Input, "ColumnDelimiter", new CharValue(','));
-        //    return flatFileReader;
-        //}
+
         //private SqlQueryReader GetSqlQueryReader()
         //{
         //    var sqlQueryReader = new SqlQueryReader(uow, engineRepository, engineElementLogger, messageService);
