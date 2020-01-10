@@ -115,10 +115,8 @@ namespace bS.Sked2.Engine.Tests
         {
             var uow = serviceProvider.GetService<IUnitOfWork>();
             var engineRepository = serviceProvider.GetService<IEngineRepository>();
-            //var engine = serviceProvider.GetService<IEngine>();
             var engine = new Engine(Mock.Of<ILogger<Engine>>(), dbContext);
             engine.Init();
-
 
             //Create entities to test
             uow.BeginTransaction();
@@ -165,11 +163,7 @@ namespace bS.Sked2.Engine.Tests
 
             jobEntry.Tasks.Add(taskEntry);
             uow.Commit();
-
-            //   var engineTask = serviceProvider.GetService<IEngineTask>();
-            //  engineTask.LoadFromEntity(taskEntry.Id);
-
-            //  engine.ExecuteTask(engineTask);
+            
             engine.ExecuteJob(jobEntry.Id);
 
         }
