@@ -136,11 +136,14 @@ namespace bS.Sked2.Engine.Tests
             //first
             var elementFlatileReaderEntry = GetFlatFileReaderEntry();
             elementFlatileReaderEntry.ParentTask = taskEntry;
+            elementFlatileReaderEntry.Position = 1;
             engineRepository.CreateElement(elementFlatileReaderEntry);
 
             //second
             var elementFlatFileWriterEntry = GetFlatFileWriterEntry();
             elementFlatFileWriterEntry.ParentTask = taskEntry;
+            elementFlatFileWriterEntry.Position = 3;
+
             engineRepository.CreateElement(elementFlatFileWriterEntry);
 
             //link
@@ -152,6 +155,8 @@ namespace bS.Sked2.Engine.Tests
                 OutputPropertyKey = "Table",
                 ParentLink = linkElement
             });
+            linkElement.Position = 2;
+
             engineRepository.CreateElement(linkElement);
 
             taskEntry.Elements.Add(elementFlatileReaderEntry);

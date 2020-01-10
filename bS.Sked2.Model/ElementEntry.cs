@@ -40,6 +40,9 @@ namespace bS.Sked2.Model
 
         public virtual IList<IElementPropertyEntry> InputProperties { get; set; }
         public virtual IList<IElementPropertyEntry> OutputProperties { get; set; }
+
+        public virtual int Position { get; set; }
+
     }
 
     class ElementEntityMap : ClassMap<ElementEntry>
@@ -62,8 +65,10 @@ namespace bS.Sked2.Model
             HasMany<InstanceEntry>(x => x.Instances);
             References<TaskEntry>(x => x.ParentTask);
             References<ModuleEntry>(x => x.ParentModule);
-            HasMany<ElementPropertyEntry>(x => x.InputProperties).Cascade.AllDeleteOrphan();
-            HasMany<ElementPropertyEntry>(x => x.OutputProperties).Cascade.AllDeleteOrphan();
+            HasMany<ElementPropertyEntry>(x => x.InputProperties).KeyColumn("input").Cascade.AllDeleteOrphan();
+            HasMany<ElementPropertyEntry>(x => x.OutputProperties).KeyColumn("output").Cascade.AllDeleteOrphan();
+            Map(x => x.Position);
+
 
         }
     }

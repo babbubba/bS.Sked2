@@ -100,5 +100,6 @@ namespace bS.Sked2.Structure.Models
         /// The parent task.
         /// </value>
         ITaskEntry ParentTask { get; set; }
+        int Position { get; set; }
     }
 }

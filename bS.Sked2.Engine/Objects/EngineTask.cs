@@ -249,7 +249,7 @@ namespace bS.Sked2.Engine.Objects
         private void GetEngineTaskElementsFlow(List<IEngineElement> engineElementsFlow)
         {
             // fetch all entities element
-            foreach (var elementEntry in taskEntry.Elements)
+            foreach (var elementEntry in taskEntry.Elements.OrderBy(e=>e.Position))
             {
                 // finding the EngineElement to execute this entry
                 var engineElementType = AssembliesExtensions.GetTypesImplementingInterface<IEngineElement>()
