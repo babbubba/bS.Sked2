@@ -134,6 +134,15 @@ namespace bS.Sked2.Model
         /// The triggers.
         /// </value>
         public virtual IList<ITriggerEntry> Triggers { get; set; }
+
+        /// <summary>
+        /// Gets or sets the position.
+        /// </summary>
+        /// <value>
+        /// The position.
+        /// </value>
+        public virtual int Position { get; set; }
+
     }
 
     /// <summary>
@@ -163,6 +172,8 @@ namespace bS.Sked2.Model
             HasMany<InstanceEntry>(x => x.Instances);
             HasMany<TaskEntry>(x => x.Tasks);
             HasMany<TriggerEntry>(x => x.Triggers);
+            Map(x => x.Position);
+
         }
     }
 }

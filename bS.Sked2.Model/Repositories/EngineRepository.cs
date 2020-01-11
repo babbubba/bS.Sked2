@@ -65,6 +65,11 @@ namespace bS.Sked2.Model.Repositories
 
         }
 
+        public IEnumerable<IJobEntry> GetJobs()
+        {
+            return base.GetAll<JobEntry>();
+        }
+
         //public void CreateLinkElement(IElementsLinkEntry linkElement)
         //{
         //    base.Create((ElementsLinkEntry)linkElement);
