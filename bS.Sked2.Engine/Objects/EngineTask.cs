@@ -160,10 +160,14 @@ namespace bS.Sked2.Engine.Objects
                 catch (EngineException eEx)
                 {
                     // handled exception
+                    //TODO: Handle this
+                    throw;
                 }
                 catch (Exception ex)
                 {
                     // unhandled exception
+                    //TODO: Handle this
+
                     throw;
                 }
             }
