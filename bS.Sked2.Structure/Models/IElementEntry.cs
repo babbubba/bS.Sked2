@@ -8,7 +8,6 @@ namespace bS.Sked2.Structure.Models
     /// </summary>
     public interface IElementEntry
     {
-        Guid Id { get; set; }
         /// <summary>
         /// Gets or sets the creation date.
         /// </summary>
@@ -16,6 +15,7 @@ namespace bS.Sked2.Structure.Models
         /// The creation date.
         /// </value>
         DateTime? CreationDate { get; set; }
+
         /// <summary>
         /// Gets or sets the deletion date.
         /// </summary>
@@ -23,6 +23,7 @@ namespace bS.Sked2.Structure.Models
         /// The deletion date.
         /// </value>
         DateTime? DeletionDate { get; set; }
+
         /// <summary>
         /// Gets or sets the description.
         /// </summary>
@@ -30,6 +31,15 @@ namespace bS.Sked2.Structure.Models
         /// The description.
         /// </value>
         string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        Guid Id { get; set; }
+
         /// <summary>
         /// Gets or sets the input properties.
         /// </summary>
@@ -37,6 +47,7 @@ namespace bS.Sked2.Structure.Models
         /// The input properties.
         /// </value>
         IList<IElementPropertyEntry> InputProperties { get; set; }
+
         /// <summary>
         /// Gets or sets the instances.
         /// </summary>
@@ -44,6 +55,7 @@ namespace bS.Sked2.Structure.Models
         /// The instances.
         /// </value>
         IList<IInstanceEntry> Instances { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is deleted.
         /// </summary>
@@ -51,6 +63,7 @@ namespace bS.Sked2.Structure.Models
         ///   <c>true</c> if this instance is deleted; otherwise, <c>false</c>.
         /// </value>
         bool IsDeleted { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is enabled.
         /// </summary>
@@ -58,6 +71,7 @@ namespace bS.Sked2.Structure.Models
         ///   <c>true</c> if this instance is enabled; otherwise, <c>false</c>.
         /// </value>
         bool IsEnabled { get; set; }
+
         /// <summary>
         /// Gets or sets the key.
         /// </summary>
@@ -65,6 +79,7 @@ namespace bS.Sked2.Structure.Models
         /// The key.
         /// </value>
         string Key { get; set; }
+
         /// <summary>
         /// Gets or sets the last update date.
         /// </summary>
@@ -72,6 +87,7 @@ namespace bS.Sked2.Structure.Models
         /// The last update date.
         /// </value>
         DateTime? LastUpdateDate { get; set; }
+
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
@@ -79,6 +95,7 @@ namespace bS.Sked2.Structure.Models
         /// The name.
         /// </value>
         string Name { get; set; }
+
         /// <summary>
         /// Gets or sets the output properties.
         /// </summary>
@@ -86,6 +103,7 @@ namespace bS.Sked2.Structure.Models
         /// The output properties.
         /// </value>
         IList<IElementPropertyEntry> OutputProperties { get; set; }
+
         /// <summary>
         /// Gets or sets the parent module.
         /// </summary>
@@ -93,6 +111,7 @@ namespace bS.Sked2.Structure.Models
         /// The parent module.
         /// </value>
         IModuleEntry ParentModule { get; set; }
+
         /// <summary>
         /// Gets or sets the parent task.
         /// </summary>
@@ -100,6 +119,13 @@ namespace bS.Sked2.Structure.Models
         /// The parent task.
         /// </value>
         ITaskEntry ParentTask { get; set; }
+
+        /// <summary>
+        /// Gets or sets the element position in the task's execution flow.
+        /// </summary>
+        /// <value>
+        /// The position.
+        /// </value>
         int Position { get; set; }
     }
 }

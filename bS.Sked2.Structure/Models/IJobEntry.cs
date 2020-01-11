@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace bS.Sked2.Structure.Models
 {
     /// <summary>
-    ///
+    /// The Job persister.
     /// </summary>
     public interface IJobEntry
     {
