@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using bS.Sked2.Structure.Base.Exceptions;
 using bS.Sked2.Structure.Base.FileSystem;
+using bS.Sked2.Structure.Engine.Data.Types;
 using bS.Sked2.Structure.Service;
 using Microsoft.Extensions.Logging;
 using Zio;
@@ -408,7 +409,7 @@ namespace bS.Sked2.Service.Storage
         {
             try
             {
-                return workSpaceFileSystem.EnumeratePaths(path.RealPath, searchPattern, searchOption).Select(p => new StoragePath(p.ToAbsolute().ToString())).ToArray();
+                return workSpaceFileSystem.EnumeratePaths(path.RealPath, searchPattern, searchOption).Select(p => new VirtualPath(p.ToAbsolute().ToString())).ToArray();
             }
             catch (Exception e)
             {

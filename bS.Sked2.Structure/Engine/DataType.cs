@@ -44,6 +44,12 @@
         /// <summary>
         /// The collection
         /// </summary>
-        Collection = 9
+        Collection = 9,
+        /// <summary>
+        /// The virtual path
+        /// </summary>
+        VirtualPath = 10
+
+
     }
 }

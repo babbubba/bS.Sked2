@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using bS.Sked2.Structure.Engine.Data.Types;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -7,53 +8,52 @@ namespace bS.Sked2.Service.Storage.Tests
     [TestClass()]
     public class StorageServiceTests
     {
-        private bool semaphore = true;
         private bool created = false;
         private StorageService storageService;
 
         [TestMethod()]
         public void StorageServiceTest()
         {
-            storageService.FileSave("Ciao sono un test!", new StoragePath(@"/file_di_prova.txt"));
+            storageService.FileSave("Ciao sono un test!", new VirtualPath(@"/file_di_prova.txt"));
 
-            Assert.IsTrue(storageService.FileExists(new StoragePath(@"/file_di_prova.txt")));
+            Assert.IsTrue(storageService.FileExists(new VirtualPath(@"/file_di_prova.txt")));
 
 
-            storageService.FileCopy(new StoragePath(@"/file_di_prova.txt"), new StoragePath(@"/file_di_prova_copia.txt"));
+            storageService.FileCopy(new VirtualPath(@"/file_di_prova.txt"), new VirtualPath(@"/file_di_prova_copia.txt"));
 
-            Assert.IsTrue(storageService.FileExists(new StoragePath(@"/file_di_prova_copia.txt")));
+            Assert.IsTrue(storageService.FileExists(new VirtualPath(@"/file_di_prova_copia.txt")));
 
-            storageService.FileMove(new StoragePath(@"/file_di_prova.txt"), new StoragePath(@"/file_di_prova_moved.txt"));
+            storageService.FileMove(new VirtualPath(@"/file_di_prova.txt"), new VirtualPath(@"/file_di_prova_moved.txt"));
 
-            Assert.IsFalse(storageService.FileExists(new StoragePath(@"/file_di_prova.txt")));
+            Assert.IsFalse(storageService.FileExists(new VirtualPath(@"/file_di_prova.txt")));
 
-            storageService.FileDelete(new StoragePath(@"/file_di_prova_copia.txt"));
+            storageService.FileDelete(new VirtualPath(@"/file_di_prova_copia.txt"));
 
-            Assert.IsFalse(storageService.FileExists(new StoragePath(@"/file_di_prova_copia.txt")));
+            Assert.IsFalse(storageService.FileExists(new VirtualPath(@"/file_di_prova_copia.txt")));
 
-            var val = storageService.FileReadString(new StoragePath(@"/file_di_prova_moved.txt"));
+            var val = storageService.FileReadString(new VirtualPath(@"/file_di_prova_moved.txt"));
 
             Assert.AreEqual("Ciao sono un test!", val);
 
-            storageService.FileDelete(new StoragePath(@"/file_di_prova_moved.txt"));
+            storageService.FileDelete(new VirtualPath(@"/file_di_prova_moved.txt"));
 
-            storageService.FolderCreate(new StoragePath(@"/sub"));
+            storageService.FolderCreate(new VirtualPath(@"/sub"));
 
-            Assert.IsTrue(storageService.FolderExists(new StoragePath(@"/sub")));
+            Assert.IsTrue(storageService.FolderExists(new VirtualPath(@"/sub")));
 
-            var watcher = storageService.FolderWatch(new StoragePath(@"/sub"));
+            var watcher = storageService.FolderWatch(new VirtualPath(@"/sub"));
 
             watcher.Created += Watcher_Created;
             watcher.IncludeSubdirectories = true;
             watcher.EnableRaisingEvents = true;
 
-            storageService.FileSave("Ciao sono un test!", new StoragePath(@"/sub/file_di_prova_watcher.txt"));
+            storageService.FileSave("Ciao sono un test!", new VirtualPath(@"/sub/file_di_prova_watcher.txt"));
 
             System.Threading.Thread.Sleep(500);
 
             Assert.IsTrue(created);
 
-            storageService.FolderDelete(new StoragePath(@"/sub"), true);
+            storageService.FolderDelete(new VirtualPath(@"/sub"), true);
 
 
         }
