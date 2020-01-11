@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using bS.Sked2.Structure.Engine.Data.Types;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,6 +30,8 @@ namespace bS.Sked2.Structure.Engine.Data.Tests
             collection.AddValue(new StringValue());
             collection.AddValue(new DictionaryEntryValue("chiave", "valore"));
             collection.AddValue(new DictionaryEntryValue());
+            collection.AddValue(new VirtualPathValue(new VirtualPath(@"\file.txt")));
+            collection.AddValue(new VirtualPathValue(new VirtualPath()));
 
             var collectionSTR = collection.WriteToStringValue();
             var collection_bis = new CollectionValue();

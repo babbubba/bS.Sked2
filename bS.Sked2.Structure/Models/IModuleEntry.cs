@@ -8,6 +8,7 @@ namespace bS.Sked2.Structure.Models
     /// </summary>
     public interface IModuleEntry
     {
+        Guid Id { get; set; }
         /// <summary>
         /// Gets or sets the creation date.
         /// </summary>
@@ -38,7 +39,7 @@ namespace bS.Sked2.Structure.Models
         /// <value>
         /// The instances.
         /// </value>
-        List<IInstanceEntry> Instances { get; set; }
+        IList<IInstanceEntry> Instances { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is deleted.
@@ -79,5 +80,9 @@ namespace bS.Sked2.Structure.Models
         /// The name.
         /// </value>
         string Name { get; set; }
+
+        IList<IElementPropertyEntry> InputProperties { get; set; }
+        IList<IElementPropertyEntry> OutputProperties { get; set; }
+
     }
 }

@@ -248,9 +248,33 @@ namespace bS.Sked2.Engine.Objects
         /// <param name="engineElementsFlow">The engine elements flow.</param>
         private void GetEngineTaskElementsFlow(List<IEngineElement> engineElementsFlow)
         {
+            var modules = new Dictionary<Guid, IEngineModule>();
+
+
             // fetch all entities element
             foreach (var elementEntry in taskEntry.Elements.OrderBy(e=>e.Position))
             {
+                // finding parent module in current loaded modules (not all element have a parent module)
+                if (elementEntry.ParentModule != null && !modules.ContainsKey(elementEntry.ParentModule.Id))
+                {
+                    //we need to load and init this module
+                    // finding the EngineElement to execute this entry
+                    var engineModuleType = AssembliesExtensions.GetTypesImplementingInterface<IEngineModule>()
+                        .FirstOrDefault(ed => (string)ed.GetProperty("KeyConst")?.GetValue(ed) == elementEntry.ParentModule.Key);
+
+                    // create new instance of Engine Module
+                    var engineModule = (IEngineModule)serviceProvider.GetService(engineModuleType);
+
+                    // Load module's data
+                    engineModule.LoadFromEntity(elementEntry.ParentModule.Id);
+
+                    // init the module
+                    engineModule.Init();
+
+                    modules.Add(elementEntry.ParentModule.Id, engineModule);
+
+                }
+
                 // finding the EngineElement to execute this entry
                 var engineElementType = AssembliesExtensions.GetTypesImplementingInterface<IEngineElement>()
                     .FirstOrDefault(ed => (string)ed.GetProperty("KeyConst")?.GetValue(ed) == elementEntry.Key);
@@ -260,6 +284,9 @@ namespace bS.Sked2.Engine.Objects
 
                 // load data from entry
                 engineElement.LoadFromEntity(elementEntry.Id);
+
+                // set the element's parent module if needed
+                if (elementEntry.ParentModule != null) engineElement.ParentEngineModule = modules[elementEntry.ParentModule.Id];
 
                 engineElementsFlow.Add(engineElement);
             }

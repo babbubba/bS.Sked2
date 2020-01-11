@@ -8,6 +8,12 @@ namespace bS.Sked2.Model
 {
     public class ModuleEntry : IAuditableEntity, IEnableableEntity, ILogicallyDeletableEntity, IPersistentEntity, IModuleEntry
     {
+        public ModuleEntry()
+        {
+            Instances = new List<IInstanceEntry>();
+            InputProperties = new List<IElementPropertyEntry>();
+            OutputProperties = new List<IElementPropertyEntry>();
+        }
         public virtual bool IsDeleted { get; set; }
         public virtual DateTime? DeletionDate { get; set; }
         public virtual Guid Id { get; set; }
@@ -16,8 +22,10 @@ namespace bS.Sked2.Model
         public virtual DateTime? LastUpdateDate { get; set; }
         public virtual string Description { get; set; }
         public virtual string Key { get; set; }
-        public virtual List<IInstanceEntry> Instances { get; set; }
+        public virtual IList<IInstanceEntry> Instances { get; set; }
         public virtual string Name { get; set; }
+        public virtual IList<IElementPropertyEntry> InputProperties { get; set; }
+        public virtual IList<IElementPropertyEntry> OutputProperties { get; set; }
 
     }
 
@@ -39,6 +47,8 @@ namespace bS.Sked2.Model
             Map(x => x.Name);
             Map(x => x.Description);
             HasMany<InstanceEntry>(x => x.Instances);
+            HasMany<ElementPropertyEntry>(x => x.InputProperties).KeyColumn("inputModule").Cascade.AllDeleteOrphan();
+            HasMany<ElementPropertyEntry>(x => x.OutputProperties).KeyColumn("outputModule").Cascade.AllDeleteOrphan();
         }
     }
 

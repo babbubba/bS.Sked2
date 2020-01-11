@@ -14,5 +14,6 @@ namespace bS.Sked2.Structure.Repositories
         void CreateElement(IElementEntry entityToCreate);
         void CreateTask(ITaskEntry taskEntry);
         void CreateJob(IJobEntry jobEntry);
+        void CreateModule(IModuleEntry moduleEntry);
     }
 }

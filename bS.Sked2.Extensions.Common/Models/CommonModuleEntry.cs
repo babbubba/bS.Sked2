@@ -1,10 +1,11 @@
 ﻿using bS.Sked2.Model;
 using bS.Sked2.Structure.Engine;
+using bS.Sked2.Structure.Models;
 using FluentNHibernate.Mapping;
 
 namespace bS.Sked2.Extensions.Common.Models
 {
-    public class CommonModuleEntry : ElementEntry
+    public class CommonModuleEntry : ModuleEntry
     {
         public CommonModuleEntry()
         {
@@ -12,7 +13,7 @@ namespace bS.Sked2.Extensions.Common.Models
             Name = "Common Module";
             Description = "This module contains the common elements.";
 
-            InputProperties.Add(new ElementPropertyEntry("WorkspacePath", "Workspace folder path", DataType.VirtualPath, true));
+            InputProperties.Add(new ElementPropertyEntry("WorkspacePath", "Workspace folder root path", DataType.String, true));
         }
     }
 

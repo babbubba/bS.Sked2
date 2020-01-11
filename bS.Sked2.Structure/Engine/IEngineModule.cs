@@ -1,4 +1,6 @@
-﻿namespace bS.Sked2.Structure.Engine
+﻿using System;
+
+namespace bS.Sked2.Structure.Engine
 {
     /// <summary>
     /// Module's interface. Amodule rapresents an extensions that contains one or more elements.
@@ -12,10 +14,12 @@
         /// The key.
         /// </value>
         string Key { get; }
+        bool IsInit { get; set; }
 
         /// <summary>
         /// Initializes this instance.
         /// </summary>
         void Init();
+        void LoadFromEntity(Guid id);
     }
 }

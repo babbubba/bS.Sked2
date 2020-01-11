@@ -1,6 +1,7 @@
 ﻿using bS.Sked2.Structure.Base.FileSystem;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace bS.Sked2.Structure.Service
@@ -36,13 +37,18 @@ namespace bS.Sked2.Structure.Service
         /// </summary>
         /// <param name="path">The virtual path.</param>
         /// <returns></returns>
-        string FileReadString(IVirtualPath path);
+        string FileReadText(IVirtualPath path);
+
+        TextReader FileOpenTextReader(IVirtualPath path);
+
         /// <summary>
         /// Deletes the specified file.
         /// </summary>
         /// <param name="path">The virtual path.</param>
         /// <returns></returns>
         void FileDelete(IVirtualPath path);
+        void LoadConfig(IStorageServiceConfig storageServiceConfig);
+
         /// <summary>
         /// Copies the file from the origin to the target virtual path.
         /// </summary>

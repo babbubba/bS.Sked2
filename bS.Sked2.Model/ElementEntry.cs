@@ -65,8 +65,8 @@ namespace bS.Sked2.Model
             HasMany<InstanceEntry>(x => x.Instances);
             References<TaskEntry>(x => x.ParentTask);
             References<ModuleEntry>(x => x.ParentModule);
-            HasMany<ElementPropertyEntry>(x => x.InputProperties).KeyColumn("input").Cascade.AllDeleteOrphan();
-            HasMany<ElementPropertyEntry>(x => x.OutputProperties).KeyColumn("output").Cascade.AllDeleteOrphan();
+            HasMany<ElementPropertyEntry>(x => x.InputProperties).KeyColumn("inputElement").Cascade.AllDeleteOrphan();
+            HasMany<ElementPropertyEntry>(x => x.OutputProperties).KeyColumn("outputElement").Cascade.AllDeleteOrphan();
             Map(x => x.Position);
 
 

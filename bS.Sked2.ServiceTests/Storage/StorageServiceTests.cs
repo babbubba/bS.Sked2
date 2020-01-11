@@ -1,4 +1,5 @@
-﻿using bS.Sked2.Structure.Engine.Data.Types;
+﻿using bS.Sked2.Model.Service;
+using bS.Sked2.Structure.Engine.Data.Types;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -31,7 +32,7 @@ namespace bS.Sked2.Service.Storage.Tests
 
             Assert.IsFalse(storageService.FileExists(new VirtualPath(@"/file_di_prova_copia.txt")));
 
-            var val = storageService.FileReadString(new VirtualPath(@"/file_di_prova_moved.txt"));
+            var val = storageService.FileReadText(new VirtualPath(@"/file_di_prova_moved.txt"));
 
             Assert.AreEqual("Ciao sono un test!", val);
 

@@ -12,7 +12,7 @@ namespace bS.Sked2.Extensions.Common.Models
             Name = "Flat File Writer";
             Description = "This elements write a flat file (like CSV) from a Table value.";
 
-            InputProperties.Add(new ElementPropertyEntry("TargetFilePath", "Target file path", DataType.String, true));
+            InputProperties.Add(new ElementPropertyEntry("TargetFilePath", "Target file path", DataType.VirtualPath, true));
             InputProperties.Add(new ElementPropertyEntry("ColumnDelimiter", "Column char delimite", DataType.Char, true));
             InputProperties.Add(new ElementPropertyEntry("Table", "Table Value to write in flat file", DataType.Table, true));
         }

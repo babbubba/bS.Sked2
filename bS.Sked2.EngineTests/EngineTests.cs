@@ -124,19 +124,25 @@ namespace bS.Sked2.Engine.Tests
             TaskEntry taskEntry = GetTaskEntry();
             taskEntry.ParentJob = jobEntry;
             engineRepository.CreateTask(taskEntry);
-            
+
+            //Module Common
+            var commonModuleEntry = new CommonModuleEntry();
+            commonModuleEntry.InputProperties.FirstOrDefault(x => x.Key == "WorkspacePath").Value = @"<string>.\</string>";
+            engineRepository.CreateModule(commonModuleEntry);
+
 
             //first
             var elementFlatileReaderEntry = GetFlatFileReaderEntry();
             elementFlatileReaderEntry.ParentTask = taskEntry;
             elementFlatileReaderEntry.Position = 1;
+            elementFlatileReaderEntry.ParentModule = commonModuleEntry;
             engineRepository.CreateElement(elementFlatileReaderEntry);
 
             //second
             var elementFlatFileWriterEntry = GetFlatFileWriterEntry();
             elementFlatFileWriterEntry.ParentTask = taskEntry;
             elementFlatFileWriterEntry.Position = 3;
-
+            elementFlatFileWriterEntry.ParentModule = commonModuleEntry;
             engineRepository.CreateElement(elementFlatFileWriterEntry);
 
             //link
@@ -168,7 +174,7 @@ namespace bS.Sked2.Engine.Tests
             var elementFlatileReaderEntry = new FlatFileReaderEntry();
             elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "ColumnDelimiter").Value = "<char>44</char>";
             elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "FirstRowHasHeader").Value = "<boolean>false</boolean>";
-            elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "SourceFilePath").Value = @"<string>.\TestDataFiles\provincia-regione-sigla.csv</string>";
+            elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "SourceFilePath").Value = @"<VirtualPath><Path>\TestDataFiles\provincia-regione-sigla.csv</Path></VirtualPath>";
             return elementFlatileReaderEntry;
         }
 
@@ -176,8 +182,8 @@ namespace bS.Sked2.Engine.Tests
         private static FlatFileWriterEntry GetFlatFileWriterEntry()
         {
             var elementFlatileWriterEntry = new FlatFileWriterEntry();
-            elementFlatileWriterEntry.InputProperties.FirstOrDefault(x => x.Key == "ColumnDelimiter").Value = "<char>44</char>";
-            elementFlatileWriterEntry.InputProperties.FirstOrDefault(x => x.Key == "TargetFilePath").Value = @"<string>.\TestDataFiles\provincia-regione-sigla.output.csv</string>";
+            elementFlatileWriterEntry.InputProperties.FirstOrDefault(x => x.Key == "ColumnDelimiter").Value = "<char>59</char>";
+            elementFlatileWriterEntry.InputProperties.FirstOrDefault(x => x.Key == "TargetFilePath").Value = @"<VirtualPath><Path>\TestDataFiles\provincia-regione-sigla.output.csv</Path></VirtualPath>";
             return elementFlatileWriterEntry;
         }
 

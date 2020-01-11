@@ -3,7 +3,7 @@
     /// <summary>
     /// Represent a virtual path object used in a file manager
     /// </summary>
-    public interface IVirtualPath
+    public interface IVirtualPath 
     {
         /// <summary>
         /// Gets the path.

@@ -57,6 +57,7 @@ namespace bS.Sked2.Engine.Objects
         /// </value>
         public abstract string Key { get; }
         public IModuleEntry ParentModule { get => elementEntry.ParentModule; }
+        public IEngineModule ParentEngineModule { get; set; }
         public ITaskEntry ParentTask { get => elementEntry.ParentTask; }
 
         /// <summary>
@@ -68,6 +69,11 @@ namespace bS.Sked2.Engine.Objects
         public override bool CanBeExecuted()
         {
             // TODO: Add logic here if needed
+            if (ParentEngineModule == null || !ParentEngineModule.IsInit)
+            {
+                //throw new EngineException(logger, $"The module '{ParentEngineModule.Key}' is not initialized correctly.");
+                return false;
+            }
             return true;
         }
 
@@ -193,7 +199,7 @@ namespace bS.Sked2.Engine.Objects
 
                     if (ip == null) throw new EngineException(logger, $"No input property with key {propertyKey} has been registered for this element.");
                     ip.Value = value;
-                   if(ipE!=null) ipE.Value = ip.Value.WriteToStringValue();
+                    if (ipE != null) ipE.Value = ip.Value.WriteToStringValue();
                     break;
 
                 case EngineDataDirection.Output:

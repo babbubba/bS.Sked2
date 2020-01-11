@@ -143,6 +143,9 @@ namespace bS.Sked2.Structure.Engine.Data
                     case DataType.Collection:
                         newEntry = new CollectionValue();
                         break;
+                    case DataType.VirtualPath:
+                        newEntry = new VirtualPathValue();
+                        break;
 
                     default:
                         throw new EngineException("Invalid DataType. Cannot read this value type.");

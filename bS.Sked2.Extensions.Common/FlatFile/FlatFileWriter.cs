@@ -4,6 +4,7 @@ using bS.Sked2.Extensions.Common.Models;
 using bS.Sked2.Structure.Base;
 using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Engine.Data;
+using bS.Sked2.Structure.Engine.Data.Types;
 using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
@@ -28,7 +29,7 @@ namespace bS.Sked2.Extensions.Common.FlatFile
         public FlatFileWriter(IUnitOfWork uow, IEngineRepository enginRepo, ILogger logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
             // Register element properties
-            RegisterInputProperties("TargetFilePath", "", DataType.String, true);
+            RegisterInputProperties("TargetFilePath", "", DataType.VirtualPath, true);
             RegisterInputProperties("ColumnDelimiter", "", DataType.Char, true);
             RegisterInputProperties("Table", "", DataType.Table, true);
         }
@@ -46,8 +47,11 @@ namespace bS.Sked2.Extensions.Common.FlatFile
 
             try
             {
+                var storageService = ((Common)ParentEngineModule).StorageService;
+
                 // Get parameters
-                var csvFilePath = GetDataValue(EngineDataDirection.Input, "TargetFilePath").Get<string>();
+                //var csvFilePath = GetDataValue(EngineDataDirection.Input, "TargetFilePath").Get<string>();
+                var csvFilePath = GetDataValue(EngineDataDirection.Input, "TargetFilePath").Get<VirtualPath>();
                 var columnDelimiter = GetDataValue(EngineDataDirection.Input, "ColumnDelimiter").Get<char>();
                 var dt = GetDataValue(EngineDataDirection.Input, "Table").Get<DataTable>();
 
@@ -66,7 +70,8 @@ namespace bS.Sked2.Extensions.Common.FlatFile
                 }
 
                 AddMessage("Writing CSV file.", MessageSeverity.Debug);
-                File.WriteAllText(csvFilePath, sb.ToString());
+                //File.WriteAllText(csvFilePath, sb.ToString());
+                storageService.FileSave(sb.ToString(), csvFilePath);
             }
             catch (Exception e)
             {

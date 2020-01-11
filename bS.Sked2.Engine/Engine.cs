@@ -3,6 +3,7 @@ using bs.Data.Interfaces;
 using bS.Sked2.Engine.Objects;
 using bS.Sked2.Model.Repositories;
 using bS.Sked2.Service.Message;
+using bS.Sked2.Service.Storage;
 using bS.Sked2.Service.Validation;
 using bS.Sked2.Shared;
 using bS.Sked2.Structure.Base.Exceptions;
@@ -174,6 +175,7 @@ namespace bS.Sked2.Engine
 
             services.AddSingleton<IMessageService, MessageService>();
             services.AddSingleton<ISqlValidationService, SqlValidationService>();
+            services.AddSingleton<IStorageService, StorageService>();
             services.AddSingleton<IEngine, Engine>();
             services.AddSingleton<IEngineJob, EngineJob>();
             services.AddSingleton<IEngineTask, EngineTask>();

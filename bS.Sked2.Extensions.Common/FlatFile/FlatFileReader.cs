@@ -6,6 +6,7 @@ using bS.Sked2.Shared;
 using bS.Sked2.Structure.Base;
 using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Engine.Data;
+using bS.Sked2.Structure.Engine.Data.Types;
 using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
@@ -26,7 +27,8 @@ namespace bS.Sked2.Extensions.Common.FlatFile
     {
         public FlatFileReader(IUnitOfWork uow, IEngineRepository enginRepo, ILogger logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
-            RegisterInputProperties("SourceFilePath", "Source file path", DataType.String, true);
+            //RegisterInputProperties("SourceFilePath", "Source file path", DataType.String, true);
+            RegisterInputProperties("SourceFilePath", "Source file path", DataType.VirtualPath, true);
             RegisterInputProperties("SkipStartingDataRows", "Starting row to skip", DataType.Int);
             RegisterInputProperties("FirstRowHasHeader", "Using first row as header", DataType.Bool, true);
             RegisterInputProperties("ColumnDelimiter", "Column char delimiter", DataType.Char, true);
@@ -47,8 +49,11 @@ namespace bS.Sked2.Extensions.Common.FlatFile
 
             try
             {
+                var storageService = ((Common)ParentEngineModule).StorageService;
+
                 // Get parameters
-                var sourceFilePath = GetDataValue(EngineDataDirection.Input, "SourceFilePath").Get<string>();
+                //var sourceFilePath = GetDataValue(EngineDataDirection.Input, "SourceFilePath").Get<string>();
+                var sourceFilePath = GetDataValue(EngineDataDirection.Input, "SourceFilePath").Get<VirtualPath>();
                 var skipStartingDataRows = GetDataValue(EngineDataDirection.Input, "SkipStartingDataRows").GetNullable<int>();
                 var firstRowHasHeader = GetDataValue(EngineDataDirection.Input, "FirstRowHasHeader").Get<bool>();
                 var columnDelimiter = GetDataValue(EngineDataDirection.Input, "ColumnDelimiter").Get<char>();
@@ -56,7 +61,7 @@ namespace bS.Sked2.Extensions.Common.FlatFile
 
                 //Start parsing file
                 AddMessage("Configuring parser to read file", MessageSeverity.Debug);
-                var parser = new GenericParserAdapter(sourceFilePath);
+                var parser = new GenericParserAdapter(storageService.FileOpenTextReader(sourceFilePath));
                 parser.SkipStartingDataRows = skipStartingDataRows ?? 0;
                 parser.FirstRowHasHeader = firstRowHasHeader;
                 parser.ColumnDelimiter = columnDelimiter;

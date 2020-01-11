@@ -16,7 +16,8 @@ namespace bS.Sked2.Extensions.Common.Models
             Name = "Flat File Reader";
             Description = "This elements read form a flat file (like CSV) and returns a Table value.";
 
-            InputProperties.Add(new ElementPropertyEntry("SourceFilePath", "Source file path", DataType.String, true));
+            //InputProperties.Add(new ElementPropertyEntry("SourceFilePath", "Source file path", DataType.String, true));
+            InputProperties.Add(new ElementPropertyEntry("SourceFilePath", "Source file path", DataType.VirtualPath, true));
             InputProperties.Add(new ElementPropertyEntry("SkipStartingDataRows", "Starting row to skip", DataType.Int));
             InputProperties.Add(new ElementPropertyEntry("FirstRowHasHeader", "Use first row as header", DataType.Bool, true));
             InputProperties.Add(new ElementPropertyEntry("ColumnDelimiter", "Column char delimiter", DataType.Char, true));
