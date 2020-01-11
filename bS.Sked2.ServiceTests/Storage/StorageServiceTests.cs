@@ -1,135 +1,75 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using bS.Sked2.Service.Storage;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace bS.Sked2.Service.Storage.Tests
 {
-    
-
-
-
-
     [TestClass()]
     public class StorageServiceTests
     {
+        private bool semaphore = true;
+        private bool created = false;
         private StorageService storageService;
+
+        [TestMethod()]
+        public void StorageServiceTest()
+        {
+            storageService.FileSave("Ciao sono un test!", new StoragePath(@"/file_di_prova.txt"));
+
+            Assert.IsTrue(storageService.FileExists(new StoragePath(@"/file_di_prova.txt")));
+
+
+            storageService.FileCopy(new StoragePath(@"/file_di_prova.txt"), new StoragePath(@"/file_di_prova_copia.txt"));
+
+            Assert.IsTrue(storageService.FileExists(new StoragePath(@"/file_di_prova_copia.txt")));
+
+            storageService.FileMove(new StoragePath(@"/file_di_prova.txt"), new StoragePath(@"/file_di_prova_moved.txt"));
+
+            Assert.IsFalse(storageService.FileExists(new StoragePath(@"/file_di_prova.txt")));
+
+            storageService.FileDelete(new StoragePath(@"/file_di_prova_copia.txt"));
+
+            Assert.IsFalse(storageService.FileExists(new StoragePath(@"/file_di_prova_copia.txt")));
+
+            var val = storageService.FileReadString(new StoragePath(@"/file_di_prova_moved.txt"));
+
+            Assert.AreEqual("Ciao sono un test!", val);
+
+            storageService.FileDelete(new StoragePath(@"/file_di_prova_moved.txt"));
+
+            storageService.FolderCreate(new StoragePath(@"/sub"));
+
+            Assert.IsTrue(storageService.FolderExists(new StoragePath(@"/sub")));
+
+            var watcher = storageService.FolderWatch(new StoragePath(@"/sub"));
+
+            watcher.Created += Watcher_Created;
+            watcher.IncludeSubdirectories = true;
+            watcher.EnableRaisingEvents = true;
+
+            storageService.FileSave("Ciao sono un test!", new StoragePath(@"/sub/file_di_prova_watcher.txt"));
+
+            System.Threading.Thread.Sleep(500);
+
+            Assert.IsTrue(created);
+
+            storageService.FolderDelete(new StoragePath(@"/sub"), true);
+
+
+        }
+
+        private void Watcher_Created(object sender, string e)
+        {
+            created = true;
+        }
 
 
         [TestInitialize]
         public void Init()
         {
             ILogger<StorageService> logger = Mock.Of<ILogger<StorageService>>();
-            var conf = new StorageServiceConfig(@"C:\temp");
+            var conf = new StorageServiceConfig(@".\");
             storageService = new StorageService(logger, conf);
         }
-
-        [TestMethod()]
-        public void FileCopyTest()
-        {
-            storageService.FileCopy(new StoragePath(@"/file_di_prova.txt"), new StoragePath(@"/file_di_prova_copia.txt"));
-        }
-
-        [TestMethod()]
-        public void FileDeleteTest()
-        {
-            storageService.FileDelete(new StoragePath(@"/sub/Nuovo documento RTF.rtf"));
-        }
-
-        [TestMethod()]
-        public void FileExistsTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void FileMoveTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void FileReadBinaryTest()
-        {
-            var binary = storageService.FileReadBinary(new StoragePath(@"/file_di_prova.txt"));
-
-        }
-
-        [TestMethod()]
-        public void FileReadStringTest()
-        {
-            var text = storageService.FileReadString(new StoragePath(@"/file_di_prova.txt"));
-
-        }
-
-        [TestMethod()]
-        public void FileSaveTest()
-        {
-            storageService.FileSave("Ciao sono un test!", new StoragePath(@"/file_di_prova.txt"));
-        }
-
-        [TestMethod()]
-        public void FileSaveTest1()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void FolderEnumeratePathsTest()
-        {
-            var r = storageService.FolderEnumeratePaths(new StoragePath(@"/"), System.IO.SearchOption.AllDirectories);
-
-        }
-
-        [TestMethod()]
-        public void FolderDeleteTest()
-        {
-            storageService.FolderDelete(new StoragePath(@"/sub"), true);
-        }
-        bool semaphore = true;
-        [TestMethod()]
-        public void FolderWatchTest()
-        {
-            var res = storageService.FolderWatch(new StoragePath("/sub"));
-            res.Renamed += Res_Renamed;
-            res.Created += Res_Created;
-            res.Deleted += Res_Deleted;
-            res.Changed += Res_Changed;
-            res.IncludeSubdirectories = true;
-            res.EnableRaisingEvents = true;
-            while (semaphore)
-            {
-                //nn fa niente
-            }
-            
-
-        }
-
-        private void Res_Changed(object sender, string e)
-        {
-            semaphore = false;
-        }
-
-        private void Res_Deleted(object sender, string e)
-        {
-            semaphore = false;
-
-        }
-
-        private void Res_Created(object sender, string e)
-        {
-            semaphore = false;
-
-        }
-
-        private void Res_Renamed(object sender, string e)
-        {
-            semaphore = false;
-
-        }
-      
     }
 }

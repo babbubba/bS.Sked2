@@ -47,7 +47,7 @@ namespace bS.Sked2.Engine.Tests
                 EntitiesFileNameScannerPatterns = new string[] { "bS.Sked2.Extensions.*.dll", "bS.Sked2.Model.dll" }
             };
 
-            services.AddSingleton(Mock.Of<ILogger<Engine>>());
+            services.AddSingleton< ILogger>(Mock.Of<ILogger<Engine>>());
             services.AddSingleton(Mock.Of<ILogger<EngineElement>>());
             services.AddSingleton(Mock.Of<ILogger<EngineTask>>());
 
@@ -62,12 +62,7 @@ namespace bS.Sked2.Engine.Tests
             services.AddSingleton<ISqlValidationService, SqlValidationService>();
             services.AddSingleton<IEngine, Engine>();
             services.AddSingleton<IEngineTask, EngineTask>();
-
-            //services.AddTransient<EngineLink>();
-            //services.AddTransient<FlatFileReader>();
-            //services.AddTransient<FlatFileWriter>();
-            //services.AddTransient<SqlQueryReader>();
-            //services.AddTransient<SqlTableWriter>();
+            services.AddTransient<FlatFileReader>();
 
             serviceProvider = services.BuildServiceProvider();
         }
