@@ -1,7 +1,5 @@
 ﻿using bS.Sked2.Structure.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace bS.Sked2.Structure.Engine
 {
@@ -11,45 +9,28 @@ namespace bS.Sked2.Structure.Engine
     /// <seealso cref="bS.Sked2.Structure.Engine.IEngineFlowComponent" />
     public interface IEngineLink : IEngineFlowComponent
     {
-        IElementEntry PreviuousElement { get; }
-        IElementEntry NextElement { get; }
+        /// <summary>
+        /// Gets the mappings.
+        /// </summary>
+        /// <value>
+        /// The mappings.
+        /// </value>
         IEnumerable<IElementsMappingEntry> Mappings { get; }
 
-        ///// <summary>
-        ///// Gets the data value.
-        ///// </summary>
-        ///// <param name="direction">The direction.</param>
-        ///// <param name="propertyKey">The property key.</param>
-        ///// <returns></returns>
-        //IEngineData GetDataValue(EngineDataDirection direction, string propertyKey);
+        /// <summary>
+        /// Gets the next element.
+        /// </summary>
+        /// <value>
+        /// The next element.
+        /// </value>
+        IElementEntry NextElement { get; }
 
-        ///// <summary>
-        ///// Registers the input properties.
-        ///// </summary>
-        ///// <param name="key">The key.</param>
-        ///// <param name="description">The description.</param>
-        ///// <param name="dataType">Type of the data.</param>
-        ///// <param name="mandatory">if set to <c>true</c> [mandatory].</param>
-        //void RegisterInputProperties(string key, string description, DataType dataType, bool mandatory = false);
-
-        ///// <summary>
-        ///// Registers the output properties.
-        ///// </summary>
-        ///// <param name="key">The key.</param>
-        ///// <param name="description">The description.</param>
-        ///// <param name="dataType">Type of the data.</param>
-        ///// <param name="mandatory">if set to <c>true</c> [mandatory].</param>
-        //void RegisterOutputProperties(string key, string description, DataType dataType, bool mandatory = false);
-
-        ///// <summary>
-        ///// Sets the data value.
-        ///// </summary>
-        ///// <param name="direction">The direction.</param>
-        ///// <param name="propertyKey">The property key.</param>
-        ///// <param name="value">The value.</param>
-        //void SetDataValue(EngineDataDirection direction, string propertyKey, IEngineData value);
-
-        //void SetDataValueIfEmpty(EngineDataDirection direction, string propertyKey, IEngineData value);
-
+        /// <summary>
+        /// Gets the previuous element.
+        /// </summary>
+        /// <value>
+        /// The previuous element.
+        /// </value>
+        IElementEntry PreviuousElement { get; }
     }
 }

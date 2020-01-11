@@ -1,15 +1,20 @@
 ﻿using bS.Sked2.Structure.Models;
-using System.Collections.Generic;
 
 namespace bS.Sked2.Structure.Engine
 {
     /// <summary>
-    /// E' l'elemento che rappresenta una operazione specifica in un Task. Ogni elemento viene eseguito dal suo specifico modulo <see cref="IEngineModule" />.
+    /// Element interface./>.
     /// </summary>
-    /// <seealso cref="bS.Sked2.Structure.Base.IStartable" />
-    /// <seealso cref="bS.Sked2.Structure.Engine.IEngineFlowComponent" />
+    /// <seealso cref="Base.IStartable" />
+    /// <seealso cref="IEngineFlowComponent" />
     public interface IEngineElement : IEngineFlowComponent
     {
+        /// <summary>
+        /// Gets the key.
+        /// </summary>
+        /// <value>
+        /// The key.
+        /// </value>
         string Key { get; }
 
         /// <summary>
@@ -29,10 +34,10 @@ namespace bS.Sked2.Structure.Engine
         ITaskEntry ParentTask { get; }
 
         /// <summary>
-        /// Gets the data value.
+        /// Gets the data value from a property.
         /// </summary>
-        /// <param name="direction">The direction.</param>
-        /// <param name="propertyKey">The property key.</param>
+        /// <param name="direction">The property's direction.</param>
+        /// <param name="propertyKey">The property's key.</param>
         /// <returns></returns>
         IEngineData GetDataValue(EngineDataDirection direction, string propertyKey);
 
@@ -55,15 +60,19 @@ namespace bS.Sked2.Structure.Engine
         void RegisterOutputProperties(string key, string description, DataType dataType, bool mandatory = false);
 
         /// <summary>
-        /// Sets the data value.
+        /// Sets the property's data value.
         /// </summary>
         /// <param name="direction">The direction.</param>
         /// <param name="propertyKey">The property key.</param>
         /// <param name="value">The value.</param>
         void SetDataValue(EngineDataDirection direction, string propertyKey, IEngineData value);
 
+        /// <summary>
+        /// Sets the property's data value only if actual value is empty.
+        /// </summary>
+        /// <param name="direction">The direction.</param>
+        /// <param name="propertyKey">The property key.</param>
+        /// <param name="value">The value.</param>
         void SetDataValueIfEmpty(EngineDataDirection direction, string propertyKey, IEngineData value);
-
-       
     }
 }

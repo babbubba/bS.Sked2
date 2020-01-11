@@ -1,21 +1,20 @@
 ﻿using bS.Sked2.Structure.Service.Messages;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace bS.Sked2.Structure.Engine
 {
-    /// <summary>Base interface for all elements, tasks, jobs, links and components.</summary>
+    /// <summary>
+    /// Base interface for all elements, tasks, jobs, links and components.
+    /// </summary>
     public interface IEngineFlowComponent
     {
-        Guid? InstanceID { get; }
-
         /// <summary>
-        /// Adds an execution message in the related istance.
+        /// Gets a value indicating whether this instance has completed.
         /// </summary>
-        /// <param name="Message">The message.</param>
-        /// <param name="severity">The severity (Optional: default is Info).</param>
-        void AddMessage(string Message, MessageSeverity severity = MessageSeverity.Info);
+        /// <value>
+        ///   <c>true</c> if this instance has completed; otherwise, <c>false</c>.
+        /// </value>
+        bool HasCompleted { get; }
 
         /// <summary>
         /// Gets a value indicating whether this instance has errors.
@@ -24,7 +23,7 @@ namespace bS.Sked2.Structure.Engine
         ///   <c>true</c> if this instance has errors; otherwise, <c>false</c>.
         /// </value>
         bool HasErrors { get; }
-       
+
         /// <summary>
         /// Gets a value indicating whether this instance has warnings.
         /// </summary>
@@ -32,6 +31,14 @@ namespace bS.Sked2.Structure.Engine
         ///   <c>true</c> if this instance has warnings; otherwise, <c>false</c>.
         /// </value>
         bool HasWarnings { get; }
+
+        /// <summary>
+        /// Gets the instance identifier.
+        /// </summary>
+        /// <value>
+        /// The instance identifier.
+        /// </value>
+        Guid? InstanceID { get; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is running.
@@ -42,27 +49,11 @@ namespace bS.Sked2.Structure.Engine
         bool IsRunning { get; }
 
         /// <summary>
-        /// Gets a value indicating whether this instance has completed.
+        /// Adds an execution message in the related istance.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance has completed; otherwise, <c>false</c>.
-        /// </value>
-        bool HasCompleted { get; }
-      
-        /// <summary>
-        /// Starts this instance.
-        /// </summary>
-        void Start();
-     
-        /// <summary>
-        /// Stops this instance.
-        /// </summary>
-        void Stop();
-      
-        /// <summary>
-        /// Pauses this instance.
-        /// </summary>
-        void Pause();
+        /// <param name="Message">The message.</param>
+        /// <param name="severity">The severity (Optional: default is Info).</param>
+        void AddMessage(string Message, MessageSeverity severity = MessageSeverity.Info);
 
         /// <summary>
         /// Determines whether this instance [can be executed].
@@ -77,5 +68,20 @@ namespace bS.Sked2.Structure.Engine
         /// </summary>
         /// <param name="EntityId">The entity identifier.</param>
         void LoadFromEntity(Guid EntityId);
+
+        /// <summary>
+        /// Pauses this instance.
+        /// </summary>
+        void Pause();
+
+        /// <summary>
+        /// Starts this instance.
+        /// </summary>
+        void Start();
+
+        /// <summary>
+        /// Stops this instance.
+        /// </summary>
+        void Stop();
     }
 }

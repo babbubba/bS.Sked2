@@ -9,19 +9,42 @@ using Microsoft.Extensions.Logging;
 
 namespace bS.Sked2.Structure.Engine
 {
+    /// <summary>
+    /// BAse class for all elements, tasks, jobs, links and components
+    /// </summary>
+    /// <seealso cref="IEngineFlowComponent" />
     public abstract class BaseEngineComponent : IEngineFlowComponent
     {
+        /// <summary>
+        /// The logger
+        /// </summary>
         protected ILogger logger;
+        /// <summary>
+        /// The message service
+        /// </summary>
         protected IMessageService messageService;
+        /// <summary>
+        /// The instance
+        /// </summary>
         protected IInstanceEntry instance;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseEngineComponent" /> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="messageService">The message service.</param>
         public BaseEngineComponent(ILogger logger, IMessageService messageService)
         {
             this.logger = logger;
             this.messageService = messageService;
-            //instance.Messages = new List<IMessageEntry>();
         }
-        
+
+        /// <summary>
+        /// Gets the instance identifier.
+        /// </summary>
+        /// <value>
+        /// The instance identifier.
+        /// </value>
         public Guid? InstanceID => instance?.Id;
 
 
@@ -59,7 +82,7 @@ namespace bS.Sked2.Structure.Engine
         /// <value>
         ///   <c>true</c> if this instance is running; otherwise, <c>false</c>.
         /// </value>
-        public  bool IsRunning => instance.BeginTime != null && !instance.IsPaused && instance.EndTime == null;
+        public bool IsRunning => instance.BeginTime != null && !instance.IsPaused && instance.EndTime == null;
 
         /// <summary>
         /// Gets a value indicating whether this instance has completed.
@@ -67,7 +90,7 @@ namespace bS.Sked2.Structure.Engine
         /// <value>
         ///   <c>true</c> if this instance has completed; otherwise, <c>false</c>.
         /// </value>
-        public  bool HasCompleted => instance.BeginTime != null && !instance.IsPaused && instance.EndTime != null;
+        public bool HasCompleted => instance.BeginTime != null && !instance.IsPaused && instance.EndTime != null;
 
 
         /// <summary>

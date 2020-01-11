@@ -7,7 +7,7 @@ using System.Text;
 namespace bS.Sked2.Structure.Engine
 {
     /// <summary>
-    /// Contiene uno o piu Elementi <see cref="IEngineElement"/> e rappresenta il flusso di esecuzione degli elementi stessi. Sostanzialmente rappresenta un compito finito.
+    /// The engine task class
     /// </summary>
     public interface IEngineTask : IEngineFlowComponent
     {

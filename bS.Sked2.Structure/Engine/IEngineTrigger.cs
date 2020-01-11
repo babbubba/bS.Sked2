@@ -1,25 +1,19 @@
 ﻿using bS.Sked2.Structure.Engine.Events;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace bS.Sked2.Structure.Engine
 {
     /// <summary>
-    /// Interfaccia base per tutti i trigger. Un trigger rappresenta il gestore di un evento che serve ad esempio per gestire l'avvio di un Job.
+    /// Interface for all triggers type. A trigger is an event manager that is used to manage the job start.
     /// </summary>
+    /// <seealso cref="bS.Sked2.Structure.Engine.IEngineFlowComponent" />
     public interface IEngineTrigger : IEngineFlowComponent
     {
-        string Name { get; set; }
-
-
         /// <summary>
-        /// Gets or sets the last execution time.
+        /// Occurs when [trigger fired].
         /// </summary>
-        /// <value>
-        /// The last execution time.
-        /// </value>
-        DateTime LastExecutionTime { get; set; }
+        event EventHandler<TriggerEventArgs> TriggerFired;
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is enable.
         /// </summary>
@@ -37,9 +31,19 @@ namespace bS.Sked2.Structure.Engine
         IEngineJob[] Jobs { get; set; }
 
         /// <summary>
-        /// Occurs when [trigger fired].
+        /// Gets or sets the last execution time.
         /// </summary>
-        event EventHandler<TriggerEventArgs> TriggerFired;
+        /// <value>
+        /// The last execution time.
+        /// </value>
+        DateTime LastExecutionTime { get; set; }
 
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        string Name { get; set; }
     }
 }
