@@ -119,5 +119,8 @@ namespace bS.Sked2.Structure.Models
         /// The triggers.
         /// </value>
         IList<ITriggerEntry> Triggers { get; set; }
+
+        int Position { get; set; }
+
     }
 }

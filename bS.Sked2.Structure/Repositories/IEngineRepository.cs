@@ -1,5 +1,6 @@
 ﻿using bS.Sked2.Structure.Models;
 using System;
+using System.Collections.Generic;
 
 namespace bS.Sked2.Structure.Repositories
 
@@ -15,5 +16,7 @@ namespace bS.Sked2.Structure.Repositories
         void CreateTask(ITaskEntry taskEntry);
         void CreateJob(IJobEntry jobEntry);
         void CreateModule(IModuleEntry moduleEntry);
+
+        IEnumerable<IJobEntry> GetJobs();
     }
 }
