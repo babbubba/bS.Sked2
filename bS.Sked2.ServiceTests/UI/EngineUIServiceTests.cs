@@ -22,18 +22,20 @@ namespace bS.Sked2.Service.UI.Tests
         [TestMethod()]
         public void JobMethodsTest()
         {
+            // Get the service
             var engineUIService = serviceProvider.GetService<IEngineUIService>();
-            //create
-            var jobId = engineUIService.CreateNewJob(new JobDefinitionCreateViewModel
-            {
-                Description = "Job di prova creato con UI service.",
-                FailIfAnyTaskHasError = true,
-                FailIfAnyTaskHasWarning = false,
-                Name = "Job Di Prova 2"
-            });
+
+            // Create
+            var jobVM = engineUIService.GetNewJob();
+            jobVM.Name = "Job di prova 1";
+            jobVM.Description = "Job di prova creato con UI service.";
+            jobVM.FailIfAnyTaskHasError = true;
+
+            var jobId = engineUIService.CreateNewJob(jobVM);
+
             Assert.IsNotNull(jobId);
 
-            //Edit
+            // Edit
             engineUIService.EditJob(jobId, new JobDefinitionEditViewModel
             {
                 Description = "Job di prova creato con UI service (modificato).",
@@ -41,11 +43,11 @@ namespace bS.Sked2.Service.UI.Tests
                 FailIfAnyTaskHasWarning = false,
             });
 
-            //Get
+            // Get
             var job = engineUIService.GetJobs().FirstOrDefault(j=>j.Id == jobId);
+
             Assert.AreEqual(job.Description, "Job di prova creato con UI service (modificato).");
         }
-
 
         [TestInitialize]
         public void Init()
