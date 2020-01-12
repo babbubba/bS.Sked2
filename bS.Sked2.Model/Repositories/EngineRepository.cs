@@ -59,6 +59,12 @@ namespace bS.Sked2.Model.Repositories
 
         }
 
+        public void UpdateJob(IJobEntry jobEntry)
+        {
+            base.Update((JobEntry)jobEntry);
+
+        }
+
         public void CreateModule(IModuleEntry moduleEntry)
         {
             base.Create((ModuleEntry)moduleEntry);

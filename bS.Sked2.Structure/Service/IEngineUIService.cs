@@ -17,8 +17,9 @@ namespace bS.Sked2.Structure.Service
         Guid CreateNewTask(ITaskDefinition taskDefinition);
         void EditTask(Guid taskId, IElementDefinition taskDefinition);
 
-        Guid CreateNewJob(IJobDefinition jobDefinition);
-        void EditJob(Guid jobId, IJobDefinition jobDefinition);
+        IEnumerable<IJobDefinitionDetail> GetJobs();
+        Guid CreateNewJob(IJobDefinitionCreate jobDefinition);
+        void EditJob(Guid jobId, IJobDefinitionEdit jobDefinition);
 
         Guid CreateNewModule(IModuleDefinition moduleDefinition);
         void EditModule(Guid moduleId, IModuleDefinition moduleDefinition);
