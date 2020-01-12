@@ -9,14 +9,13 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace bS.Sked2.Service.UI
 {
     public class EngineUIService : ServiceBase, IEngineUIService
     {
-        private readonly IUnitOfWork uow;
         private readonly IEngineRepository engineRepository;
+        private readonly IUnitOfWork uow;
 
         public EngineUIService(
             ILogger logger,
@@ -27,31 +26,13 @@ namespace bS.Sked2.Service.UI
             this.engineRepository = engineRepository;
         }
 
-        public bool AddElementToTask(Guid TaskId, Guid ElementId)
-        {
-            throw new NotImplementedException();
-        }
+        #region Jobs
 
-        public bool AddModuleToElement(Guid ElementId, Guid ModuleId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool AddTaskToJob(Guid JobId, Guid TaskId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool AddTriggerToJob(Guid JobId, Guid TriggerId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Guid CreateNewElement(IElementDefinition elementDefinition)
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// Creates the new job.
+        /// </summary>
+        /// <param name="jobDefinition">The job definition.</param>
+        /// <returns></returns>
         public Guid CreateNewJob(IJobDefinitionCreate jobDefinition)
         {
             uow.BeginTransaction();
@@ -63,7 +44,7 @@ namespace bS.Sked2.Service.UI
                 FailIfAnyTaskHasWarning = jobDefinition.FailIfAnyTaskHasWarning,
                 IsEnabled = true,
                 Name = jobDefinition.Name,
-                Position = engineRepository.GetJobs().Select(j=>j.Position).DefaultIfEmpty().Max() + 1
+                Position = engineRepository.GetJobs().Select(j => j.Position).DefaultIfEmpty().Max() + 1
             };
 
             engineRepository.CreateJob(jobEntity);
@@ -71,26 +52,6 @@ namespace bS.Sked2.Service.UI
             uow.Commit();
 
             return jobEntity.Id;
-        }
-
-        public Guid CreateNewModule(IModuleDefinition moduleDefinition)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Guid CreateNewTask(ITaskDefinition taskDefinition)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Guid CreateNewTrigger(ITriggerDefinition triggerDefinition)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EditElement(Guid elementId, IElementDefinition elementDefinition)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -110,56 +71,29 @@ namespace bS.Sked2.Service.UI
             uow.Commit();
         }
 
-        public void EditModule(Guid moduleId, IModuleDefinition moduleDefinition)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EditTask(Guid taskId, IElementDefinition taskDefinition)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EditTrigger(Guid triggerId, ITriggerDefinition triggerDefinition)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<IElementType> GetElementTypes()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<IModuleDefinition> GetExistingModulesForElementType(IElementType elementType)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
-        /// Gets the jobs.
+        /// Gets the active jobs ordered by position ascending.
         /// </summary>
         /// <returns></returns>
         public IEnumerable<IJobDefinitionDetail> GetJobs()
         {
-            return engineRepository.GetJobs().Where(j=>!j.IsDeleted).OrderBy(j=>j.Position).Select(j => new JobDefinitionDetailViewModel
-            {
-                Id = j.Id,
-                Description = j.Description,
-                FailIfAnyTaskHasError = j.FailIfAnyTaskHasError,
-                FailIfAnyTaskHasWarning = j.FailIfAnyTaskHasWarning,
-                Name = j.Name,
-                Position = j.Position,
-                IsEnabled = j.IsEnabled,
-                CreationDate = j.CreationDate,
-                LastUpdateDate = j.LastUpdateDate
-            });
+            return engineRepository.GetJobs()
+                .Where(j => !j.IsDeleted && j.IsEnabled)
+                .OrderBy(j => j.Position)
+                .Select(j => new JobDefinitionDetailViewModel
+                {
+                    Id = j.Id,
+                    Description = j.Description,
+                    FailIfAnyTaskHasError = j.FailIfAnyTaskHasError,
+                    FailIfAnyTaskHasWarning = j.FailIfAnyTaskHasWarning,
+                    Name = j.Name,
+                    Position = j.Position,
+                    IsEnabled = j.IsEnabled,
+                    CreationDate = j.CreationDate,
+                    LastUpdateDate = j.LastUpdateDate
+                });
         }
 
-        public IEnumerable<ITriggerType> GetTriggerTypes()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion Jobs
     }
-
-  
 }

@@ -1,6 +1,6 @@
 ﻿namespace bS.Sked2.Structure.Engine.UI
 {
-    public interface ITriggerDefinition
+    public interface ITriggerDefinitionCreate
     {
         ITriggerType TriggerType { get; set; }
 
