@@ -47,6 +47,9 @@ namespace bS.Sked2.Engine.Objects
             this.engineRepository = enginRepo;
             inputProperties = new List<IEngineElementProperty>();
             outputProperties = new List<IEngineElementProperty>();
+
+            // Create the instance ID for this element
+            instance = engineRepository.CreateNewInstance();
         }
 
         /// <summary>
@@ -71,7 +74,7 @@ namespace bS.Sked2.Engine.Objects
             // TODO: Add logic here if needed
             if (ParentEngineModule == null || !ParentEngineModule.IsInit)
             {
-                //throw new EngineException(logger, $"The module '{ParentEngineModule.Key}' is not initialized correctly.");
+                AddMessage($"The module '{ParentEngineModule?.Key??"-"}' is not initialized correctly.", Structure.Service.Messages.MessageSeverity.Fatal);
                 return false;
             }
             return true;
@@ -274,8 +277,7 @@ namespace bS.Sked2.Engine.Objects
         {
             uow.BeginTransaction();
 
-            // Create the instance ID for this element
-            instance = engineRepository.CreateNewInstance();
+            
 
             // Set the execution begin time
             instance.BeginTime = DateTime.Now;

@@ -67,43 +67,6 @@ namespace bS.Sked2.Engine.Tests
             serviceProvider = services.BuildServiceProvider();
         }
 
-        [TestMethod()]
-        public void ExecuteFlatFileReader()
-        {
-
-            var uow = serviceProvider.GetService<IUnitOfWork>();
-            var engineRepository = serviceProvider.GetService<IEngineRepository>();
-            var engine = serviceProvider.GetService<IEngine>();
-
-            engine.Init();
-
-            //Create entities to test
-            uow.BeginTransaction();
-
-            TaskEntry taskEntry = GetTaskEntry();
-            engineRepository.CreateTask(taskEntry);
-
-            FlatFileReaderEntry elementFlatileReaderEntry = GetFlatFileReaderEntry();
-            elementFlatileReaderEntry.ParentTask = taskEntry;
-            engineRepository.CreateElement(elementFlatileReaderEntry);
-
-            taskEntry.Elements.Add(elementFlatileReaderEntry);
-
-            uow.Commit();
-
-            // Create Engine element for execution
-            var flatFileReader = serviceProvider.GetService<FlatFileReader>();
-
-            // Load the entity in the engine  element
-            flatFileReader.LoadFromEntity(elementFlatileReaderEntry.Id);
-
-            // Execute
-            engine.ExecuteElement(flatFileReader);
-
-            // Check the result
-            var resultFlatFileReader = flatFileReader.GetDataValue(EngineDataDirection.Output, "Table")?.Get<DataTable>();
-            Assert.IsNotNull(resultFlatFileReader);
-        }
 
         [TestMethod()]
         public void TestLinkElement()

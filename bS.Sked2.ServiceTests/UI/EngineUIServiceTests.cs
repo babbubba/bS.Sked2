@@ -41,6 +41,7 @@ namespace bS.Sked2.Service.UI.Tests
                 Description = "Job di prova creato con UI service (modificato).",
                 FailIfAnyTaskHasError = false,
                 FailIfAnyTaskHasWarning = false,
+                IsEnabled = true
             });
 
             // Get
