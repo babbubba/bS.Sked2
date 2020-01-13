@@ -119,5 +119,13 @@ namespace bS.Sked2.Structure.Models
         /// The parent job.
         /// </value>
         IJobEntry ParentJob { get; set; }
+
+        /// <summary>
+        /// Gets or sets the position.
+        /// </summary>
+        /// <value>
+        /// The position.
+        /// </value>
+        int Position { get; set; }
     }
 }

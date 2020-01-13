@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace bS.Sked2.Structure.Service
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public interface IEngineUIService
     {
@@ -143,6 +143,12 @@ namespace bS.Sked2.Structure.Service
         void EditTask(Guid taskId, IElementDefinitionEdit taskDefinition);
 
         /// <summary>
+        /// Gets the create task.
+        /// </summary>
+        /// <returns></returns>
+        ITaskDefinitionCreate GetCreateTask();
+
+        /// <summary>
         /// Gets the new task.
         /// </summary>
         /// <returns></returns>
@@ -151,9 +157,8 @@ namespace bS.Sked2.Structure.Service
         /// <summary>
         /// Gets the tasks.
         /// </summary>
-        /// <param name="jobId">The job identifier.</param>
         /// <returns></returns>
-        IEnumerable<ITaskDefinitionDetail> GetTasks(Guid jobId);
+        IEnumerable<ITaskDefinitionDetail> GetTasks();
 
         /// <summary>
         /// Moves the task down.
@@ -203,6 +208,12 @@ namespace bS.Sked2.Structure.Service
         Guid CreateNewJob(IJobDefinitionCreate jobDefinition);
 
         /// <summary>
+        /// Deletes the job.
+        /// </summary>
+        /// <param name="jobID">The job identifier.</param>
+        void DeleteJob(Guid jobID);
+
+        /// <summary>
         /// Edits the job.
         /// </summary>
         /// <param name="jobId">The job identifier.</param>
@@ -210,16 +221,24 @@ namespace bS.Sked2.Structure.Service
         void EditJob(Guid jobId, IJobDefinitionEdit jobDefinition);
 
         /// <summary>
+        /// Gets the new job.
+        /// </summary>
+        /// <returns></returns>
+        IJobDefinitionCreate GetCreateJob();
+        
+
+        /// <summary>
+        /// Gets the edit job.
+        /// </summary>
+        /// <param name="jobId">The job identifier.</param>
+        /// <returns></returns>
+        IJobDefinitionEdit GetEditJob(Guid jobId);
+
+        /// <summary>
         /// Gets the jobs.
         /// </summary>
         /// <returns></returns>
         IEnumerable<IJobDefinitionDetail> GetJobs();
-
-        /// <summary>
-        /// Gets the new job.
-        /// </summary>
-        /// <returns></returns>
-        IJobDefinitionCreate GetNewJob();
 
         /// <summary>
         /// Moves the job down.

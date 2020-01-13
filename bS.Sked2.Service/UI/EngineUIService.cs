@@ -38,7 +38,23 @@ namespace bS.Sked2.Service.UI
 
         public bool AddTaskToJob(Guid jobId, Guid taskId)
         {
-            throw new NotImplementedException();
+            uow.BeginTransaction();
+            try
+            {
+                var jobEntry = engineRepository.GetJobById(jobId);
+                var taskEntry = engineRepository.GetTaskById(taskId);
+                jobEntry.Tasks.Add(taskEntry);
+                taskEntry.ParentJob = jobEntry;
+                uow.Commit();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error adding task {taskId.ToString()} to job {jobId.ToString()}.", ex);
+                uow.Rollback();
+                return false;
+            }
+
+            return true;
         }
 
         public bool AddTriggerToJob(Guid jobId, Guid triggerId)
@@ -96,7 +112,23 @@ namespace bS.Sked2.Service.UI
 
         public Guid CreateNewTask(ITaskDefinitionCreate taskDefinition)
         {
-            throw new NotImplementedException();
+            uow.BeginTransaction();
+
+            var taskEntity = new TaskEntry
+            {
+                Description = taskDefinition.Description,
+                FailIfAnyElementHasError = taskDefinition.FailIfAnyElementHasError,
+                FailIfAnyElementHasWarning = taskDefinition.FailIfAnyElementHasWarning,
+                IsEnabled = true,
+                Name = taskDefinition.Name,
+                Position = engineRepository.GetTasks().Select(t => t.Position).DefaultIfEmpty().Max() + 1
+            };
+
+            engineRepository.CreateTask(taskEntity);
+
+            uow.Commit();
+
+            return taskEntity.Id;
         }
 
         public Guid CreateNewTrigger(ITriggerDefinitionCreate triggerDefinition)
@@ -107,6 +139,23 @@ namespace bS.Sked2.Service.UI
         public void DeleteElement(Guid elementId)
         {
             throw new NotImplementedException();
+        }
+
+        public void DeleteJob(Guid jobId)
+        {
+            uow.BeginTransaction();
+            var entry = engineRepository.GetJobById(jobId);
+            entry.IsDeleted = true;
+            foreach (var task in entry.Tasks)
+            {
+                task.IsDeleted = true;
+                foreach (var element in task.Elements)
+                {
+                    element.IsDeleted = true;
+                }
+            }
+
+            uow.Commit();
         }
 
         public void DeleteLink(Guid linkID)
@@ -138,6 +187,7 @@ namespace bS.Sked2.Service.UI
         {
             uow.BeginTransaction();
             var job = engineRepository.GetJobById(jobId);
+            job.Name = jobDefinition.Name;
             job.Description = jobDefinition.Description;
             job.FailIfAnyTaskHasError = jobDefinition.FailIfAnyTaskHasError;
             job.FailIfAnyTaskHasWarning = jobDefinition.FailIfAnyTaskHasWarning;
@@ -164,6 +214,37 @@ namespace bS.Sked2.Service.UI
         public void EditTrigger(Guid triggerId, ITriggerDefinitionEdit triggerDefinition)
         {
             throw new NotImplementedException();
+        }
+
+        public IJobDefinitionCreate GetCreateJob()
+        {
+            return new JobDefinitionCreateViewModel
+            {
+                Name = "New Job",
+                Description = "New Job description"
+            };
+        }
+
+        public ITaskDefinitionCreate GetCreateTask()
+        {
+            return new TaskDefinitionCreateViewModel
+            {
+                Name = "New Task",
+                Description = "New Task description"
+            };
+        }
+
+        public IJobDefinitionEdit GetEditJob(Guid jobId)
+        {
+            var entry = engineRepository.GetJobById(jobId);
+            return new JobDefinitionEditViewModel
+            {
+                Name = entry.Name,
+                Description = entry.Description,
+                FailIfAnyTaskHasError = entry.FailIfAnyTaskHasError,
+                FailIfAnyTaskHasWarning = entry.FailIfAnyTaskHasWarning,
+                IsEnabled = entry.IsEnabled
+            };
         }
 
         public IEnumerable<IElementDefinitionDetail> GetElements(Guid taskId)
@@ -209,15 +290,6 @@ namespace bS.Sked2.Service.UI
             throw new NotImplementedException();
         }
 
-        public IJobDefinitionCreate GetNewJob()
-        {
-            return new JobDefinitionCreateViewModel
-            {
-                Name = "New Job",
-                Description = "New Job description"
-            };
-        }
-
         public ILinkDefinitionCreate GetNewLink()
         {
             throw new NotImplementedException();
@@ -238,9 +310,23 @@ namespace bS.Sked2.Service.UI
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ITaskDefinitionDetail> GetTasks(Guid jobId)
+        public IEnumerable<ITaskDefinitionDetail> GetTasks()
         {
-            throw new NotImplementedException();
+            return engineRepository.GetTasks()
+               .Where(t => !t.IsDeleted && t.IsEnabled)
+               .OrderBy(t => t.Position)
+               .Select( t=> new TaskDefinitionDetailViewModel
+               {
+                   Id = t.Id,
+                   Description = t.Description,
+                   FailIfAnyElementHasError = t.FailIfAnyElementHasError,
+                   FailIfAnyElementHasWarning = t.FailIfAnyElementHasWarning,
+                   Name = t.Name,
+                   Position = t.Position,
+                   IsEnabled = t.IsEnabled,
+                   CreationDate = t.CreationDate,
+                   LastUpdateDate = t.LastUpdateDate
+               });
         }
 
         public IEnumerable<ITriggerDefinitionDetail> GetTriggers()

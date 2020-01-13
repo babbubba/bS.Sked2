@@ -4,7 +4,6 @@ using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace bS.Sked2.Model.Repositories
 {
@@ -12,28 +11,21 @@ namespace bS.Sked2.Model.Repositories
     {
         public EngineRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-
-
         }
 
-        public IJobEntry GetJobById(Guid Id)
+        public void CreateElement(IElementEntry entityToCreate)
         {
-            return base.GetById<JobEntry>(Id);
+            base.Create((ElementEntry)entityToCreate);
         }
 
-        public ITaskEntry GetTaskById(Guid Id)
+        public void CreateJob(IJobEntry jobEntry)
         {
-            return base.GetById<TaskEntry>(Id);
+            base.Create((JobEntry)jobEntry);
         }
 
-        public IElementEntry GetElementById(Guid Id)
+        public void CreateModule(IModuleEntry moduleEntry)
         {
-            return base.GetById<ElementEntry>(Id);
-        }
-
-        public IModuleEntry GetModuleById(Guid Id)
-        {
-            return base.GetById<ModuleEntry>(Id);
+            base.Create((ModuleEntry)moduleEntry);
         }
 
         public IInstanceEntry CreateNewInstance()
@@ -43,37 +35,44 @@ namespace bS.Sked2.Model.Repositories
             return newInstance;
         }
 
-        public void CreateElement(IElementEntry entityToCreate)
-        {
-            base.Create((ElementEntry)entityToCreate);
-        }
-
         public void CreateTask(ITaskEntry taskEntry)
         {
             base.Create((TaskEntry)taskEntry);
         }
 
-        public void CreateJob(IJobEntry jobEntry)
+        public IElementEntry GetElementById(Guid Id)
         {
-            base.Create((JobEntry)jobEntry);
-
+            return base.GetById<ElementEntry>(Id);
         }
 
-        public void UpdateJob(IJobEntry jobEntry)
+        public IJobEntry GetJobById(Guid Id)
         {
-            base.Update((JobEntry)jobEntry);
-
-        }
-
-        public void CreateModule(IModuleEntry moduleEntry)
-        {
-            base.Create((ModuleEntry)moduleEntry);
-
+            return base.GetById<JobEntry>(Id);
         }
 
         public IEnumerable<IJobEntry> GetJobs()
         {
             return base.GetAll<JobEntry>();
+        }
+
+        public IModuleEntry GetModuleById(Guid Id)
+        {
+            return base.GetById<ModuleEntry>(Id);
+        }
+
+        public ITaskEntry GetTaskById(Guid Id)
+        {
+            return base.GetById<TaskEntry>(Id);
+        }
+
+        public IEnumerable<ITaskEntry> GetTasks()
+        {
+            return base.GetAll<TaskEntry>();
+        }
+
+        public void UpdateJob(IJobEntry jobEntry)
+        {
+            base.Update((JobEntry)jobEntry);
         }
 
         //public void CreateLinkElement(IElementsLinkEntry linkElement)

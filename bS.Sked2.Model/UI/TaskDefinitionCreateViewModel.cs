@@ -6,8 +6,8 @@ namespace bS.Sked2.Model.UI
     /// <summary>
     ///
     /// </summary>
-    /// <seealso cref="bS.Sked2.Structure.Engine.UI.IJobDefinitionCreate" />
-    public class JobDefinitionCreateViewModel : IJobDefinitionCreate
+    /// <seealso cref="bS.Sked2.Structure.Engine.UI.ITaskDefinitionCreate" />
+    public class TaskDefinitionCreateViewModel : ITaskDefinitionCreate
     {
         /// <summary>
         /// Gets or sets the description.
@@ -19,22 +19,22 @@ namespace bS.Sked2.Model.UI
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [fail if any task has error].
+        /// Gets or sets a value indicating whether [fail if any element has error].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [fail if any task has error]; otherwise, <c>false</c>.
+        ///   <c>true</c> if [fail if any element has error]; otherwise, <c>false</c>.
         /// </value>
         [Required]
-        public bool FailIfAnyTaskHasError { get; set; }
+        public bool FailIfAnyElementHasError { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [fail if any task has warning].
+        /// Gets or sets a value indicating whether [fail if any element has warning].
         /// </summary>
         /// <value>
-        ///   <c>true</c> if [fail if any task has warning]; otherwise, <c>false</c>.
+        ///   <c>true</c> if [fail if any element has warning]; otherwise, <c>false</c>.
         /// </value>
         [Required]
-        public bool FailIfAnyTaskHasWarning { get; set; }
+        public bool FailIfAnyElementHasWarning { get; set; }
 
         /// <summary>
         /// Gets or sets the name.

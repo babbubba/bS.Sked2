@@ -19,5 +19,7 @@ namespace bS.Sked2.Structure.Repositories
         void CreateModule(IModuleEntry moduleEntry);
 
         IEnumerable<IJobEntry> GetJobs();
+        IEnumerable<ITaskEntry> GetTasks();
+        
     }
 }
