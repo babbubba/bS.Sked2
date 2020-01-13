@@ -18,56 +18,42 @@ namespace bS.Sked2.Service.UI.Tests
     {
         private ServiceProvider serviceProvider;
 
-        
         [TestMethod()]
-        public void JobMethodsTest()
+        public void CreationAndEditTest()
         {
             // Get the service
             var engineUIService = serviceProvider.GetService<IEngineUIService>();
 
-            // Create
-            var jobVM = engineUIService.GetCreateJob();
-            jobVM.Name = "Job di prova 1";
-            jobVM.Description = "Job di prova creato con UI service.";
-            jobVM.FailIfAnyTaskHasError = true;
-            var jobId = engineUIService.CreateNewJob(jobVM);
-
-            Assert.IsNotNull(jobId);
-
-            // Edit
-            var jobEditVM = engineUIService.GetEditJob(jobId);
-            jobEditVM.Description = "Job di prova creato con UI service (modificato).";
-            engineUIService.EditJob(jobId, jobEditVM);
-
-            // Get
-            var job = engineUIService.GetJobs().FirstOrDefault(j=>j.Id == jobId);
-
-            Assert.AreEqual(job.Description, "Job di prova creato con UI service (modificato).");
-
-            // Logical delete
-            engineUIService.DeleteJob(jobId);
-        }
-
-        [TestMethod()]
-        public void TaskMethodsTest()
-        {
-            // Get the service
-            var engineUIService = serviceProvider.GetService<IEngineUIService>();
-
-            // Create
+            // Create job
             var jobVM = engineUIService.GetCreateJob();
             jobVM.Name = "Job di prova 2";
             jobVM.Description = "Job di prova creato con UI service e contenente un task.";
             jobVM.FailIfAnyTaskHasError = true;
             var jobId = engineUIService.CreateNewJob(jobVM);
 
+            // Edit Job
+            var jobEditVM = engineUIService.GetEditJob(jobId);
+            jobEditVM.Description = "Job di prova creato con UI service (modificato).";
+            engineUIService.EditJob(jobId, jobEditVM);
+
+            // Create task
             var taskVM = engineUIService.GetCreateTask();
             taskVM.Name = "Task di prova 2";
             taskVM.Description = "Task di prova creato con UI service.";
             var taskId = engineUIService.CreateNewTask(taskVM);
 
+            // Add task to job
             engineUIService.AddTaskToJob(jobId, taskId);
+
+            // Edit the task
+            var taskEditVM = engineUIService.GetEditTask(taskId);
+            taskEditVM.Description = "Task di prova creato con UI service (modificato).";
+            engineUIService.EditTask(taskId, taskEditVM);
+
+            // Create Element 1
+            var element1 = engineUIService.GetCreateElement();
         }
+
 
         [TestInitialize]
         public void Init()

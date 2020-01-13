@@ -39,6 +39,9 @@ namespace bS.Sked2.Extensions.Common.FlatFile
 
         public override string Key => "FlatFileReader";
         public static string KeyConst => "FlatFileReader";
+        public static string Name => "Flat File Reader";
+        public static string Description => "Reads data from a flat file and returns a Table Data Value";
+
 
         /// <summary>
         /// Starts this instance. In derived class you have to execute this base before your overrided code.

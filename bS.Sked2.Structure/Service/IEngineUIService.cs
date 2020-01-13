@@ -40,6 +40,19 @@ namespace bS.Sked2.Structure.Service
         void EditElement(Guid elementId, IElementDefinitionEdit elementDefinition);
 
         /// <summary>
+        /// Gets the creation view model for the element.
+        /// </summary>
+        /// <returns></returns>
+        IElementDefinitionCreate GetCreateElement();
+
+        /// <summary>
+        /// Gets the edit task.
+        /// </summary>
+        /// <param name="taskId">The task identifier.</param>
+        /// <returns></returns>
+        ITaskDefinitionEdit GetEditTask(Guid taskId);
+
+        /// <summary>
         /// Gets the elements in the Task.
         /// </summary>
         /// <param name="taskId">The task identifier.</param>
@@ -52,12 +65,6 @@ namespace bS.Sked2.Structure.Service
         /// <param name="taskId">The task identifier.</param>
         /// <returns></returns>
         IEnumerable<IElementDefinitionPreview> GetElementsPreview(Guid taskId);
-
-        /// <summary>
-        /// Gets the new element view model for creation.
-        /// </summary>
-        /// <returns></returns>
-        IElementDefinitionCreate GetNewElement();
 
         /// <summary>
         /// Moves the element down.
@@ -140,19 +147,13 @@ namespace bS.Sked2.Structure.Service
         /// </summary>
         /// <param name="taskId">The task identifier.</param>
         /// <param name="taskDefinition">The task definition.</param>
-        void EditTask(Guid taskId, IElementDefinitionEdit taskDefinition);
+        void EditTask(Guid taskId, ITaskDefinitionEdit taskDefinition);
 
         /// <summary>
         /// Gets the create task.
         /// </summary>
         /// <returns></returns>
         ITaskDefinitionCreate GetCreateTask();
-
-        /// <summary>
-        /// Gets the new task.
-        /// </summary>
-        /// <returns></returns>
-        ITaskDefinitionCreate GetNewTask();
 
         /// <summary>
         /// Gets the tasks.
@@ -225,7 +226,6 @@ namespace bS.Sked2.Structure.Service
         /// </summary>
         /// <returns></returns>
         IJobDefinitionCreate GetCreateJob();
-        
 
         /// <summary>
         /// Gets the edit job.
@@ -304,7 +304,7 @@ namespace bS.Sked2.Structure.Service
         /// Gets the new module.
         /// </summary>
         /// <returns></returns>
-        IModuleDefinitionCreate GetNewModule();
+        IModuleDefinitionCreate GetCreateModule();
 
         #endregion Modules
 
@@ -334,7 +334,7 @@ namespace bS.Sked2.Structure.Service
         /// Gets the new trigger.
         /// </summary>
         /// <returns></returns>
-        ITriggerDefinitionCreate GetNewTrigger();
+        ITriggerDefinitionCreate GetCreateTrigger();
 
         /// <summary>
         /// Gets the triggers.

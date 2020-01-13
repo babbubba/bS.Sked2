@@ -36,6 +36,8 @@ namespace bS.Sked2.Extensions.Common.FlatFile
 
         public override string Key => "FlatFileWriter";
         public static string KeyConst => "FlatFileWriter";
+        public static string Name => "Flat File Writer";
+        public static string Description => "Writes data from a Table Data Value in a flat file";
 
 
         /// <summary>
