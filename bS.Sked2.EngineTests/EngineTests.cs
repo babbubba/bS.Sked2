@@ -76,57 +76,59 @@ namespace bS.Sked2.Engine.Tests
             var engine = new Engine(Mock.Of<ILogger<Engine>>(), dbContext);
             engine.Init();
 
+            JobEntry jobEntry = null;
             //Create entities to test
-            uow.BeginTransaction();
-
-            //Job
-            JobEntry jobEntry = GetJobEntry();
-            engineRepository.CreateJob(jobEntry);
-
-            //Task
-            TaskEntry taskEntry = GetTaskEntry();
-            taskEntry.ParentJob = jobEntry;
-            engineRepository.CreateTask(taskEntry);
-
-            //Module Common
-            var commonModuleEntry = new CommonModuleEntry();
-            commonModuleEntry.InputProperties.FirstOrDefault(x => x.Key == "WorkspacePath").Value = @"<string>.\</string>";
-            engineRepository.CreateModule(commonModuleEntry);
-
-
-            //first
-            var elementFlatileReaderEntry = GetFlatFileReaderEntry();
-            elementFlatileReaderEntry.ParentTask = taskEntry;
-            elementFlatileReaderEntry.Position = 1;
-            elementFlatileReaderEntry.ParentModule = commonModuleEntry;
-            engineRepository.CreateElement(elementFlatileReaderEntry);
-
-            //second
-            var elementFlatFileWriterEntry = GetFlatFileWriterEntry();
-            elementFlatFileWriterEntry.ParentTask = taskEntry;
-            elementFlatFileWriterEntry.Position = 3;
-            elementFlatFileWriterEntry.ParentModule = commonModuleEntry;
-            engineRepository.CreateElement(elementFlatFileWriterEntry);
-
-            //link
-            var linkElement = new ElementsLinkEntry(elementFlatileReaderEntry, elementFlatFileWriterEntry);
-            linkElement.ParentTask = taskEntry;
-            linkElement.Mappings.Add(new ElementsMappingEntry
+            using (var transaction = uow.BeginTransaction())
             {
-                InputPropertyKey = "Table",
-                OutputPropertyKey = "Table",
-                ParentLink = linkElement
-            });
-            linkElement.Position = 2;
 
-            engineRepository.CreateElement(linkElement);
+                //Job
+                jobEntry = GetJobEntry();
+                engineRepository.CreateJob(jobEntry);
 
-            taskEntry.Elements.Add(elementFlatileReaderEntry);
-            taskEntry.Elements.Add(linkElement);
-            taskEntry.Elements.Add(elementFlatFileWriterEntry);
+                //Task
+                TaskEntry taskEntry = GetTaskEntry();
+                taskEntry.ParentJob = jobEntry;
+                engineRepository.CreateTask(taskEntry);
 
-            jobEntry.Tasks.Add(taskEntry);
-            uow.Commit();
+                //Module Common
+                var commonModuleEntry = new CommonModuleEntry();
+                commonModuleEntry.InputProperties.FirstOrDefault(x => x.Key == "WorkspacePath").Value = @"<string>.\</string>";
+                engineRepository.CreateModule(commonModuleEntry);
+
+
+                //first
+                var elementFlatileReaderEntry = GetFlatFileReaderEntry();
+                elementFlatileReaderEntry.ParentTask = taskEntry;
+                elementFlatileReaderEntry.Position = 1;
+                elementFlatileReaderEntry.ParentModule = commonModuleEntry;
+                engineRepository.CreateElement(elementFlatileReaderEntry);
+
+                //second
+                var elementFlatFileWriterEntry = GetFlatFileWriterEntry();
+                elementFlatFileWriterEntry.ParentTask = taskEntry;
+                elementFlatFileWriterEntry.Position = 3;
+                elementFlatFileWriterEntry.ParentModule = commonModuleEntry;
+                engineRepository.CreateElement(elementFlatFileWriterEntry);
+
+                //link
+                var linkElement = new ElementsLinkEntry(elementFlatileReaderEntry, elementFlatFileWriterEntry);
+                linkElement.ParentTask = taskEntry;
+                linkElement.Mappings.Add(new ElementsMappingEntry
+                {
+                    InputPropertyKey = "Table",
+                    OutputPropertyKey = "Table",
+                    ParentLink = linkElement
+                });
+                linkElement.Position = 2;
+
+                engineRepository.CreateElement(linkElement);
+
+                taskEntry.Elements.Add(elementFlatileReaderEntry);
+                taskEntry.Elements.Add(linkElement);
+                taskEntry.Elements.Add(elementFlatFileWriterEntry);
+
+                jobEntry.Tasks.Add(taskEntry);
+            }
             
             engine.ExecuteJob(jobEntry.Id);
 

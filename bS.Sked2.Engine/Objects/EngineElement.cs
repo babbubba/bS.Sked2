@@ -111,13 +111,13 @@ namespace bS.Sked2.Engine.Objects
         /// </summary>
         public override void Pause()
         {
-            uow.BeginTransaction();
+            using (var transaction = uow.BeginTransaction())
+            {
 
-            instance.IsPaused = true;
+                instance.IsPaused = true;
 
-            AddMessage("Element execution paused.");
-
-            uow.Commit();
+                AddMessage("Element execution paused.");
+            }
         }
 
         /// <summary>
@@ -275,17 +275,15 @@ namespace bS.Sked2.Engine.Objects
         /// </summary>
         public override void Start()
         {
-            uow.BeginTransaction();
+            using (var transaction = uow.BeginTransaction())
+            {
+                                                             // Set the execution begin time
+                instance.BeginTime = DateTime.Now;
 
-            
+                // Add current instance to entry
+                elementEntry.Instances.Add(instance);
 
-            // Set the execution begin time
-            instance.BeginTime = DateTime.Now;
-
-            // Add current instance to entry
-            elementEntry.Instances.Add(instance);
-
-            uow.Commit();
+            }
 
             // Add a message to notify the element started
             AddMessage("Element execution started.");
@@ -296,15 +294,15 @@ namespace bS.Sked2.Engine.Objects
         /// </summary>
         public override void Stop()
         {
-            uow.BeginTransaction();
+            using (var transaction = uow.BeginTransaction())
+            {
+                // It set paused value to false in case this element was paused previously
+                instance.IsPaused = false;
 
-            // It set paused value to false in case this element was paused previously
-            instance.IsPaused = false;
+                // instance this element finish time
+                instance.EndTime = DateTime.Now;
+            }
 
-            // instance this element finish time
-            instance.EndTime = DateTime.Now;
-
-            uow.Commit();
             // Add a message to notify the element finish execution
             AddMessage("Element execution finish.");
         }

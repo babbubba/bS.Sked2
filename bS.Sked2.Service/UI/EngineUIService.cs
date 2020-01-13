@@ -38,19 +38,19 @@ namespace bS.Sked2.Service.UI
 
         public bool AddTaskToJob(Guid jobId, Guid taskId)
         {
-            uow.BeginTransaction();
             try
             {
-                var jobEntry = engineRepository.GetJobById(jobId);
-                var taskEntry = engineRepository.GetTaskById(taskId);
-                jobEntry.Tasks.Add(taskEntry);
-                taskEntry.ParentJob = jobEntry;
-                uow.Commit();
+                using (var transaction = uow.BeginTransaction())
+                {
+                    var jobEntry = engineRepository.GetJobById(jobId);
+                    var taskEntry = engineRepository.GetTaskById(taskId);
+                    jobEntry.Tasks.Add(taskEntry);
+                    taskEntry.ParentJob = jobEntry;
+                }
             }
             catch (Exception ex)
             {
                 logger.LogError($"Error adding task {taskId.ToString()} to job {jobId.ToString()}.", ex);
-                uow.Rollback();
                 return false;
             }
 
@@ -81,8 +81,6 @@ namespace bS.Sked2.Service.UI
         /// <returns></returns>
         public Guid CreateNewJob(IJobDefinitionCreate jobDefinition)
         {
-            uow.BeginTransaction();
-
             var jobEntity = new JobEntry
             {
                 Description = jobDefinition.Description,
@@ -93,9 +91,10 @@ namespace bS.Sked2.Service.UI
                 Position = engineRepository.GetJobs().Select(j => j.Position).DefaultIfEmpty().Max() + 1
             };
 
-            engineRepository.CreateJob(jobEntity);
-
-            uow.Commit();
+            using (var transaction = uow.BeginTransaction())
+            {
+                engineRepository.CreateJob(jobEntity);
+            }
 
             return jobEntity.Id;
         }
@@ -112,8 +111,6 @@ namespace bS.Sked2.Service.UI
 
         public Guid CreateNewTask(ITaskDefinitionCreate taskDefinition)
         {
-            uow.BeginTransaction();
-
             var taskEntity = new TaskEntry
             {
                 Description = taskDefinition.Description,
@@ -124,9 +121,11 @@ namespace bS.Sked2.Service.UI
                 Position = engineRepository.GetTasks().Select(t => t.Position).DefaultIfEmpty().Max() + 1
             };
 
-            engineRepository.CreateTask(taskEntity);
+            using (var transaction = uow.BeginTransaction())
+            {
+                engineRepository.CreateTask(taskEntity);
 
-            uow.Commit();
+            }
 
             return taskEntity.Id;
         }
@@ -143,19 +142,19 @@ namespace bS.Sked2.Service.UI
 
         public void DeleteJob(Guid jobId)
         {
-            uow.BeginTransaction();
-            var entry = engineRepository.GetJobById(jobId);
-            entry.IsDeleted = true;
-            foreach (var task in entry.Tasks)
+            using (var transaction = uow.BeginTransaction())
             {
-                task.IsDeleted = true;
-                foreach (var element in task.Elements)
+                var entry = engineRepository.GetJobById(jobId);
+                entry.IsDeleted = true;
+                foreach (var task in entry.Tasks)
                 {
-                    element.IsDeleted = true;
+                    task.IsDeleted = true;
+                    foreach (var element in task.Elements)
+                    {
+                        element.IsDeleted = true;
+                    }
                 }
             }
-
-            uow.Commit();
         }
 
         public void DeleteLink(Guid linkID)
@@ -185,15 +184,16 @@ namespace bS.Sked2.Service.UI
         /// <param name="jobDefinition">The job definition.</param>
         public void EditJob(Guid jobId, IJobDefinitionEdit jobDefinition)
         {
-            uow.BeginTransaction();
-            var job = engineRepository.GetJobById(jobId);
-            job.Name = jobDefinition.Name;
-            job.Description = jobDefinition.Description;
-            job.FailIfAnyTaskHasError = jobDefinition.FailIfAnyTaskHasError;
-            job.FailIfAnyTaskHasWarning = jobDefinition.FailIfAnyTaskHasWarning;
-            job.IsEnabled = jobDefinition.IsEnabled;
-            engineRepository.UpdateJob(job);
-            uow.Commit();
+            using (var transaction = uow.BeginTransaction())
+            {
+                var job = engineRepository.GetJobById(jobId);
+                job.Name = jobDefinition.Name;
+                job.Description = jobDefinition.Description;
+                job.FailIfAnyTaskHasError = jobDefinition.FailIfAnyTaskHasError;
+                job.FailIfAnyTaskHasWarning = jobDefinition.FailIfAnyTaskHasWarning;
+                job.IsEnabled = jobDefinition.IsEnabled;
+                engineRepository.UpdateJob(job);
+            }
         }
 
         public void EditLink(Guid linkID, ILinkDefinitionEdit linkDefinition)
@@ -315,7 +315,7 @@ namespace bS.Sked2.Service.UI
             return engineRepository.GetTasks()
                .Where(t => !t.IsDeleted && t.IsEnabled)
                .OrderBy(t => t.Position)
-               .Select( t=> new TaskDefinitionDetailViewModel
+               .Select(t => new TaskDefinitionDetailViewModel
                {
                    Id = t.Id,
                    Description = t.Description,

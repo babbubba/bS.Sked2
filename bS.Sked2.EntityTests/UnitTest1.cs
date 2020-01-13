@@ -30,18 +30,19 @@ namespace bS.Sked2.EntityTests
         public void TestMethod1()
         {
             IUnitOfWork uOW = CreateUnitOfWork_Sqlite(); 
-            var repository = new TestRepository(uOW); 
+            var repository = new TestRepository(uOW);
 
             #region Create Entity
-            uOW.BeginTransaction();
-            var entityToCreate = new FlatFileReaderEntry();
+            using (var transaction = uOW.BeginTransaction())
+            {
+                var entityToCreate = new FlatFileReaderEntry();
 
-            entityToCreate.InputProperties.FirstOrDefault(x => x.Key == "ColumnDelimiter").Value = "<char>44</char>";
-            entityToCreate.InputProperties.FirstOrDefault(x => x.Key == "FirstRowHasHeader").Value = "<boolean>false</boolean>";
-            entityToCreate.InputProperties.FirstOrDefault(x => x.Key == "SourceFilePath").Value = @"<string>.\TestDataFiles\provincia-regione-sigla.csv</string>";
+                entityToCreate.InputProperties.FirstOrDefault(x => x.Key == "ColumnDelimiter").Value = "<char>44</char>";
+                entityToCreate.InputProperties.FirstOrDefault(x => x.Key == "FirstRowHasHeader").Value = "<boolean>false</boolean>";
+                entityToCreate.InputProperties.FirstOrDefault(x => x.Key == "SourceFilePath").Value = @"<string>.\TestDataFiles\provincia-regione-sigla.csv</string>";
 
-            repository.Create(entityToCreate);
-            uOW.Commit();
+                repository.Create(entityToCreate);
+            }
             #endregion
         }
     }

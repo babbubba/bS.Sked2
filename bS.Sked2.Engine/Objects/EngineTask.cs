@@ -102,11 +102,12 @@ namespace bS.Sked2.Engine.Objects
         /// </summary>
         public override void Pause()
         {
-            uow.BeginTransaction();
+            using (var transaction = uow.BeginTransaction())
+            {
 
-            instance.IsPaused = true;
+                instance.IsPaused = true;
 
-            uow.Commit();
+            }
 
             AddMessage("Task execution paused.");
         }
@@ -116,18 +117,19 @@ namespace bS.Sked2.Engine.Objects
         /// </summary>
         public override void Start()
         {
-            uow.BeginTransaction();
+            using (var transaction = uow.BeginTransaction())
+            {
 
-            // Create the instance ID for this element
-            instance = engineRepository.CreateNewInstance();
+                // Create the instance ID for this element
+                instance = engineRepository.CreateNewInstance();
 
-            // Set the execution begin time
-            instance.BeginTime = DateTime.Now;
+                // Set the execution begin time
+                instance.BeginTime = DateTime.Now;
 
-            // Add current instance to entry
-            taskEntry.Instances.Add(instance);
+                // Add current instance to entry
+                taskEntry.Instances.Add(instance);
 
-            uow.Commit();
+            }
 
             // Add a message to notify the element started
             AddMessage("Task execution started.");
@@ -178,18 +180,19 @@ namespace bS.Sked2.Engine.Objects
         /// </summary>
         public override void Stop()
         {
-            uow.BeginTransaction();
+            using (var transaction = uow.BeginTransaction())
+            {
 
-            // It set paused value to false in case this element was paused previously
-            instance.IsPaused = false;
+                // It set paused value to false in case this element was paused previously
+                instance.IsPaused = false;
 
-            // Set this element finish time
-            instance.EndTime = DateTime.Now;
+                // Set this element finish time
+                instance.EndTime = DateTime.Now;
 
-            // Add a message to notify the element finish execution
-            AddMessage("Task execution finish.");
+                // Add a message to notify the element finish execution
+                AddMessage("Task execution finish.");
 
-            uow.Commit();
+            }
         }
 
         /// <summary>
@@ -256,7 +259,7 @@ namespace bS.Sked2.Engine.Objects
 
 
             // fetch all entities element
-            foreach (var elementEntry in taskEntry.Elements.OrderBy(e=>e.Position))
+            foreach (var elementEntry in taskEntry.Elements.OrderBy(e => e.Position))
             {
                 // finding parent module in current loaded modules (not all element have a parent module)
                 if (elementEntry.ParentModule != null && !modules.ContainsKey(elementEntry.ParentModule.Id))

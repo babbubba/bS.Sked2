@@ -49,36 +49,38 @@ namespace bS.Sked2.Extensions.Common.FlatFile
 
             try
             {
-                var storageService = ((Common)ParentEngineModule).StorageService;
+                using (var transaction = uow.BeginTransaction())
+                {
+                    var storageService = ((Common)ParentEngineModule).StorageService;
 
-                // Get parameters
-                //var sourceFilePath = GetDataValue(EngineDataDirection.Input, "SourceFilePath").Get<string>();
-                var sourceFilePath = GetDataValue(EngineDataDirection.Input, "SourceFilePath").Get<VirtualPath>();
-                var skipStartingDataRows = GetDataValue(EngineDataDirection.Input, "SkipStartingDataRows").GetNullable<int>();
-                var firstRowHasHeader = GetDataValue(EngineDataDirection.Input, "FirstRowHasHeader").Get<bool>();
-                var columnDelimiter = GetDataValue(EngineDataDirection.Input, "ColumnDelimiter").Get<char>();
-                var limitToRows = GetDataValue(EngineDataDirection.Input, "LimitToRows").GetNullable<int>();
+                    // Get parameters
+                    //var sourceFilePath = GetDataValue(EngineDataDirection.Input, "SourceFilePath").Get<string>();
+                    var sourceFilePath = GetDataValue(EngineDataDirection.Input, "SourceFilePath").Get<VirtualPath>();
+                    var skipStartingDataRows = GetDataValue(EngineDataDirection.Input, "SkipStartingDataRows").GetNullable<int>();
+                    var firstRowHasHeader = GetDataValue(EngineDataDirection.Input, "FirstRowHasHeader").Get<bool>();
+                    var columnDelimiter = GetDataValue(EngineDataDirection.Input, "ColumnDelimiter").Get<char>();
+                    var limitToRows = GetDataValue(EngineDataDirection.Input, "LimitToRows").GetNullable<int>();
 
-                //Start parsing file
-                AddMessage("Configuring parser to read file", MessageSeverity.Debug);
-                var parser = new GenericParserAdapter(storageService.FileOpenTextReader(sourceFilePath));
-                parser.SkipStartingDataRows = skipStartingDataRows ?? 0;
-                parser.FirstRowHasHeader = firstRowHasHeader;
-                parser.ColumnDelimiter = columnDelimiter;
-                parser.MaxRows = limitToRows ?? 0;
-                var table = new TableValue();
+                    //Start parsing file
+                    AddMessage("Configuring parser to read file", MessageSeverity.Debug);
+                    var parser = new GenericParserAdapter(storageService.FileOpenTextReader(sourceFilePath));
+                    parser.SkipStartingDataRows = skipStartingDataRows ?? 0;
+                    parser.FirstRowHasHeader = firstRowHasHeader;
+                    parser.ColumnDelimiter = columnDelimiter;
+                    parser.MaxRows = limitToRows ?? 0;
+                    var table = new TableValue();
 
-                AddMessage($"Begin parsing file: '{sourceFilePath}'.", MessageSeverity.Debug);
-                table.Set(parser.GetDataTable());
+                    AddMessage($"Begin parsing file: '{sourceFilePath}'.", MessageSeverity.Debug);
+                    table.Set(parser.GetDataTable());
 
-                AddMessage($"Setting output value in element.", MessageSeverity.Debug);
-                SetDataValue(EngineDataDirection.Output, "Table", table);
+                    AddMessage($"Setting output value in element.", MessageSeverity.Debug);
+                    SetDataValue(EngineDataDirection.Output, "Table", table);
 
-                AddMessage($"Releasing unnecessary resources.", MessageSeverity.Debug);
-                parser.Dispose();
+                    AddMessage($"Releasing unnecessary resources.", MessageSeverity.Debug);
+                    parser.Dispose();
 
-                AddMessage($"Parsing file completed. {table.RowCount} read.", MessageSeverity.Debug);
-                uow.Commit();                
+                    AddMessage($"Parsing file completed. {table.RowCount} read.", MessageSeverity.Debug);
+                }             
             }
             catch (Exception e)
             {

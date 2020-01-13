@@ -40,9 +40,10 @@ namespace bS.Sked2.Service.Message
 
         public void SaveMessage(IMessageEntry message)
         {
-            uow.BeginTransaction();
-            messageRepository.CreateMessage(message);
-            uow.Commit();
+            using (var transaction = uow.BeginTransaction())
+            {
+                messageRepository.CreateMessage(message);
+            }
         }
     }
 }
