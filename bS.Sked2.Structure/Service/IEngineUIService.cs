@@ -344,4 +344,5 @@ namespace bS.Sked2.Structure.Service
 
         #endregion Triggers
     }
+
 }

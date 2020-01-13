@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Linq;
+using bS.Sked2.Model.Service;
 
 namespace bS.Sked2.Service.UI.Tests
 {
@@ -70,11 +71,17 @@ namespace bS.Sked2.Service.UI.Tests
                 EntitiesFileNameScannerPatterns = new string[] { "bS.Sked2.Extensions.*.dll", "bS.Sked2.Model.dll" }
             };
 
+            var engineUiServiceConfigx = new EngineUIServiceConfig
+            {
+                ExtensionsFolder = @"c:\temp\"
+            };
+
             services.AddSingleton(Mock.Of<ILogger>());
             services.AddSingleton<IDbContext>(dbContext);
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IEngineRepository, EngineRepository>();
-            services.AddSingleton<IEngineUIService, EngineUIService>();
+            services.AddSingleton<IEngineUIServiceConfig>(engineUiServiceConfigx);
+            services.AddTransient<IEngineUIService, EngineUIService>();
             serviceProvider = services.BuildServiceProvider();
         }
     }

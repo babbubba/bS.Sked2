@@ -86,5 +86,33 @@ namespace bS.Sked2.Shared
                 .Where(a => typeof(TInterface).IsAssignableFrom(a) && !a.IsAbstract && !a.IsInterface);
             return types;
         }
+
+        /// <summary>
+        /// Gets the types implementing interface from dll files present in specified folders.
+        /// </summary>
+        /// <typeparam name="TInterface">The type of the interface.</typeparam>
+        /// <param name="foldersToSearchrDlls">The folders to searchr dll files.</param>
+        /// <param name="searchInSubFolders">if set to <c>true</c> [search in sub folders].</param>
+        /// <returns></returns>
+        public static IEnumerable<Type> GetTypesImplementingInterface<TInterface>(string[] foldersToSearchrDlls, bool searchInSubFolders = false)
+        {
+            var dllFiles = new List<string>();
+
+            // For every folder
+            if (foldersToSearchrDlls != null)
+            {
+                foreach (var folder in foldersToSearchrDlls)
+                {
+                    // add candidated file
+                    dllFiles.AddRange(Directory.EnumerateFiles(folder, "*.dll", searchInSubFolders ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly));
+                }
+            }
+
+            return dllFiles
+                  .Select(Assembly.LoadFrom)
+                  .Where(a => !a.FullName.Contains("Microsoft"))
+                  .SelectMany(a => a.GetTypes())
+                .Where(a => typeof(TInterface).IsAssignableFrom(a) && !a.IsAbstract && !a.IsInterface);
+        }
     }
 }

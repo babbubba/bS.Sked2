@@ -16,15 +16,18 @@ namespace bS.Sked2.Service.UI
     public partial class EngineUIService : ServiceBase, IEngineUIService
     {
         private readonly IEngineRepository engineRepository;
+        private readonly IEngineUIServiceConfig configuration;
         private readonly IUnitOfWork uow;
 
         public EngineUIService(
             ILogger logger,
             IUnitOfWork uow,
-            IEngineRepository engineRepository) : base(logger)
+            IEngineRepository engineRepository,
+            IEngineUIServiceConfig configuration) : base(logger)
         {
             this.uow = uow;
             this.engineRepository = engineRepository;
+            this.configuration = configuration;
         }
 
         #region Elements
@@ -61,7 +64,7 @@ namespace bS.Sked2.Service.UI
 
         private IEnumerable<IElementType> GetElementTypes()
         {
-            return AssembliesExtensions.GetTypesImplementingInterface<IEngineElement>()
+            return AssembliesExtensions.GetTypesImplementingInterface<IEngineElement>( new string[] { configuration.ExtensionsFolder }, true)
                       .Select(ed => new ElementTypeViewModel
                       {
                           Key = (string)ed.GetProperty("KeyConst")?.GetValue(ed),
