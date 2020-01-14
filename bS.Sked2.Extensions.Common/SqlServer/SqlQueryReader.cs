@@ -4,6 +4,7 @@ using bS.Sked2.Extensions.Common.Models;
 using bS.Sked2.Structure.Base;
 using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Engine.Data;
+using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
 using bS.Sked2.Structure.Service.Messages;
@@ -34,16 +35,13 @@ namespace bS.Sked2.Extensions.Common.SqlServer
         public override string Key => "SqlQueryReader";
         public static string KeyConst => "SqlQueryReader";
 
+        public static string Name => "Sql Query Reader";
+        public static string Description => "This elements read data form a SQL Server query and returns a Table value.";
 
-        //public override void LoadFromEntity(Guid EntityId)
-        //{
-        //    elementEntry = engineRepository.GetElementById(EntityId);
-        //    var entity = (SqlQueryReaderEntry)elementEntry;
-
-        //    // set data properties from entity
-        //    SetDataValue(EngineDataDirection.Input, "ConnectionString", new StringValue(entity.ConnectionString));
-        //    SetDataValue(EngineDataDirection.Input, "SqlQuery", new StringValue(entity.SqlQuery));
-        //}
+        public override IElementEntry GetEmptyEntity()
+        {
+            return new SqlQueryReaderEntry();
+        }
 
         public override void Start()
         {

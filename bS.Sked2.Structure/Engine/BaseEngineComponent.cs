@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using bS.Sked2.Structure.Base.Exceptions;
 using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Service;
 using bS.Sked2.Structure.Service.Messages;
@@ -121,5 +122,13 @@ namespace bS.Sked2.Structure.Engine
         /// </summary>
         /// <param name="EntityId">The entity identifier.</param>
         public abstract void LoadFromEntity(Guid EntityId);
+
+        public virtual IElementEntry GetEmptyEntity()
+        {
+            throw new EngineException(logger, "This engine component has to implement the 'GetEmptyEntity' in its final class!"); ;
+        }
+
+
+
     }
 }

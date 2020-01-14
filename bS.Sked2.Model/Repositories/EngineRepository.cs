@@ -70,6 +70,11 @@ namespace bS.Sked2.Model.Repositories
             return base.GetAll<TaskEntry>();
         }
 
+        public IEnumerable<IElementEntry> GetElements()
+        { 
+            return base.GetAll<ElementEntry>();
+        }
+
         public void UpdateJob(IJobEntry jobEntry)
         {
             base.Update((JobEntry)jobEntry);

@@ -1,8 +1,6 @@
-﻿using bS.Sked2.Service.UI;
-using bs.Data;
+﻿using bs.Data;
 using bs.Data.Interfaces;
 using bS.Sked2.Model.Repositories;
-using bS.Sked2.Model.UI;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +9,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Linq;
 using bS.Sked2.Model.Service;
+using bS.Sked2.Structure.Engine;
+using bS.Sked2.Model.Engine;
 
 namespace bS.Sked2.Service.UI.Tests
 {
@@ -22,7 +22,10 @@ namespace bS.Sked2.Service.UI.Tests
         [TestMethod()]
         public void CreationAndEditTest()
         {
-            // Get the service
+            // Get the services
+            var engine = serviceProvider.GetService<IEngine>();
+            engine.Init();
+
             var engineUIService = serviceProvider.GetService<IEngineUIService>();
 
             // Create job
@@ -52,7 +55,14 @@ namespace bS.Sked2.Service.UI.Tests
             engineUIService.EditTask(taskId, taskEditVM);
 
             // Create Element 1
-            var element1 = engineUIService.GetCreateElement();
+            var element1VM = engineUIService.GetCreateElement();
+            element1VM.Name = "Read CSV File";
+            element1VM.Description = "Read teh CSV file with the cities.";
+            element1VM.ElementTypeKey = element1VM.ElementTypesList.First(etp => etp.Key == "FlatFileReader").Key;
+            element1VM.ParentTaskId = taskId;
+            var element1Id = engineUIService.CreateNewElement(element1VM);
+
+
         }
 
 
@@ -73,13 +83,20 @@ namespace bS.Sked2.Service.UI.Tests
 
             var engineUiServiceConfigx = new EngineUIServiceConfig
             {
-                ExtensionsFolder = @"c:\temp\"
+                ExtensionsFolder = @"..\..\..\..\bS.Sked2.Extensions.Common\bin\Debug\netcoreapp3.0\"
+            };
+
+            var engineConfig = new EngineConfig
+            {
+                ExtensionsFolder = @"..\..\..\..\bS.Sked2.Extensions.Common\bin\Debug\netcoreapp3.0\"
             };
 
             services.AddSingleton(Mock.Of<ILogger>());
             services.AddSingleton<IDbContext>(dbContext);
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IEngineRepository, EngineRepository>();
+            services.AddSingleton<IEngineConfig>(engineConfig);
+            services.AddSingleton<IEngine, Engine.Engine>();
             services.AddSingleton<IEngineUIServiceConfig>(engineUiServiceConfigx);
             services.AddTransient<IEngineUIService, EngineUIService>();
             serviceProvider = services.BuildServiceProvider();

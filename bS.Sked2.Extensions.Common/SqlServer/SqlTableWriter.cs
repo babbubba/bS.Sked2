@@ -4,6 +4,7 @@ using bS.Sked2.Extensions.Common.Models;
 using bS.Sked2.Structure.Base;
 using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Engine.Data;
+using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
 using bS.Sked2.Structure.Service.Messages;
@@ -19,20 +20,6 @@ namespace bS.Sked2.Extensions.Common.SqlServer
 {
     public class SqlTableWriter : EngineElement
     {
-        //public SqlTableWriter(ILogger logger, IMessageService messageService) : base(logger, messageService)
-        //{
-        //    // Config the element
-        //    Key = "SqlWriter";
-        //    Name = "SQL Writer";
-        //    Description = "This elements insert TableValue to a SQL Server table.";
-
-        //    // Register element properties
-        //    RegisterInputProperties("ConnectionString", "Sql Server Connection String", DataType.String, true);
-        //    RegisterInputProperties("SqlTable", "Sql destination table", DataType.String, true);
-        //    RegisterInputProperties("ColumnsMapping", "Columns Mapping", DataType.Collection);
-        //    RegisterInputProperties("SourceTable", "Source TableValue", DataType.Table, true);
-        //}
-
         public SqlTableWriter(IUnitOfWork uow, IEngineRepository enginRepo, ILogger logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
             // Register element properties
@@ -44,27 +31,13 @@ namespace bS.Sked2.Extensions.Common.SqlServer
 
         public override string Key => "SqlTableWriter";
         public static string KeyConst => "SqlTableWriter";
+        public static string Name => "Sql Table Writer";
+        public static string Description => "This elements insert a Table Data Value into a SQL Server table.";
 
-
-
-        //public override void LoadFromEntity(Guid EntityId)
-        //{
-        //    elementEntry = engineRepository.GetElementById(EntityId);
-        //    // set data properties from entity!!!
-        //    //SqlTableWriterEntry
-        //    var entity = (SqlTableWriterEntry)elementEntry;
-
-        //    // set data properties from entity
-        //    SetDataValue(EngineDataDirection.Input, "ConnectionString", new StringValue(entity.ConnectionString));
-        //    SetDataValue(EngineDataDirection.Input, "SqlTable", new StringValue(entity.SqlTable));
-        //    var columnsMapping = new List<IEngineData>();
-        //    foreach (var row in entity.ColumnsMapping.Split("|!*&$%!|"))
-        //    {
-        //        var cells = row.Split("|!@#§!|");
-        //        columnsMapping.Add( new DictionaryEntryValue(cells[0], cells[1]));
-        //    }
-        //    SetDataValue(EngineDataDirection.Input, "ColumnsMapping", new CollectionValue(columnsMapping));
-        //}
+        public override IElementEntry GetEmptyEntity()
+        {
+            return new SqlTableWriterEntry();
+        }
 
         public override void Start()
         {

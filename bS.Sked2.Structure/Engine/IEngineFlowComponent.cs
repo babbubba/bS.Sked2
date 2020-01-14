@@ -1,4 +1,5 @@
-﻿using bS.Sked2.Structure.Service.Messages;
+﻿using bS.Sked2.Structure.Models;
+using bS.Sked2.Structure.Service.Messages;
 using System;
 
 namespace bS.Sked2.Structure.Engine
@@ -68,6 +69,7 @@ namespace bS.Sked2.Structure.Engine
         /// </summary>
         /// <param name="EntityId">The entity identifier.</param>
         void LoadFromEntity(Guid EntityId);
+        IElementEntry GetEmptyEntity();
 
         /// <summary>
         /// Pauses this instance.

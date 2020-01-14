@@ -1,4 +1,5 @@
-﻿using bS.Sked2.Model;
+﻿using bS.Sked2.Extensions.Common.FlatFile;
+using bS.Sked2.Model;
 using bS.Sked2.Structure.Engine;
 using FluentNHibernate.Mapping;
 
@@ -8,9 +9,13 @@ namespace bS.Sked2.Extensions.Common.Models
     {
         public FlatFileWriterEntry()
         {
-            Key = "FlatFileWriter";
-            Name = "Flat File Writer";
-            Description = "This elements write a flat file (like CSV) from a Table value.";
+            //Key = "FlatFileWriter";
+            //Name = "Flat File Writer";
+            //Description = "This elements write a flat file (like CSV) from a Table value.";
+
+            Key = FlatFileWriter.KeyConst;
+            Name = FlatFileWriter.Name;
+            Description = FlatFileWriter.Description;
 
             InputProperties.Add(new ElementPropertyEntry("TargetFilePath", "Target file path", DataType.VirtualPath, true));
             InputProperties.Add(new ElementPropertyEntry("ColumnDelimiter", "Column char delimite", DataType.Char, true));

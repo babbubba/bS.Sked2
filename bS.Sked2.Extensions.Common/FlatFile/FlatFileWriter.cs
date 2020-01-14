@@ -39,7 +39,10 @@ namespace bS.Sked2.Extensions.Common.FlatFile
         public static string Name => "Flat File Writer";
         public static string Description => "Writes data from a Table Data Value in a flat file";
 
-
+        public override IElementEntry GetEmptyEntity()
+        {
+            return new FlatFileWriterEntry();
+        }
         /// <summary>
         /// Starts this instance. In derived class you have to execute this base before your overrided code.
         /// </summary>

@@ -3,6 +3,7 @@ using bS.Sked2.Model.UI;
 using bS.Sked2.Service.Base;
 using bS.Sked2.Structure.Engine.UI;
 using bS.Sked2.Structure.Service;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,33 @@ namespace bS.Sked2.Service.UI
 {
     public partial class EngineUIService : ServiceBase, IEngineUIService
     {
+        /// <summary>
+        /// Adds the element to task.
+        /// </summary>
+        /// <param name="taskId">The task identifier.</param>
+        /// <param name="elementId">The element identifier.</param>
+        /// <returns></returns>
         public bool AddElementToTask(Guid taskId, Guid elementId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var transaction = uow.BeginTransaction())
+                {
+                    var taskEntry = engineRepository.GetTaskById(taskId);
+                    var elemententry = engineRepository.GetElementById(elementId);
+
+                    taskEntry.Elements.Add(elemententry);
+                    elemententry.ParentTask = taskEntry;
+                    elemententry.Position = taskEntry.Elements.Select(e => e.Position).DefaultIfEmpty().Max() + 1;
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error adding element {elementId.ToString()} to task {taskId.ToString()}.", ex);
+                return false;
+            }
+
+            return true;
         }
 
         public Guid CloneTask(Guid taskId)
@@ -34,8 +59,7 @@ namespace bS.Sked2.Service.UI
                 FailIfAnyElementHasError = taskDefinition.FailIfAnyElementHasError,
                 FailIfAnyElementHasWarning = taskDefinition.FailIfAnyElementHasWarning,
                 IsEnabled = true,
-                Name = taskDefinition.Name,
-                Position = engineRepository.GetTasks().Select(t => t.Position).DefaultIfEmpty().Max() + 1
+                Name = taskDefinition.Name
             };
 
             using (var transaction = uow.BeginTransaction())

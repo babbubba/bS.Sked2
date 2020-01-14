@@ -37,5 +37,7 @@ namespace bS.Sked2.Structure.Engine
         /// Initializes this instance.
         /// </summary>
         void Init();
+
+        IServiceProvider ServiceProvider { get; }
     }
 }

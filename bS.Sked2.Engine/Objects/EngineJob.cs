@@ -53,6 +53,8 @@ namespace bS.Sked2.Engine.Objects
             jobEntry = engineRepository.GetJobById(JobId);
         }
 
+        
+
         /// <summary>
         /// Pauses this instance.
         /// </summary>

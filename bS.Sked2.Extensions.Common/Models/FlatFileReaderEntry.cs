@@ -1,4 +1,5 @@
 ﻿using bs.Data.Interfaces.BaseEntities;
+using bS.Sked2.Extensions.Common.FlatFile;
 using bS.Sked2.Model;
 using bS.Sked2.Structure.Engine;
 using FluentNHibernate.Mapping;
@@ -12,11 +13,10 @@ namespace bS.Sked2.Extensions.Common.Models
     {
         public FlatFileReaderEntry()
         {
-            Key = "FlatFileReader";
-            Name = "Flat File Reader";
-            Description = "This elements read form a flat file (like CSV) and returns a Table value.";
+            Key = FlatFileReader.KeyConst;
+            Name = FlatFileReader.Name;
+            Description = FlatFileReader.Description;
 
-            //InputProperties.Add(new ElementPropertyEntry("SourceFilePath", "Source file path", DataType.String, true));
             InputProperties.Add(new ElementPropertyEntry("SourceFilePath", "Source file path", DataType.VirtualPath, true));
             InputProperties.Add(new ElementPropertyEntry("SkipStartingDataRows", "Starting row to skip", DataType.Int));
             InputProperties.Add(new ElementPropertyEntry("FirstRowHasHeader", "Use first row as header", DataType.Bool, true));

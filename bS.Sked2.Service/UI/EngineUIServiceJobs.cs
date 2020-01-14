@@ -28,6 +28,7 @@ namespace bS.Sked2.Service.UI
                     var taskEntry = engineRepository.GetTaskById(taskId);
                     jobEntry.Tasks.Add(taskEntry);
                     taskEntry.ParentJob = jobEntry;
+                    taskEntry.Position = jobEntry.Tasks.Select(t => t.Position).DefaultIfEmpty().Max() + 1;
                 }
             }
             catch (Exception ex)

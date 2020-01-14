@@ -14,6 +14,8 @@ namespace bS.Sked2.Model.UI
         public string Name { get; set; }
         [StringLength(250), Required]
         public string Description { get; set; }
+        [Required]
+        public Guid ParentTaskId { get; set; }        
         public IEnumerable<IElementType> ElementTypesList { get; set; }
     }
 }

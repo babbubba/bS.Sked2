@@ -20,6 +20,6 @@ namespace bS.Sked2.Structure.Repositories
 
         IEnumerable<IJobEntry> GetJobs();
         IEnumerable<ITaskEntry> GetTasks();
-        
+        IEnumerable<IElementEntry> GetElements();
     }
 }

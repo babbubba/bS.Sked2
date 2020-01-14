@@ -43,6 +43,11 @@ namespace bS.Sked2.Extensions.Common.FlatFile
         public static string Description => "Reads data from a flat file and returns a Table Data Value";
 
 
+        public override IElementEntry GetEmptyEntity()
+        {
+            return new FlatFileReaderEntry();
+        }
+
         /// <summary>
         /// Starts this instance. In derived class you have to execute this base before your overrided code.
         /// </summary>

@@ -25,6 +25,7 @@ namespace bS.Sked2.Engine
         private readonly IServiceCollection services;
 
         public IEngineConfig Configuration { get; }
+        public IServiceProvider ServiceProvider => serviceProvider;
 
         public Engine(ILogger logger, IDbContext dbContext, IEngineConfig configuration)
         {
@@ -187,7 +188,8 @@ namespace bS.Sked2.Engine
             services.AddTransient<EngineLink>();
 
             // Register all extensions elements and modules types
-            var engineModuleTypes = AssembliesExtensions.GetTypesImplementingInterface<IEngineModule>();
+            //var engineModuleTypes = AssembliesExtensions.GetTypesImplementingInterface<IEngineModule>();
+            var engineModuleTypes = AssembliesExtensions.GetTypesImplementingInterface<IEngineModule>(new string[] { Configuration.ExtensionsFolder }, true);
             foreach (var engineModule in engineModuleTypes)
             {
                 engineModule.GetMethod("RegisterModule").Invoke(null, new object[] { services });
