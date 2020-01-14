@@ -23,10 +23,14 @@ namespace bS.Sked2.Engine
         private readonly ILogger logger;
         private readonly IDbContext dbContext;
         private readonly IServiceCollection services;
-        public Engine(ILogger logger, IDbContext dbContext)
+
+        public IEngineConfig Configuration { get; }
+
+        public Engine(ILogger logger, IDbContext dbContext, IEngineConfig configuration)
         {
             this.logger = logger;
             this.dbContext = dbContext;
+            Configuration = configuration;
             this.services = new ServiceCollection();
         }
 
@@ -176,9 +180,10 @@ namespace bS.Sked2.Engine
             services.AddSingleton<IMessageService, MessageService>();
             services.AddSingleton<ISqlValidationService, SqlValidationService>();
             services.AddSingleton<IStorageService, StorageService>();
+            services.AddSingleton(Configuration);
             services.AddSingleton<IEngine, Engine>();
-            services.AddSingleton<IEngineJob, EngineJob>();
-            services.AddSingleton<IEngineTask, EngineTask>();
+            services.AddTransient<IEngineJob, EngineJob>();
+            services.AddTransient<IEngineTask, EngineTask>();
             services.AddTransient<EngineLink>();
 
             // Register all extensions elements and modules types

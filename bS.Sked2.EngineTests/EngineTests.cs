@@ -23,6 +23,7 @@ using bS.Sked2.Extensions.Common.Models;
 using bS.Sked2.Model;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using bS.Sked2.Model.Engine;
 
 namespace bS.Sked2.Engine.Tests
 {
@@ -30,14 +31,13 @@ namespace bS.Sked2.Engine.Tests
     public class EngineTests
     {
         private static IServiceProvider serviceProvider;
-        private IDbContext dbContext;
 
         [TestInitialize]
         public void Init()
         {
             var services = new ServiceCollection();
 
-            dbContext = new DbContext
+            var dbContext = new DbContext
             {
                 ConnectionString = "Data Source=.\\bs.Data.Test.db;Version=3;BinaryGuid=False;",
                 DatabaseEngineType = "sqlite",
@@ -45,6 +45,11 @@ namespace bS.Sked2.Engine.Tests
                 Update = true,
                 LookForEntitiesDllInCurrentDirectoryToo = true,
                 EntitiesFileNameScannerPatterns = new string[] { "bS.Sked2.Extensions.*.dll", "bS.Sked2.Model.dll" }
+            };
+
+            var engineConfig = new EngineConfig
+            {
+                ExtensionsFolder = @"C:\temp\"
             };
 
             services.AddSingleton< ILogger>(Mock.Of<ILogger<Engine>>());
@@ -60,6 +65,7 @@ namespace bS.Sked2.Engine.Tests
 
             services.AddSingleton<IMessageService, MessageService>();
             services.AddSingleton<ISqlValidationService, SqlValidationService>();
+            services.AddSingleton<IEngineConfig>(engineConfig);
             services.AddSingleton<IEngine, Engine>();
             services.AddSingleton<IEngineTask, EngineTask>();
             services.AddTransient<FlatFileReader>();
@@ -69,11 +75,11 @@ namespace bS.Sked2.Engine.Tests
 
 
         [TestMethod()]
-        public void TestLinkElement()
+        public void TaskFlowTest()
         {
             var uow = serviceProvider.GetService<IUnitOfWork>();
             var engineRepository = serviceProvider.GetService<IEngineRepository>();
-            var engine = new Engine(Mock.Of<ILogger<Engine>>(), dbContext);
+            var engine = serviceProvider.GetService<IEngine>();
             engine.Init();
 
             JobEntry jobEntry = null;

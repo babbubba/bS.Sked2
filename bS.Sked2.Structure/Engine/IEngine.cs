@@ -7,6 +7,8 @@ namespace bS.Sked2.Structure.Engine
     /// </summary>
     public interface IEngine
     {
+        public IEngineConfig Configuration { get; }
+
         /// <summary>
         /// Executes the element.
         /// </summary>

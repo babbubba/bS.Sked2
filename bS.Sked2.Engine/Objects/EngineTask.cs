@@ -266,9 +266,9 @@ namespace bS.Sked2.Engine.Objects
                 {
                     //we need to load and init this module
                     // finding the EngineElement to execute this entry
-                    var engineModuleType = AssembliesExtensions.GetTypesImplementingInterface<IEngineModule>()
+                    //var engineModuleType = AssembliesExtensions.GetTypesImplementingInterface<IEngineModule>()
+                    var engineModuleType = AssembliesExtensions.GetTypesImplementingInterface<IEngineModule>(new string[] { engine.Configuration.ExtensionsFolder }, true)
                         .FirstOrDefault(ed => (string)ed.GetProperty("KeyConst")?.GetValue(ed) == elementEntry.ParentModule.Key);
-
                     // create new instance of Engine Module
                     var engineModule = (IEngineModule)serviceProvider.GetService(engineModuleType);
 
@@ -283,7 +283,8 @@ namespace bS.Sked2.Engine.Objects
                 }
 
                 // finding the EngineElement to execute this entry
-                var engineElementType = AssembliesExtensions.GetTypesImplementingInterface<IEngineElement>()
+                //var engineElementType = AssembliesExtensions.GetTypesImplementingInterface<IEngineElement>()
+                var engineElementType = AssembliesExtensions.GetTypesImplementingInterface<IEngineElement>(new string[] { engine.Configuration.ExtensionsFolder }, true)
                     .FirstOrDefault(ed => (string)ed.GetProperty("KeyConst")?.GetValue(ed) == elementEntry.Key);
 
                 // create new instance of Engine Element
