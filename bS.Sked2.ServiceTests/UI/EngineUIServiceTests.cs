@@ -13,6 +13,7 @@ using bS.Sked2.Structure.Engine;
 using bS.Sked2.Model.Engine;
 using bS.Sked2.Structure.Engine.Data.Types;
 using bS.Sked2.Structure.Engine.Data;
+using bS.Sked2.Shared;
 
 namespace bS.Sked2.Service.UI.Tests
 {
@@ -66,12 +67,10 @@ namespace bS.Sked2.Service.UI.Tests
 
             // Edit the Element1 (FlatFileReader)
             var element1EditVM = engineUIService.GetEditElement(element1Id);
-            element1EditVM.InputProperties.First(p => p.Key == "ColumnDelimiter").Value = new CharValue(',');
-            element1EditVM.InputProperties.First(p => p.Key == "FirstRowHasHeader").Value = new BoolValue(false);
-            element1EditVM.InputProperties.First(p => p.Key == "SourceFilePath").Value = new VirtualPathValue(new VirtualPath(@"\TestDataFiles\provincia-regione-sigla.csv"));
+            element1EditVM.InputProperties.First(p => p.Key == "ColumnDelimiter").Value = new CharValue(',').WriteToStringValue().Base64Encode();
+            element1EditVM.InputProperties.First(p => p.Key == "FirstRowHasHeader").Value = new BoolValue(false).WriteToStringValue().Base64Encode();
+            element1EditVM.InputProperties.First(p => p.Key == "SourceFilePath").Value = new VirtualPathValue(new VirtualPath(@"\TestDataFiles\provincia-regione-sigla.csv")).WriteToStringValue().Base64Encode();
             engineUIService.EditElement(element1Id, element1EditVM);
-
-
         }
 
 

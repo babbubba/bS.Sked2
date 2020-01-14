@@ -25,7 +25,7 @@ namespace bS.Sked2.Model.UI
         [Required]
         public Structure.Engine.DataType DataType { get; set; }
         [Required]
-        public object Value { get; set; }
+        public string Value { get; set; }
         public string Key { get; set; }
         public string Description { get; set; }
     }

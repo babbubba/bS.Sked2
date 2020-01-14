@@ -80,6 +80,7 @@ namespace bS.Sked2.Service.UI
                 entry.FailIfAnyElementHasError = taskDefinition.FailIfAnyElementHasError;
                 entry.FailIfAnyElementHasWarning = taskDefinition.FailIfAnyElementHasWarning;
                 entry.IsEnabled = taskDefinition.IsEnabled;
+                engineRepository.UpdateTask(entry);
             }
         }
 

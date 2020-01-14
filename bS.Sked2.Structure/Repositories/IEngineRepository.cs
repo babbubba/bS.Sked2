@@ -7,19 +7,32 @@ namespace bS.Sked2.Structure.Repositories
 {
     public interface IEngineRepository
     {
-        IJobEntry GetJobById(Guid Id);
-        ITaskEntry GetTaskById(Guid Id);
-        IElementEntry GetElementById(Guid Id);
-        IModuleEntry GetModuleById(Guid Id);
-        IInstanceEntry CreateNewInstance();
         void CreateElement(IElementEntry entityToCreate);
-        void CreateTask(ITaskEntry taskEntry);
+
         void CreateJob(IJobEntry jobEntry);
-        void UpdateJob(IJobEntry jobEntry);
+
         void CreateModule(IModuleEntry moduleEntry);
 
-        IEnumerable<IJobEntry> GetJobs();
-        IEnumerable<ITaskEntry> GetTasks();
+        IInstanceEntry CreateNewInstance();
+
+        void CreateTask(ITaskEntry taskEntry);
+
+        IElementEntry GetElementById(Guid Id);
+
         IEnumerable<IElementEntry> GetElements();
+
+        IJobEntry GetJobById(Guid Id);
+        IEnumerable<IJobEntry> GetJobs();
+
+        IModuleEntry GetModuleById(Guid Id);
+
+        ITaskEntry GetTaskById(Guid Id);
+        IEnumerable<ITaskEntry> GetTasks();
+
+        void UpdateEment(IElementEntry elementEntry);
+
+        void UpdateJob(IJobEntry jobEntry);
+
+        void UpdateTask(ITaskEntry taskEntry);
     }
 }

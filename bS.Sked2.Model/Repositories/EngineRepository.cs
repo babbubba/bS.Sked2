@@ -80,6 +80,16 @@ namespace bS.Sked2.Model.Repositories
             base.Update((JobEntry)jobEntry);
         }
 
+        public void UpdateTask(ITaskEntry taskEntry)
+        {
+            base.Update((TaskEntry)taskEntry);
+        }
+        public void UpdateEment(IElementEntry elementEntry)
+        { 
+            base.Update((ElementEntry)elementEntry);
+
+        }
+
         //public void CreateLinkElement(IElementsLinkEntry linkElement)
         //{
         //    base.Create((ElementsLinkEntry)linkElement);

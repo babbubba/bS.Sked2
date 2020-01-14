@@ -62,6 +62,11 @@ namespace bS.Sked2.Service.UI
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Edits the element.
+        /// </summary>
+        /// <param name="elementId">The element identifier.</param>
+        /// <param name="elementDefinition">The element definition.</param>
         public void EditElement(Guid elementId, IElementDefinitionEdit elementDefinition)
         {
             IElementEntry entry = null;
@@ -71,28 +76,25 @@ namespace bS.Sked2.Service.UI
                 entry.Name = elementDefinition.Name;
                 entry.Description = elementDefinition.Description;
 
-
                 foreach (var inputProperty in elementDefinition.InputProperties)
                 {
-                    entry.InputProperties.FirstOrDefault(p => p.Key == inputProperty.Key).Value = ((IEngineData)inputProperty.Value).WriteToStringValue();
+                    var entryProperty = entry.InputProperties.FirstOrDefault(p => p.Key == inputProperty.Key);
+                    var data = GetPopertyDataValue(entryProperty);
+                    data.ReadFromStringValue(inputProperty.Value.Base64Decode());
+                    //entry.InputProperties.FirstOrDefault(p => p.Key == inputProperty.Key).Value = ((IEngineData)inputProperty.Value).WriteToStringValue();
+                    entryProperty.Value = data.WriteToStringValue();
                 }
-                //foreach (var inputProperty in entry.InputProperties)
-                //{
-                //    inputProperty.Value = ((IEngineData)elementDefinition.InputProperties
-                //        .FirstOrDefault(p => p.Key == inputProperty.Key).Value)
-                //        .WriteToStringValue();
-                //}
 
-                //foreach (var outputProperty in entry.OutputProperties)
-                //{
-                //    outputProperty.Value = ((IEngineData)elementDefinition.OutputProperties
-                //        .FirstOrDefault(p => p.Key == outputProperty.Key).Value)
-                //        .WriteToStringValue();
-                //}
                 foreach (var outputProperties in elementDefinition.OutputProperties)
                 {
-                    entry.OutputProperties.FirstOrDefault(p => p.Key == outputProperties.Key).Value = ((IEngineData)outputProperties.Value).WriteToStringValue();
+                    var entryProperty = entry.OutputProperties.FirstOrDefault(p => p.Key == outputProperties.Key);
+                    var data = GetPopertyDataValue(entryProperty);
+                    data.ReadFromStringValue(outputProperties.Value.Base64Decode());
+                    //entry.OutputProperties.FirstOrDefault(p => p.Key == outputProperties.Key).Value = ((IEngineData)outputProperties.Value).WriteToStringValue();
+                    entryProperty.Value = data.WriteToStringValue();
                 }
+
+                engineRepository.UpdateEment(entry);
             }
 
             if (elementDefinition.ParentModuleId != null && elementDefinition.ParentModuleId != entry.ParentModule.Id)
@@ -100,6 +102,34 @@ namespace bS.Sked2.Service.UI
                 SetElementModule(elementId, (Guid)elementDefinition.ParentModuleId);
             }
         }
+
+        //public void EditElement(Guid elementId, IElementDefinitionEdit elementDefinition)
+        //{
+        //    IElementEntry entry = null;
+        //    using (var transaction = uow.BeginTransaction())
+        //    {
+        //        entry = engineRepository.GetElementById(elementId);
+        //        entry.Name = elementDefinition.Name;
+        //        entry.Description = elementDefinition.Description;
+
+
+        //        foreach (var inputProperty in elementDefinition.InputProperties)
+        //        {
+        //            entry.InputProperties.FirstOrDefault(p => p.Key == inputProperty.Key).Value = inputProperty.Value.Base64Decode();
+        //        }
+
+        //        foreach (var outputProperties in elementDefinition.OutputProperties)
+        //        {
+        //            entry.OutputProperties.FirstOrDefault(p => p.Key == outputProperties.Key).Value = outputProperties.Value.Base64Decode();
+        //        }
+        //    }
+
+        //    if (elementDefinition.ParentModuleId != null && elementDefinition.ParentModuleId != entry.ParentModule.Id)
+        //    {
+        //        SetElementModule(elementId, (Guid)elementDefinition.ParentModuleId);
+        //    }
+        //}
+
 
         /// <summary>
         /// Gets the creation view model for the element.
@@ -137,7 +167,8 @@ namespace bS.Sked2.Service.UI
                 inputProperties.Add(new ElementPropertyDefinition
                 {
                     DataType = inputProperty.DataType,
-                    Value = engineDataValue,
+                    //Value = engineDataValue,
+                    Value = engineDataValue.WriteToStringValue().Base64Encode(),
                     Key = inputProperty.Key,
                     Description = propertyDetail.Description
                 });
@@ -154,7 +185,8 @@ namespace bS.Sked2.Service.UI
                 outputProperties.Add(new ElementPropertyDefinition
                 {
                     DataType = outputProperty.DataType,
-                    Value = engineDataValue,
+                    //Value = engineDataValue,
+                    Value = engineDataValue.WriteToStringValue().Base64Encode(),
                     Key = outputProperty.Key,
                     Description = propertyDetail.Description
                 });
@@ -163,6 +195,55 @@ namespace bS.Sked2.Service.UI
 
             return result;
         }
+
+        //public IElementDefinitionEdit GetEditElement(Guid elementId)
+        //{
+        //    var result = new ElementDefinitionEdit();
+        //    var entry = engineRepository.GetElementById(elementId);
+        //    result.Name = entry.Name;
+        //    result.Description = entry.Description;
+        //    result.ParentModuleId = entry.ParentModule?.Id;
+
+        //    // get the Engine element
+        //    var engineElement = GetEngineElement(entry.Key);
+
+        //    // get the properties value
+        //    // input
+        //    var inputProperties = new List<ElementPropertyDefinition>();
+        //    foreach (var inputProperty in entry.InputProperties)
+        //    {
+        //        var engineDataValue = GetPopertyDataValue(inputProperty);
+        //        var propertyDetail = engineElement.InputProperties.FirstOrDefault(ip => ip.Key == inputProperty.Key);
+
+        //        inputProperties.Add(new ElementPropertyDefinition
+        //        {
+        //            DataType = inputProperty.DataType,
+        //            Value = engineDataValue.WriteToStringValue().Base64Encode(),
+        //            Key = inputProperty.Key,
+        //            Description = propertyDetail.Description
+        //        });
+        //    }
+        //    result.InputProperties = inputProperties;
+
+        //    // output
+        //    var outputProperties = new List<ElementPropertyDefinition>();
+        //    foreach (var outputProperty in entry.OutputProperties)
+        //    {
+        //        var engineDataValue = GetPopertyDataValue(outputProperty);
+        //        var propertyDetail = engineElement.OutputProperties.FirstOrDefault(op => op.Key == outputProperty.Key);
+
+        //        outputProperties.Add(new ElementPropertyDefinition
+        //        {
+        //            DataType = outputProperty.DataType,
+        //            Value = engineDataValue.WriteToStringValue().Base64Encode(),
+        //            Key = outputProperty.Key,
+        //            Description = propertyDetail.Description
+        //        });
+        //    }
+        //    result.OutputProperties = outputProperties;
+
+        //    return result;
+        //}
 
         public IEnumerable<IElementDefinitionDetail> GetElements(Guid taskId)
         {
