@@ -11,6 +11,8 @@ using System.Linq;
 using bS.Sked2.Model.Service;
 using bS.Sked2.Structure.Engine;
 using bS.Sked2.Model.Engine;
+using bS.Sked2.Structure.Engine.Data.Types;
+using bS.Sked2.Structure.Engine.Data;
 
 namespace bS.Sked2.Service.UI.Tests
 {
@@ -54,13 +56,20 @@ namespace bS.Sked2.Service.UI.Tests
             taskEditVM.Description = "Task di prova creato con UI service (modificato).";
             engineUIService.EditTask(taskId, taskEditVM);
 
-            // Create Element 1
+            // Create Element 1 (FlatFileReader)
             var element1VM = engineUIService.GetCreateElement();
             element1VM.Name = "Read CSV File";
             element1VM.Description = "Read teh CSV file with the cities.";
             element1VM.ElementTypeKey = element1VM.ElementTypesList.First(etp => etp.Key == "FlatFileReader").Key;
             element1VM.ParentTaskId = taskId;
             var element1Id = engineUIService.CreateNewElement(element1VM);
+
+            // Edit the Element1 (FlatFileReader)
+            var element1EditVM = engineUIService.GetEditElement(element1Id);
+            element1EditVM.InputProperties.First(p => p.Key == "ColumnDelimiter").Value = new CharValue(',');
+            element1EditVM.InputProperties.First(p => p.Key == "FirstRowHasHeader").Value = new BoolValue(false);
+            element1EditVM.InputProperties.First(p => p.Key == "SourceFilePath").Value = new VirtualPathValue(new VirtualPath(@"\TestDataFiles\provincia-regione-sigla.csv"));
+            engineUIService.EditElement(element1Id, element1EditVM);
 
 
         }

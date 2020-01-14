@@ -17,7 +17,7 @@ namespace bS.Sked2.Structure.Service
         /// <param name="elementId">The element identifier.</param>
         /// <param name="moduleId">The module identifier.</param>
         /// <returns></returns>
-        bool AddModuleToElement(Guid elementId, Guid moduleId);
+        bool SetElementModule(Guid elementId, Guid moduleId);
 
         /// <summary>
         /// Creates the new element.
@@ -44,6 +44,13 @@ namespace bS.Sked2.Structure.Service
         /// </summary>
         /// <returns></returns>
         IElementDefinitionCreate GetCreateElement();
+
+        /// <summary>
+        /// Gets the element's edit view model.
+        /// </summary>
+        /// <param name="element1Id">The element1 identifier.</param>
+        /// <returns></returns>
+        IElementDefinitionEdit GetEditElement(Guid elementId);
 
         /// <summary>
         /// Gets the edit task.
@@ -294,17 +301,17 @@ namespace bS.Sked2.Structure.Service
         void EditModule(Guid moduleId, IModuleDefinitionEdit moduleDefinition);
 
         /// <summary>
+        /// Gets the new module.
+        /// </summary>
+        /// <returns></returns>
+        IModuleDefinitionCreate GetCreateModule();
+
+        /// <summary>
         /// Gets the modules for element.
         /// </summary>
         /// <param name="elementType">Type of the element.</param>
         /// <returns></returns>
         IEnumerable<IModuleDefinitionDetail> GetModulesForElement(IElementType elementType);
-
-        /// <summary>
-        /// Gets the new module.
-        /// </summary>
-        /// <returns></returns>
-        IModuleDefinitionCreate GetCreateModule();
 
         #endregion Modules
 
@@ -344,5 +351,4 @@ namespace bS.Sked2.Structure.Service
 
         #endregion Triggers
     }
-
 }

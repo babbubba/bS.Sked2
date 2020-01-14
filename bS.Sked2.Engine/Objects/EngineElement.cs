@@ -22,11 +22,26 @@ namespace bS.Sked2.Engine.Objects
         /// The input properties
         /// </summary>
         protected IList<IEngineElementProperty> inputProperties;
+        /// <summary>
+        /// Gets the input properties.
+        /// </summary>
+        /// <value>
+        /// The input properties.
+        /// </value>
+        public IEngineElementProperty[] InputProperties => inputProperties.ToArray();
 
         /// <summary>
         /// The output properties
         /// </summary>
         protected IList<IEngineElementProperty> outputProperties;
+        /// <summary>
+        /// Gets the onput properties.
+        /// </summary>
+        /// <value>
+        /// The onput properties.
+        /// </value>
+        public IEngineElementProperty[] OutputProperties => outputProperties.ToArray();
+
 
         protected readonly IUnitOfWork uow;
 

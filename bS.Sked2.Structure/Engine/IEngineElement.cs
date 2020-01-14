@@ -25,6 +25,9 @@ namespace bS.Sked2.Structure.Engine
         /// </value>
         IModuleEntry ParentModule { get; }
         IEngineModule ParentEngineModule { get; set; }
+        IEngineElementProperty[] InputProperties { get; }
+        IEngineElementProperty[] OutputProperties { get; }
+
 
         /// <summary>
         /// Gets the parent task.

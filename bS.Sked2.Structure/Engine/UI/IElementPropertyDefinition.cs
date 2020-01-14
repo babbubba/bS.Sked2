@@ -4,5 +4,7 @@
     {
         DataType DataType { get; set; }
         object Value { get; set; }
+        string Key { get; set; }
+        string Description { get; set; }
     }
 }

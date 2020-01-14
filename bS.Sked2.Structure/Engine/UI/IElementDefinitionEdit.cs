@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace bS.Sked2.Structure.Engine.UI
 {
@@ -6,6 +7,7 @@ namespace bS.Sked2.Structure.Engine.UI
     {
         string Name { get; set; }
         string Description { get; set; }
+        Guid? ParentModuleId { get; set; }
         IEnumerable<IElementPropertyDefinition> InputProperties { get; set; }
         IEnumerable<IElementPropertyDefinition> OutputProperties { get; set; }
     }
