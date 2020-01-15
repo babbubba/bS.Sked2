@@ -1,5 +1,7 @@
 ﻿using bs.Data.Interfaces;
+using bS.Sked2.Model.UI;
 using bS.Sked2.Service.Base;
+using bS.Sked2.Shared;
 using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Engine.UI;
 using bS.Sked2.Structure.Repositories;
@@ -7,6 +9,7 @@ using bS.Sked2.Structure.Service;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace bS.Sked2.Service.UI
 {
@@ -75,7 +78,23 @@ namespace bS.Sked2.Service.UI
 
         public IModuleDefinitionCreate GetCreateModule()
         {
-            throw new NotImplementedException();
+            return new ModuleDefinitionCreateViewModel
+            {
+                Name = "New Module",
+                Description = "New Module description",
+                ModuleTypesList = GetModuleTypes()
+            };
+        }
+
+        private IEnumerable<IModuleType> GetModuleTypes()
+        {
+            return AssembliesExtensions.GetTypesImplementingInterface<IEngineModule>(new string[] { configuration.ExtensionsFolder }, true)
+                      .Select(ed => new ModuleTypeViewModel
+                      {
+                          Key = (string)ed.GetProperty("KeyConst")?.GetValue(ed),
+                          Name = (string)ed.GetProperty("Name")?.GetValue(ed),
+                          Description = (string)ed.GetProperty("Description")?.GetValue(ed)
+                      });
         }
 
         #endregion Modules

@@ -24,8 +24,10 @@ namespace bS.Sked2.Extensions.Common
             this.StorageService = storageService;
         }
 
-        public override string Key => "Common";
+        public override string Key => KeyConst;
         public static string KeyConst => "Common";
+        public static string Name => "Common Module";
+        public static string Description => "This module contains the common elements.";
 
         public static void RegisterModule(IServiceCollection serviceCollection)
         {

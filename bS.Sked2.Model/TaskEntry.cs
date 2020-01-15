@@ -23,6 +23,7 @@ namespace bS.Sked2.Model
         {
             Instances = new List<IInstanceEntry>();
             Elements = new List<IElementEntry>();
+            Modules = new List<IModuleEntry>();
         }
 
         /// <summary>
@@ -120,6 +121,7 @@ namespace bS.Sked2.Model
         /// The last update date.
         /// </value>
         public virtual DateTime? LastUpdateDate { get; set; }
+        public virtual IList<IModuleEntry> Modules { get; set; }
 
         /// <summary>
         /// Gets or sets the name.
@@ -174,6 +176,7 @@ namespace bS.Sked2.Model
             References<JobEntry>(x => x.ParentJob);
             HasMany<InstanceEntry>(x => x.Instances);
             HasMany<ElementEntry>(x => x.Elements);
+            HasMany<ModuleEntry>(x => x.Modules);
         }
     }
 }

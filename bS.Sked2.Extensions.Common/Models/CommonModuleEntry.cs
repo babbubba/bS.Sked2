@@ -9,9 +9,9 @@ namespace bS.Sked2.Extensions.Common.Models
     {
         public CommonModuleEntry()
         {
-            Key = "Common";
-            Name = "Common Module";
-            Description = "This module contains the common elements.";
+            Key = Common.KeyConst;
+            Name = Common.Name;
+            Description = Common.Description;
 
             InputProperties.Add(new ElementPropertyEntry("WorkspacePath", "Workspace folder root path", DataType.String, true));
         }

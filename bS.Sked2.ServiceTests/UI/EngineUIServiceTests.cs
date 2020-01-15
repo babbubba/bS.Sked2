@@ -57,6 +57,10 @@ namespace bS.Sked2.Service.UI.Tests
             taskEditVM.Description = "Task di prova creato con UI service (modificato).";
             engineUIService.EditTask(taskId, taskEditVM);
 
+            // Create the module
+            var moduleVM = engineUIService.GetCreateModule();
+
+
             // Create Element 1 (FlatFileReader)
             var element1VM = engineUIService.GetCreateElement();
             element1VM.Name = "Read CSV File";
