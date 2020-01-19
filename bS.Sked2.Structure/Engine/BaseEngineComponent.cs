@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using bS.Sked2.Structure.Base.Exceptions;
-using bS.Sked2.Structure.Models;
+﻿using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Service;
 using bS.Sked2.Structure.Service.Messages;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
 
 namespace bS.Sked2.Structure.Engine
 {
@@ -20,10 +17,12 @@ namespace bS.Sked2.Structure.Engine
         /// The logger
         /// </summary>
         protected ILogger logger;
+
         /// <summary>
         /// The message service
         /// </summary>
         protected IMessageService messageService;
+
         /// <summary>
         /// The instance
         /// </summary>
@@ -47,7 +46,6 @@ namespace bS.Sked2.Structure.Engine
         /// The instance identifier.
         /// </value>
         public Guid? InstanceID => instance?.Id;
-
 
         /// <summary>
         /// Adds the message.
@@ -93,7 +91,6 @@ namespace bS.Sked2.Structure.Engine
         /// </value>
         public bool HasCompleted => instance.BeginTime != null && !instance.IsPaused && instance.EndTime != null;
 
-
         /// <summary>
         /// Starts this instance.
         /// </summary>
@@ -123,12 +120,10 @@ namespace bS.Sked2.Structure.Engine
         /// <param name="EntityId">The entity identifier.</param>
         public abstract void LoadFromEntity(Guid EntityId);
 
-        public virtual IElementEntry GetEmptyEntity()
-        {
-            throw new EngineException(logger, "This engine component has to implement the 'GetEmptyEntity' in its final class!"); ;
-        }
+        public abstract IEngineEntry GetEmptyEntity();
 
-
-
+        //{
+        //    throw new EngineException(logger, "This engine component has to implement the 'GetEmptyEntity' in its final class!"); ;
+        //}
     }
 }

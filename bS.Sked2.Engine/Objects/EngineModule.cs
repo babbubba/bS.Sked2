@@ -6,36 +6,36 @@ using bS.Sked2.Structure.Engine.Data;
 using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
-using bS.Sked2.Structure.Service.Messages;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace bS.Sked2.Engine.Objects
 {
-    public abstract class EngineModule : BaseEngineComponent, IEngineFlowComponent, IEngineModule
+    public abstract class EngineModule : BaseEngineComponent, IEngineModule
     {
         protected readonly IUnitOfWork uow;
         protected readonly IEngineRepository engineRepository;
         protected IModuleEntry moduleEntry;
-
 
         /// <summary>
         /// The input properties
         /// </summary>
         protected IList<IEngineElementProperty> inputProperties;
 
+        public IEngineElementProperty[] InputProperties => inputProperties.ToArray();
+
         /// <summary>
         /// The output properties
         /// </summary>
         protected IList<IEngineElementProperty> outputProperties;
 
+        public IEngineElementProperty[] OutputProperties => outputProperties.ToArray();
 
         public EngineModule(
-            ILogger logger, 
-            IMessageService messageService, 
+            ILogger logger,
+            IMessageService messageService,
             IUnitOfWork uow,
             IEngineRepository engineRepository) : base(logger, messageService)
         {
@@ -48,7 +48,6 @@ namespace bS.Sked2.Engine.Objects
         public abstract string Key { get; }
 
         public bool IsInit { get; set; }
-
 
         public abstract void Init();
 
@@ -191,7 +190,6 @@ namespace bS.Sked2.Engine.Objects
 
         public void SetDataValueIfEmpty(EngineDataDirection direction, string propertyKey, DataType dataType, string persistingValue)
         {
-
             var engineDataType = AssembliesExtensions.GetTypesImplementingInterface<IEngineData>()
             .FirstOrDefault(ed => (DataType)ed.GetProperty("DataTypeConst").GetValue(ed) == dataType);
 
@@ -201,7 +199,6 @@ namespace bS.Sked2.Engine.Objects
 
             SetDataValueIfEmpty(direction, propertyKey, engineDataValue);
         }
-
 
         /// <summary>
         /// Gets the data value.
@@ -243,7 +240,5 @@ namespace bS.Sked2.Engine.Objects
                 SetDataValueIfEmpty(EngineDataDirection.Output, outputProperty.Key, outputProperty.DataType, outputProperty.Value);
             }
         }
-
-
     }
 }

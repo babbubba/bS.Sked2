@@ -92,6 +92,7 @@ namespace bS.Sked2.Engine
             engineJob.LoadFromEntity(jobId);
             ExecuteJob(engineJob);
         }
+
         /// <summary>
         /// Executes the job.
         /// </summary>
@@ -197,7 +198,6 @@ namespace bS.Sked2.Engine
 
             // build the service providere used in Engine
             serviceProvider = services.BuildServiceProvider();
-
         }
     }
 }

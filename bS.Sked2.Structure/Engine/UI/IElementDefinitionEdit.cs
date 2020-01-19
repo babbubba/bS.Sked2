@@ -8,7 +8,7 @@ namespace bS.Sked2.Structure.Engine.UI
         string Name { get; set; }
         string Description { get; set; }
         Guid? ParentModuleId { get; set; }
-        IEnumerable<IElementPropertyDefinition> InputProperties { get; set; }
-        IEnumerable<IElementPropertyDefinition> OutputProperties { get; set; }
+        IEnumerable<IPropertyDefinition> InputProperties { get; set; }
+        IEnumerable<IPropertyDefinition> OutputProperties { get; set; }
     }
 }

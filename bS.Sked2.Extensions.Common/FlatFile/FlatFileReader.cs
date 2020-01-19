@@ -2,8 +2,6 @@
 using bS.Sked2.Engine.Objects;
 using bS.Sked2.Extensions.Common.FlatFile.Helper;
 using bS.Sked2.Extensions.Common.Models;
-using bS.Sked2.Shared;
-using bS.Sked2.Structure.Base;
 using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Engine.Data;
 using bS.Sked2.Structure.Engine.Data.Types;
@@ -13,14 +11,11 @@ using bS.Sked2.Structure.Service;
 using bS.Sked2.Structure.Service.Messages;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace bS.Sked2.Extensions.Common.FlatFile
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <seealso cref="bS.Sked2.Structure.Engine.BaseEngineElement" />
     public class FlatFileReader : EngineElement
@@ -42,8 +37,7 @@ namespace bS.Sked2.Extensions.Common.FlatFile
         public static string Name => "Flat File Reader";
         public static string Description => "Reads data from a flat file and returns a Table Data Value";
 
-
-        public override IElementEntry GetEmptyEntity()
+        public override IEngineEntry GetEmptyEntity()
         {
             return new FlatFileReaderEntry();
         }
@@ -88,13 +82,12 @@ namespace bS.Sked2.Extensions.Common.FlatFile
                     parser.Dispose();
 
                     AddMessage($"Parsing file completed. {table.RowCount} read.", MessageSeverity.Debug);
-                }             
+                }
             }
             catch (Exception e)
             {
                 AddMessage($"Error reading flat file. {e.Message}", MessageSeverity.Error);
             }
         }
-
     }
 }

@@ -6,7 +6,7 @@ namespace bS.Sked2.Structure.Models
     /// <summary>
     /// The base persister for Elements.
     /// </summary>
-    public interface IElementEntry
+    public interface IElementEntry : IEngineEntry
     {
         /// <summary>
         /// Gets or sets the creation date.

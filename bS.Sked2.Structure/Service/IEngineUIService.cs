@@ -12,14 +12,6 @@ namespace bS.Sked2.Structure.Service
         #region Elements
 
         /// <summary>
-        /// Adds the module to element.
-        /// </summary>
-        /// <param name="elementId">The element identifier.</param>
-        /// <param name="moduleId">The module identifier.</param>
-        /// <returns></returns>
-        bool SetElementModule(Guid elementId, Guid moduleId);
-
-        /// <summary>
         /// Creates the new element.
         /// </summary>
         /// <param name="elementDefinition">The element definition.</param>
@@ -53,11 +45,11 @@ namespace bS.Sked2.Structure.Service
         IElementDefinitionEdit GetEditElement(Guid elementId);
 
         /// <summary>
-        /// Gets the edit task.
+        /// Gets the edit module.
         /// </summary>
-        /// <param name="taskId">The task identifier.</param>
+        /// <param name="moduleId">The module identifier.</param>
         /// <returns></returns>
-        ITaskDefinitionEdit GetEditTask(Guid taskId);
+        IModuleDefinitionEdit GetEditModule(Guid moduleId);
 
         /// <summary>
         /// Gets the elements in the Task.
@@ -93,6 +85,14 @@ namespace bS.Sked2.Structure.Service
         /// <returns></returns>
         bool RemoveModuleFromElement(Guid elementId, Guid moduleId);
 
+        /// <summary>
+        /// Adds the module to element.
+        /// </summary>
+        /// <param name="elementId">The element identifier.</param>
+        /// <param name="moduleId">The module identifier.</param>
+        /// <returns></returns>
+        bool SetElementModule(Guid elementId, Guid moduleId);
+
         #endregion Elements
 
         #region Links
@@ -126,6 +126,13 @@ namespace bS.Sked2.Structure.Service
         #endregion Links
 
         #region Tasks
+
+        /// <summary>
+        /// Gets the edit task.
+        /// </summary>
+        /// <param name="taskId">The task identifier.</param>
+        /// <returns></returns>
+        ITaskDefinitionEdit GetEditTask(Guid taskId);
 
         /// <summary>
         /// Adds the element to task.
@@ -312,6 +319,8 @@ namespace bS.Sked2.Structure.Service
         /// <param name="elementType">Type of the element.</param>
         /// <returns></returns>
         IEnumerable<IModuleDefinitionDetail> GetModulesForElement(IElementType elementType);
+
+        bool SetModuleTask(Guid moduleId, Guid parentTaskId);
 
         #endregion Modules
 

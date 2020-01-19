@@ -1,6 +1,12 @@
 ﻿using bs.Data;
 using bs.Data.Interfaces;
+using bS.Sked2.Model.Engine;
 using bS.Sked2.Model.Repositories;
+using bS.Sked2.Model.Service;
+using bS.Sked2.Shared;
+using bS.Sked2.Structure.Engine;
+using bS.Sked2.Structure.Engine.Data;
+using bS.Sked2.Structure.Engine.Data.Types;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,12 +14,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Linq;
-using bS.Sked2.Model.Service;
-using bS.Sked2.Structure.Engine;
-using bS.Sked2.Model.Engine;
-using bS.Sked2.Structure.Engine.Data.Types;
-using bS.Sked2.Structure.Engine.Data;
-using bS.Sked2.Shared;
 
 namespace bS.Sked2.Service.UI.Tests
 {
@@ -59,7 +59,17 @@ namespace bS.Sked2.Service.UI.Tests
 
             // Create the module
             var moduleVM = engineUIService.GetCreateModule();
+            moduleVM.Name = "Modulo di prova(Common)";
+            moduleVM.Description = "Modulo di prova Common";
+            moduleVM.ParentTaskId = taskId;
+            moduleVM.ModuleTypeKey = moduleVM.ModuleTypesList.First(etp => etp.Key == "Common").Key;
+            var moduleId = engineUIService.CreateNewModule(moduleVM);
 
+            //Edit the module
+            var moduleEditVM = engineUIService.GetEditModule(moduleId);
+            moduleEditVM.ParentTaskId = taskId;
+            moduleEditVM.InputProperties.First(p => p.Key == "WorkspacePath").Value = new VirtualPathValue(new VirtualPath(@".\")).WriteToStringValue().Base64Encode();
+            engineUIService.EditModule(moduleId, moduleEditVM);
 
             // Create Element 1 (FlatFileReader)
             var element1VM = engineUIService.GetCreateElement();
@@ -71,12 +81,12 @@ namespace bS.Sked2.Service.UI.Tests
 
             // Edit the Element1 (FlatFileReader)
             var element1EditVM = engineUIService.GetEditElement(element1Id);
+            element1EditVM.ParentModuleId = moduleId;
             element1EditVM.InputProperties.First(p => p.Key == "ColumnDelimiter").Value = new CharValue(',').WriteToStringValue().Base64Encode();
             element1EditVM.InputProperties.First(p => p.Key == "FirstRowHasHeader").Value = new BoolValue(false).WriteToStringValue().Base64Encode();
             element1EditVM.InputProperties.First(p => p.Key == "SourceFilePath").Value = new VirtualPathValue(new VirtualPath(@"\TestDataFiles\provincia-regione-sigla.csv")).WriteToStringValue().Base64Encode();
             engineUIService.EditElement(element1Id, element1EditVM);
         }
-
 
         [TestInitialize]
         public void Init()

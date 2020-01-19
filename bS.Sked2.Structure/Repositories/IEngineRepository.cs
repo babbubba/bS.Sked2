@@ -34,5 +34,6 @@ namespace bS.Sked2.Structure.Repositories
         void UpdateJob(IJobEntry jobEntry);
 
         void UpdateTask(ITaskEntry taskEntry);
+        void UpdateModule(IModuleEntry entry);
     }
 }

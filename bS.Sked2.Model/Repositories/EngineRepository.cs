@@ -90,6 +90,12 @@ namespace bS.Sked2.Model.Repositories
 
         }
 
+        public void UpdateModule(IModuleEntry entry)
+        {
+            base.Update((ModuleEntry)entry);
+
+        }
+
         //public void CreateLinkElement(IElementsLinkEntry linkElement)
         //{
         //    base.Create((ElementsLinkEntry)linkElement);

@@ -27,6 +27,11 @@ namespace bS.Sked2.Engine.Objects
             elementEntry = engineRepository.GetElementById(EntityId);
         }
 
+        public override IEngineEntry GetEmptyEntity()
+        {
+            throw new NotImplementedException();
+        }
+
         public IElementEntry PreviuousElement => ((ElementsLinkEntry)elementEntry).Previuous;
 
         public IElementEntry NextElement => ((ElementsLinkEntry)elementEntry).Next;

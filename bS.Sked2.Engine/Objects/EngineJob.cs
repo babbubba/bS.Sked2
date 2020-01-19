@@ -44,6 +44,11 @@ namespace bS.Sked2.Engine.Objects
             return true;
         }
 
+        public override IEngineEntry GetEmptyEntity()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Loads from entity.
         /// </summary>

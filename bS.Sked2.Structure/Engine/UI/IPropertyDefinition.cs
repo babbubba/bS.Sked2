@@ -1,6 +1,6 @@
 ﻿namespace bS.Sked2.Structure.Engine.UI
 {
-    public interface IElementPropertyDefinition
+    public interface IPropertyDefinition
     {
         DataType DataType { get; set; }
         string Value { get; set; }

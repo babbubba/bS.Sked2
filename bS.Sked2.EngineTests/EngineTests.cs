@@ -1,22 +1,22 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Microsoft.Extensions.Logging;
-using Moq;
-using bS.Sked2.Extensions.Common.FlatFile;
-using bS.Sked2.Structure.Service;
-using bS.Sked2.Structure.Engine;
-using bS.Sked2.Engine.Objects;
-using bS.Sked2.Service.Message;
-using bS.Sked2.Service.Validation;
+﻿using bs.Data;
 using bs.Data.Interfaces;
-using bS.Sked2.Structure.Repositories;
-using bS.Sked2.Model.Repositories;
-using bs.Data;
+using bS.Sked2.Engine.Objects;
+using bS.Sked2.Extensions.Common.FlatFile;
 using bS.Sked2.Extensions.Common.Models;
 using bS.Sked2.Model;
-using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
 using bS.Sked2.Model.Engine;
+using bS.Sked2.Model.Repositories;
+using bS.Sked2.Service.Message;
+using bS.Sked2.Service.Validation;
+using bS.Sked2.Structure.Engine;
+using bS.Sked2.Structure.Repositories;
+using bS.Sked2.Structure.Service;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
+using System.Linq;
 
 namespace bS.Sked2.Engine.Tests
 {
@@ -45,7 +45,7 @@ namespace bS.Sked2.Engine.Tests
                 ExtensionsFolder = @"C:\temp\"
             };
 
-            services.AddSingleton< ILogger>(Mock.Of<ILogger<Engine>>());
+            services.AddSingleton<ILogger>(Mock.Of<ILogger<Engine>>());
             services.AddSingleton(Mock.Of<ILogger<EngineElement>>());
             services.AddSingleton(Mock.Of<ILogger<EngineTask>>());
 
@@ -54,7 +54,6 @@ namespace bS.Sked2.Engine.Tests
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IEngineRepository, EngineRepository>();
             services.AddSingleton<IMessageRepository, MessageRepository>();
-
 
             services.AddSingleton<IMessageService, MessageService>();
             services.AddSingleton<ISqlValidationService, SqlValidationService>();
@@ -65,7 +64,6 @@ namespace bS.Sked2.Engine.Tests
 
             serviceProvider = services.BuildServiceProvider();
         }
-
 
         [TestMethod()]
         public void TaskFlowTest()
@@ -79,7 +77,6 @@ namespace bS.Sked2.Engine.Tests
             //Create entities to test
             using (var transaction = uow.BeginTransaction())
             {
-
                 //Job
                 jobEntry = GetJobEntry();
                 engineRepository.CreateJob(jobEntry);
@@ -93,7 +90,6 @@ namespace bS.Sked2.Engine.Tests
                 var commonModuleEntry = new CommonModuleEntry();
                 commonModuleEntry.InputProperties.FirstOrDefault(x => x.Key == "WorkspacePath").Value = @"<string>.\</string>";
                 engineRepository.CreateModule(commonModuleEntry);
-
 
                 //first
                 var elementFlatileReaderEntry = GetFlatFileReaderEntry();
@@ -128,12 +124,11 @@ namespace bS.Sked2.Engine.Tests
 
                 jobEntry.Tasks.Add(taskEntry);
             }
-            
-            engine.ExecuteJob(jobEntry.Id);
 
+            engine.ExecuteJob(jobEntry.Id);
         }
 
-            private static FlatFileReaderEntry GetFlatFileReaderEntry()
+        private static FlatFileReaderEntry GetFlatFileReaderEntry()
         {
             var elementFlatileReaderEntry = new FlatFileReaderEntry();
             elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "ColumnDelimiter").Value = "<char>44</char>";
@@ -141,7 +136,6 @@ namespace bS.Sked2.Engine.Tests
             elementFlatileReaderEntry.InputProperties.FirstOrDefault(x => x.Key == "SourceFilePath").Value = @"<VirtualPath><Path>\TestDataFiles\provincia-regione-sigla.csv</Path></VirtualPath>";
             return elementFlatileReaderEntry;
         }
-
 
         private static FlatFileWriterEntry GetFlatFileWriterEntry()
         {
@@ -175,7 +169,6 @@ namespace bS.Sked2.Engine.Tests
             };
         }
 
-
         //private SqlQueryReader GetSqlQueryReader()
         //{
         //    var sqlQueryReader = new SqlQueryReader(uow, engineRepository, engineElementLogger, messageService);
@@ -208,6 +201,5 @@ namespace bS.Sked2.Engine.Tests
         //    sqlWriter.SetDataValue(EngineDataDirection.Input, "SourceTable", new TableValue(dt));
         //    return sqlWriter;
         //}
-
     }
 }

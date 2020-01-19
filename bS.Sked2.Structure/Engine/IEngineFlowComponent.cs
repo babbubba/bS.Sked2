@@ -69,7 +69,7 @@ namespace bS.Sked2.Structure.Engine
         /// </summary>
         /// <param name="EntityId">The entity identifier.</param>
         void LoadFromEntity(Guid EntityId);
-        IElementEntry GetEmptyEntity();
+        IEngineEntry GetEmptyEntity();
 
         /// <summary>
         /// Pauses this instance.

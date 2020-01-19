@@ -1,7 +1,6 @@
 ﻿using bs.Data.Interfaces;
 using bS.Sked2.Engine.Objects;
 using bS.Sked2.Extensions.Common.Models;
-using bS.Sked2.Structure.Base;
 using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Engine.Data;
 using bS.Sked2.Structure.Models;
@@ -13,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 
 namespace bS.Sked2.Extensions.Common.SqlServer
 {
@@ -21,7 +19,7 @@ namespace bS.Sked2.Extensions.Common.SqlServer
     {
         private readonly ISqlValidationService sqlValidationService;
 
-        public SqlQueryReader(IUnitOfWork uow, IEngineRepository enginRepo, ILogger logger, IMessageService messageService, ISqlValidationService sqlValidationService) : base(uow, enginRepo, logger, messageService )
+        public SqlQueryReader(IUnitOfWork uow, IEngineRepository enginRepo, ILogger logger, IMessageService messageService, ISqlValidationService sqlValidationService) : base(uow, enginRepo, logger, messageService)
         {
             this.sqlValidationService = sqlValidationService;
 
@@ -38,7 +36,7 @@ namespace bS.Sked2.Extensions.Common.SqlServer
         public static string Name => "Sql Query Reader";
         public static string Description => "This elements read data form a SQL Server query and returns a Table value.";
 
-        public override IElementEntry GetEmptyEntity()
+        public override IEngineEntry GetEmptyEntity()
         {
             return new SqlQueryReaderEntry();
         }
@@ -57,7 +55,7 @@ namespace bS.Sked2.Extensions.Common.SqlServer
 
                 var sqlErrors = new List<string>();
                 if (!sqlValidationService.IsSQLQueryValid(sqlQuery, out sqlErrors))
-                { 
+                {
                     AddMessage($"Error/s in the sql query provided: {string.Join("; ", sqlErrors)}", MessageSeverity.Error);
                     return;
                 }
@@ -79,7 +77,6 @@ namespace bS.Sked2.Extensions.Common.SqlServer
 
                     AddMessage($"Importing Sql Query completed. {table.RowCount} rows read.", MessageSeverity.Debug);
                 }
-
             }
             catch (Exception e)
             {

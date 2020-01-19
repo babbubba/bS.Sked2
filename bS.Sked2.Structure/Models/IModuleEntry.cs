@@ -6,9 +6,10 @@ namespace bS.Sked2.Structure.Models
     /// <summary>
     /// The Module persister. A module is an extension that handle one or more elements.
     /// </summary>
-    public interface IModuleEntry
+    public interface IModuleEntry : IEngineEntry
     {
         Guid Id { get; set; }
+
         /// <summary>
         /// Gets or sets the creation date.
         /// </summary>
@@ -84,5 +85,6 @@ namespace bS.Sked2.Structure.Models
         IList<IElementPropertyEntry> InputProperties { get; set; }
         IList<IElementPropertyEntry> OutputProperties { get; set; }
 
+        ITaskEntry ParentTask { get; set; }
     }
 }

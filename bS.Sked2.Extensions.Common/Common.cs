@@ -1,16 +1,16 @@
 ﻿using bs.Data.Interfaces;
 using bS.Sked2.Engine.Objects;
 using bS.Sked2.Extensions.Common.FlatFile;
+using bS.Sked2.Extensions.Common.Models;
 using bS.Sked2.Extensions.Common.SqlServer;
 using bS.Sked2.Model.Service;
 using bS.Sked2.Structure.Engine;
+using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace bS.Sked2.Extensions.Common
 {
@@ -20,7 +20,7 @@ namespace bS.Sked2.Extensions.Common
 
         public Common(ILogger logger, IMessageService messageService, IUnitOfWork uow, IEngineRepository enginRepo, IStorageService storageService) : base(logger, messageService, uow, enginRepo)
         {
-            RegisterInputProperties("WorkspacePath", "Source file path", DataType.String, true);
+            RegisterInputProperties("WorkspacePath", "Source file path", DataType.VirtualPath, true);
             this.StorageService = storageService;
         }
 
@@ -63,6 +63,11 @@ namespace bS.Sked2.Extensions.Common
         public override void Stop()
         {
             throw new NotImplementedException();
+        }
+
+        public override IEngineEntry GetEmptyEntity()
+        {
+            return new CommonModuleEntry();
         }
     }
 }

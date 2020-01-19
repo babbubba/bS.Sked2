@@ -88,6 +88,11 @@ namespace bS.Sked2.Engine.Objects
             return true;
         }
 
+        public override IEngineEntry GetEmptyEntity()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Loads from entity.
         /// </summary>
@@ -104,9 +109,7 @@ namespace bS.Sked2.Engine.Objects
         {
             using (var transaction = uow.BeginTransaction())
             {
-
                 instance.IsPaused = true;
-
             }
 
             AddMessage("Task execution paused.");
@@ -119,7 +122,6 @@ namespace bS.Sked2.Engine.Objects
         {
             using (var transaction = uow.BeginTransaction())
             {
-
                 // Create the instance ID for this element
                 instance = engineRepository.CreateNewInstance();
 
@@ -128,7 +130,6 @@ namespace bS.Sked2.Engine.Objects
 
                 // Add current instance to entry
                 taskEntry.Instances.Add(instance);
-
             }
 
             // Add a message to notify the element started
@@ -182,7 +183,6 @@ namespace bS.Sked2.Engine.Objects
         {
             using (var transaction = uow.BeginTransaction())
             {
-
                 // It set paused value to false in case this element was paused previously
                 instance.IsPaused = false;
 
@@ -191,7 +191,6 @@ namespace bS.Sked2.Engine.Objects
 
                 // Add a message to notify the element finish execution
                 AddMessage("Task execution finish.");
-
             }
         }
 
@@ -257,7 +256,6 @@ namespace bS.Sked2.Engine.Objects
         {
             var modules = new Dictionary<Guid, IEngineModule>();
 
-
             // fetch all entities element
             foreach (var elementEntry in taskEntry.Elements.OrderBy(e => e.Position))
             {
@@ -279,7 +277,6 @@ namespace bS.Sked2.Engine.Objects
                     engineModule.Init();
 
                     modules.Add(elementEntry.ParentModule.Id, engineModule);
-
                 }
 
                 // finding the EngineElement to execute this entry

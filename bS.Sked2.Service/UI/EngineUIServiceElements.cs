@@ -39,7 +39,7 @@ namespace bS.Sked2.Service.UI
                 IEngineElement engineElement = GetEngineElement(elementDefinition.ElementTypeKey);
 
                 // Get the right entry model for this engine element type
-                elementEntry = engineElement.GetEmptyEntity();
+                elementEntry = (IElementEntry)engineElement.GetEmptyEntity();
 
                 // Populate the entry element whit data provided by user
                 // elementEntry.ParentTask = taskEntry;
@@ -112,7 +112,6 @@ namespace bS.Sked2.Service.UI
         //        entry.Name = elementDefinition.Name;
         //        entry.Description = elementDefinition.Description;
 
-
         //        foreach (var inputProperty in elementDefinition.InputProperties)
         //        {
         //            entry.InputProperties.FirstOrDefault(p => p.Key == inputProperty.Key).Value = inputProperty.Value.Base64Decode();
@@ -130,7 +129,6 @@ namespace bS.Sked2.Service.UI
         //    }
         //}
 
-
         /// <summary>
         /// Gets the creation view model for the element.
         /// </summary>
@@ -147,7 +145,7 @@ namespace bS.Sked2.Service.UI
 
         public IElementDefinitionEdit GetEditElement(Guid elementId)
         {
-            var result = new ElementDefinitionEdit();
+            var result = new ElementDefinitionEditViewModel();
             var entry = engineRepository.GetElementById(elementId);
             result.Name = entry.Name;
             result.Description = entry.Description;
@@ -158,13 +156,13 @@ namespace bS.Sked2.Service.UI
 
             // get the properties value
             // input
-            var inputProperties = new List<ElementPropertyDefinition>();
+            var inputProperties = new List<PropertyDefinition>();
             foreach (var inputProperty in entry.InputProperties)
             {
                 var engineDataValue = GetPopertyDataValue(inputProperty);
                 var propertyDetail = engineElement.InputProperties.FirstOrDefault(ip => ip.Key == inputProperty.Key);
 
-                inputProperties.Add(new ElementPropertyDefinition
+                inputProperties.Add(new PropertyDefinition
                 {
                     DataType = inputProperty.DataType,
                     //Value = engineDataValue,
@@ -176,13 +174,13 @@ namespace bS.Sked2.Service.UI
             result.InputProperties = inputProperties;
 
             // output
-            var outputProperties = new List<ElementPropertyDefinition>();
+            var outputProperties = new List<PropertyDefinition>();
             foreach (var outputProperty in entry.OutputProperties)
             {
                 var engineDataValue = GetPopertyDataValue(outputProperty);
                 var propertyDetail = engineElement.OutputProperties.FirstOrDefault(op => op.Key == outputProperty.Key);
 
-                outputProperties.Add(new ElementPropertyDefinition
+                outputProperties.Add(new PropertyDefinition
                 {
                     DataType = outputProperty.DataType,
                     //Value = engineDataValue,
@@ -277,7 +275,21 @@ namespace bS.Sked2.Service.UI
 
         public bool SetElementModule(Guid elementId, Guid moduleId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var transaction = uow.BeginTransaction())
+                {
+                    var element = engineRepository.GetElementById(elementId);
+                    var module = engineRepository.GetModuleById(moduleId);
+                    element.ParentModule = module;
+                    engineRepository.UpdateEment(element);
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         private static IEngineData GetPopertyDataValue(IElementPropertyEntry inputProperty)

@@ -1,9 +1,7 @@
 ﻿using bs.Data.Interfaces;
 using bS.Sked2.Engine.Objects;
 using bS.Sked2.Extensions.Common.Models;
-using bS.Sked2.Structure.Base;
 using bS.Sked2.Structure.Engine;
-using bS.Sked2.Structure.Engine.Data;
 using bS.Sked2.Structure.Engine.Data.Types;
 using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Repositories;
@@ -13,19 +11,17 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Text;
 
 namespace bS.Sked2.Extensions.Common.FlatFile
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <seealso cref="bS.Sked2.Structure.Engine.BaseEngineElement" />
     public class FlatFileWriter : EngineElement
     {
-
         public FlatFileWriter(IUnitOfWork uow, IEngineRepository enginRepo, ILogger logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
             // Register element properties
@@ -39,10 +35,11 @@ namespace bS.Sked2.Extensions.Common.FlatFile
         public static string Name => "Flat File Writer";
         public static string Description => "Writes data from a Table Data Value in a flat file";
 
-        public override IElementEntry GetEmptyEntity()
+        public override IEngineEntry GetEmptyEntity()
         {
             return new FlatFileWriterEntry();
         }
+
         /// <summary>
         /// Starts this instance. In derived class you have to execute this base before your overrided code.
         /// </summary>

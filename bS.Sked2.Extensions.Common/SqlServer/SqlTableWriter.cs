@@ -1,9 +1,7 @@
 ﻿using bs.Data.Interfaces;
 using bS.Sked2.Engine.Objects;
 using bS.Sked2.Extensions.Common.Models;
-using bS.Sked2.Structure.Base;
 using bS.Sked2.Structure.Engine;
-using bS.Sked2.Structure.Engine.Data;
 using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
@@ -14,7 +12,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 
 namespace bS.Sked2.Extensions.Common.SqlServer
 {
@@ -34,7 +31,7 @@ namespace bS.Sked2.Extensions.Common.SqlServer
         public static string Name => "Sql Table Writer";
         public static string Description => "This elements insert a Table Data Value into a SQL Server table.";
 
-        public override IElementEntry GetEmptyEntity()
+        public override IEngineEntry GetEmptyEntity()
         {
             return new SqlTableWriterEntry();
         }

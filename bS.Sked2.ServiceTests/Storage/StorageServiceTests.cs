@@ -19,7 +19,6 @@ namespace bS.Sked2.Service.Storage.Tests
 
             Assert.IsTrue(storageService.FileExists(new VirtualPath(@"/file_di_prova.txt")));
 
-
             storageService.FileCopy(new VirtualPath(@"/file_di_prova.txt"), new VirtualPath(@"/file_di_prova_copia.txt"));
 
             Assert.IsTrue(storageService.FileExists(new VirtualPath(@"/file_di_prova_copia.txt")));
@@ -55,15 +54,12 @@ namespace bS.Sked2.Service.Storage.Tests
             Assert.IsTrue(created);
 
             storageService.FolderDelete(new VirtualPath(@"/sub"), true);
-
-
         }
 
         private void Watcher_Created(object sender, string e)
         {
             created = true;
         }
-
 
         [TestInitialize]
         public void Init()

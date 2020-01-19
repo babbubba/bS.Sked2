@@ -1,8 +1,6 @@
 ﻿using bS.Sked2.Structure.Engine.Data.Types;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace bS.Sked2.Structure.Engine.Data.Tests
 {
@@ -51,7 +49,6 @@ namespace bS.Sked2.Structure.Engine.Data.Tests
             //var s123STR = s123.WriteToStringValue();
             //var s123_bis = new StringValue();
             //s123_bis.ReadFromStringValue(s123STR);
-
         }
     }
 }
