@@ -35,7 +35,7 @@ namespace bS.Sked2.Service.Storage
 
         #region C.tor
 
-        public StorageService(ILogger logger) : base(logger)
+        public StorageService(ILogger<StorageService> logger) : base(logger)
         {
         }
 

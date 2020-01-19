@@ -22,7 +22,7 @@ namespace bS.Sked2.Extensions.Common.FlatFile
     /// <seealso cref="bS.Sked2.Structure.Engine.BaseEngineElement" />
     public class FlatFileWriter : EngineElement
     {
-        public FlatFileWriter(IUnitOfWork uow, IEngineRepository enginRepo, ILogger logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
+        public FlatFileWriter(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<Engine.Engine> logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
             // Register element properties
             RegisterInputProperties("TargetFilePath", "", DataType.VirtualPath, true);

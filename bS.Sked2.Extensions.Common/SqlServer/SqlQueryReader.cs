@@ -19,7 +19,7 @@ namespace bS.Sked2.Extensions.Common.SqlServer
     {
         private readonly ISqlValidationService sqlValidationService;
 
-        public SqlQueryReader(IUnitOfWork uow, IEngineRepository enginRepo, ILogger logger, IMessageService messageService, ISqlValidationService sqlValidationService) : base(uow, enginRepo, logger, messageService)
+        public SqlQueryReader(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<Engine.Engine> logger, IMessageService messageService, ISqlValidationService sqlValidationService) : base(uow, enginRepo, logger, messageService)
         {
             this.sqlValidationService = sqlValidationService;
 

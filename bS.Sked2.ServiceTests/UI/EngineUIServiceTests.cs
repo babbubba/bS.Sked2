@@ -11,6 +11,7 @@ using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Linq;
@@ -93,6 +94,7 @@ namespace bS.Sked2.Service.UI.Tests
         {
             var services = new ServiceCollection();
 
+
             var dbContext = new DbContext
             {
                 ConnectionString = "Data Source=.\\bs.Data.Test.db;Version=3;BinaryGuid=False;",
@@ -103,7 +105,7 @@ namespace bS.Sked2.Service.UI.Tests
                 EntitiesFileNameScannerPatterns = new string[] { "bS.Sked2.Extensions.*.dll", "bS.Sked2.Model.dll" }
             };
 
-            var engineUiServiceConfigx = new EngineUIServiceConfig
+            var engineUiServiceConfig = new EngineUIServiceConfig
             {
                 ExtensionsFolder = @"..\..\..\..\bS.Sked2.Extensions.Common\bin\Debug\netcoreapp3.0\"
             };
@@ -113,13 +115,13 @@ namespace bS.Sked2.Service.UI.Tests
                 ExtensionsFolder = @"..\..\..\..\bS.Sked2.Extensions.Common\bin\Debug\netcoreapp3.0\"
             };
 
-            services.AddSingleton(Mock.Of<ILogger>());
+            services.AddLogging(config => config.AddConsole());
             services.AddSingleton<IDbContext>(dbContext);
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IEngineRepository, EngineRepository>();
             services.AddSingleton<IEngineConfig>(engineConfig);
             services.AddSingleton<IEngine, Engine.Engine>();
-            services.AddSingleton<IEngineUIServiceConfig>(engineUiServiceConfigx);
+            services.AddSingleton<IEngineUIServiceConfig>(engineUiServiceConfig);
             services.AddTransient<IEngineUIService, EngineUIService>();
             serviceProvider = services.BuildServiceProvider();
         }

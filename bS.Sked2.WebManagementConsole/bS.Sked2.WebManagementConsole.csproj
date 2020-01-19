@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\bS.Sked2.Engine\bS.Sked2.Engine.csproj" />
     <ProjectReference Include="..\bS.Sked2.Service\bS.Sked2.Service.csproj" />
   </ItemGroup>
 

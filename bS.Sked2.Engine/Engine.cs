@@ -20,16 +20,18 @@ namespace bS.Sked2.Engine
     public class Engine : IEngine
     {
         protected IServiceProvider serviceProvider;
-        private readonly ILogger logger;
+        private readonly ILogger<Engine> logger;
+        private readonly ILoggerFactory loggerFactory;
         private readonly IDbContext dbContext;
         private readonly IServiceCollection services;
 
         public IEngineConfig Configuration { get; }
         public IServiceProvider ServiceProvider => serviceProvider;
 
-        public Engine(ILogger logger, IDbContext dbContext, IEngineConfig configuration)
+        public Engine(ILogger<Engine> logger, ILoggerFactory loggerFactory, IDbContext dbContext, IEngineConfig configuration)
         {
             this.logger = logger;
+            this.loggerFactory = loggerFactory;
             this.dbContext = dbContext;
             Configuration = configuration;
             this.services = new ServiceCollection();
@@ -174,6 +176,7 @@ namespace bS.Sked2.Engine
         {
             services.AddSingleton(dbContext);
             services.AddSingleton(logger);
+            services.AddSingleton(loggerFactory);
 
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<IEngineRepository, EngineRepository>();
@@ -181,6 +184,7 @@ namespace bS.Sked2.Engine
 
             services.AddSingleton<IMessageService, MessageService>();
             services.AddSingleton<ISqlValidationService, SqlValidationService>();
+            services.AddSingleton(loggerFactory.CreateLogger<StorageService>());
             services.AddSingleton<IStorageService, StorageService>();
             services.AddSingleton(Configuration);
             services.AddSingleton<IEngine, Engine>();
@@ -189,7 +193,6 @@ namespace bS.Sked2.Engine
             services.AddTransient<EngineLink>();
 
             // Register all extensions elements and modules types
-            //var engineModuleTypes = AssembliesExtensions.GetTypesImplementingInterface<IEngineModule>();
             var engineModuleTypes = AssembliesExtensions.GetTypesImplementingInterface<IEngineModule>(new string[] { Configuration.ExtensionsFolder }, true);
             foreach (var engineModule in engineModuleTypes)
             {

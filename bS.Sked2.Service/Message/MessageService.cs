@@ -17,15 +17,6 @@ namespace bS.Sked2.Service.Message
             this.uow = uow;
             this.messageRepository = messageRepository;
         }
-        //public IMessageEntry CreateMessage(string message, MessageSeverity severity)
-        //{
-        //    var mess = new MessageEntry
-        //    {
-        //        Message = message,
-        //        Severity = severity
-        //    };
-        //    return mess;
-        //}
 
         public IMessageEntry CreateMessage(string message, IInstanceEntry instance, MessageSeverity severity)
         {

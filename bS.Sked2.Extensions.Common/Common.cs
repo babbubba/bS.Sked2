@@ -18,7 +18,7 @@ namespace bS.Sked2.Extensions.Common
     {
         public IStorageService StorageService;
 
-        public Common(ILogger logger, IMessageService messageService, IUnitOfWork uow, IEngineRepository enginRepo, IStorageService storageService) : base(logger, messageService, uow, enginRepo)
+        public Common(ILogger<Engine.Engine> logger, IMessageService messageService, IUnitOfWork uow, IEngineRepository enginRepo, IStorageService storageService) : base(logger, messageService, uow, enginRepo)
         {
             RegisterInputProperties("WorkspacePath", "Source file path", DataType.VirtualPath, true);
             this.StorageService = storageService;

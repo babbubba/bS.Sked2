@@ -23,7 +23,7 @@ namespace bS.Sked2.Service.UI
         private readonly IEngine engine;
 
         public EngineUIService(
-            ILogger logger,
+            ILogger<EngineUIService> logger,
             IUnitOfWork uow,
             IEngine engine,
             IEngineRepository engineRepository,
