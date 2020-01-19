@@ -9,6 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { ElementComponent } from './element/element.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MonitorComponent } from './monitor/monitor.component';
+import { JobComponent } from './job/job.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { MonitorComponent } from './monitor/monitor.component';
     ElementComponent,
     DashboardComponent,
     MonitorComponent,
+    JobComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

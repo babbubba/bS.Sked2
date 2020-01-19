@@ -1,1 +1,6 @@
-<p>dashboard works!</p>
+<h2>Jobs</h2>
+<ul class="jobs list-unstyled">
+  <li *ngFor="let job of jobs">
+    <app-job [job]="job"></app-job>
+  </li>
+</ul>
