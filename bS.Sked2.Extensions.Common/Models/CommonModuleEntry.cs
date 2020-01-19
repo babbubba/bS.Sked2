@@ -13,7 +13,7 @@ namespace bS.Sked2.Extensions.Common.Models
             Name = Common.Name;
             Description = Common.Description;
 
-            InputProperties.Add(new ElementPropertyEntry("WorkspacePath", "Workspace folder root path", DataType.String, true));
+            InputProperties.Add(new ElementPropertyEntry("WorkspacePath", "Workspace folder root path", DataType.VirtualPath, true));
         }
     }
 

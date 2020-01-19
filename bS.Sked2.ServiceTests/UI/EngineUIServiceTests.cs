@@ -67,7 +67,7 @@ namespace bS.Sked2.Service.UI.Tests
 
             //Edit the module
             var moduleEditVM = engineUIService.GetEditModule(moduleId);
-            moduleEditVM.ParentTaskId = taskId;
+            //moduleEditVM.ParentTaskId = taskId;
             moduleEditVM.InputProperties.First(p => p.Key == "WorkspacePath").Value = new VirtualPathValue(new VirtualPath(@".\")).WriteToStringValue().Base64Encode();
             engineUIService.EditModule(moduleId, moduleEditVM);
 
