@@ -1,32 +1,13 @@
-<h2>Jobs</h2>
+<h2>Jobs <button class="btn btn-primary float-right" [disabled]="disableAddJobButton" (click)="onJobSelect()">Add new Job</button></h2>
 <div class="row">
   <div class="col">
     <ul class="jobs list-unstyled">
-      <li *ngFor="let job of jobs" (click)="onJobSelect(job)">
+      <li *ngFor="let job of jobs" class="jobs" [class.selected]="job === selectedJob" (click)="onJobSelect(job)">
         <app-job [job]="job"></app-job>
       </li>
     </ul>
   </div>
-  <div *ngIf="selectedJob" class="col-3">
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" class="form-control" id="name" [(ngModel)]="selectedJob.name" placeholder="name">
-      <div class="invalid-feedback">
-        Valid name is required.
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="description">Description</label>
-      <textarea class="form-control" id="description" [(ngModel)]="selectedJob.description" placeholder="description" rows="3"></textarea>
-      <div class="invalid-feedback">
-        Valid description is required.
-      </div>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" [(ngModel)]="selectedJob.isEnabled"  id="isEnabled">
-      <label class="form-check-label" for="isEnabled">
-        Enabled
-      </label>
-    </div>
+  <div *ngIf="selectedJobDetail" class="col-3 job-detail">
+    <app-jod-detail [jobDetail]="selectedJobDetail"></app-jod-detail>
   </div>
 </div>

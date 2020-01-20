@@ -1,0 +1,44 @@
+<div class="border job-detail">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="name" [(ngModel)]="jobDetail.name" placeholder="name">
+    <div class="invalid-feedback">
+      Valid name is required.
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea class="form-control" id="description" [(ngModel)]="jobDetail.description" placeholder="description" rows="3"></textarea>
+    <div class="invalid-feedback">
+      Valid description is required.
+    </div>
+  </div>
+  <div class="form-group form-check">
+    <input class="form-check-input" type="checkbox" [(ngModel)]="jobDetail.isEnabled" id="isEnabled">
+    <label class="form-check-label" for="isEnabled">
+      Enabled
+    </label>
+  </div>
+  <div class="form-group form-check">
+    <input class="form-check-input" type="checkbox" [(ngModel)]="jobDetail.failIfAnyTaskHasError" id="failIfAnyTaskHasError">
+    <label class="form-check-label" for="failIfAnyTaskHasError">
+      Fails if any task has error
+    </label>
+  </div>
+  <div class="form-group form-check">
+    <input class="form-check-input" type="checkbox" [(ngModel)]="jobDetail.failIfAnyTaskHasWarning" id="failIfAnyTaskHasWarning">
+    <label class="form-check-label" for="failIfAnyTaskHasWarning">
+      Fails if any task has warning
+    </label>
+  </div>
+  <div class="form-group" *ngIf="jobDetail.creationDate">
+    Created: {{jobDetail.creationDate | date:'short'}}
+  </div>
+  <div class="form-group" *ngIf="jobDetail.lastUpdateDate">
+    Updated: {{jobDetail.lastUpdateDate | date:'short'}}
+  </div>
+  <div class="job-detail-buttons text-right">
+    <!--<button class="btn btn-danger">Cancel</button>-->
+    <button class="btn btn-success">Save</button>
+  </div>
+</div>

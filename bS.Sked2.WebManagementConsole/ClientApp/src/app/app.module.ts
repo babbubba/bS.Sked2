@@ -10,6 +10,7 @@ import { ElementComponent } from './element/element.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MonitorComponent } from './monitor/monitor.component';
 import { JobComponent } from './job/job.component';
+import { JodDetailComponent } from './jod-detail/jod-detail.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { JobComponent } from './job/job.component';
     DashboardComponent,
     MonitorComponent,
     JobComponent,
+    JodDetailComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

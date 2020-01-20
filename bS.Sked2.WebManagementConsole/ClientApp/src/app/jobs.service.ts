@@ -13,6 +13,18 @@ export class JobsService {
     return JOBS;
   }
 
+  getJobCreate(): JobDetail {
+    return JOBDETAILNEW;
+  }
+
+  createJobDetail(job: JobDetail): void {
+    //TODO: Implementa logica per la creazione
+  }
+
+  saveJobDetail(job: JobDetail): void {
+    //TODO: Implementa logica per il salvataggio
+  }
+
   getJobDetail(id: string): JobDetail {
     return JOBDETAIL;
   }
@@ -28,6 +40,18 @@ const JOBDETAIL: JobDetail = {
   name: 'Job dettaglio',
   description: 'Descrizione nel dettaglio di un job',
   failIfAnyTaskHasError: true,
+  failIfAnyTaskHasWarning: false,
+  isEnabled: true,
+  creationDate: new Date,
+  lastUpdateDate: new Date
+
+};
+
+const JOBDETAILNEW: JobDetail = {
+  id: null,
+  name: 'Job vuoto',
+  description: 'Descrizione vuota',
+  failIfAnyTaskHasError: false,
   failIfAnyTaskHasWarning: false,
   isEnabled: true,
   creationDate: new Date,

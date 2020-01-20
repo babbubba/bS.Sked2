@@ -13,7 +13,9 @@ export class DashboardComponent implements OnInit {
   constructor(private jobsService: JobsService) { }
 
   jobs: Job[];
-  selectedJob: JobDetail;
+  selectedJob: Job;
+  selectedJobDetail: JobDetail;
+  disableAddJobButton: boolean = false;
 
   ngOnInit() {
     this.loadJobs();
@@ -24,7 +26,16 @@ export class DashboardComponent implements OnInit {
   }
 
   onJobSelect(job: Job) {
-    this.selectedJob = this.jobsService.getJobDetail(job.id);
+    this.selectedJob = job;
+    if (this.selectedJob != null) {
+      this.disableAddJobButton = false;
+      this.selectedJobDetail = this.jobsService.getJobDetail(this.selectedJob.id);
+    }
+    else {
+      this.disableAddJobButton = true;
+      this.selectedJobDetail = this.jobsService.getJobCreate();
+    }
+
   }
 
 }

@@ -1,0 +1,10 @@
+div.border.job-detail {
+  padding: 4px;
+}
+div.job-detail-buttons {
+    margin: 8px;
+}
+
+div.job-detail-buttons > button{
+  margin-left: 8px;
+}
