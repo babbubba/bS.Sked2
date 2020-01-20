@@ -9,8 +9,8 @@ For repository we use [bs.Data](https://github.com/babbubba/bs.Data "bs.Data") N
 #### bS.Sked2.Service
 It implements Service Pattern.
 #### bS.Sked2.Extensions.Common
-It implements the first extension module.
+It implements the first extension module. This is loaded dinamically.
 #### bS.Sked2.Engine
-It implement the Engine logic for the elements execution.
-#### bS.Sked2.Main
-It exposes the web api functionality.
+It implement the Engine logic for the jobs execution.
+#### bS.Sked2.WebManagementConsole
+Front-end based on Angular 8 single page application.
