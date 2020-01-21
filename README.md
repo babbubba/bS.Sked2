@@ -14,3 +14,14 @@ It implements the first extension module. This is loaded dinamically.
 It implement the Engine logic for the jobs execution.
 #### bS.Sked2.WebManagementConsole
 Front-end based on Angular 8 single page application.
+## How it works
+Sked 2 is designed to execute Jobs.
+The Job is the highest level entity that owns one or more Task and can be launched by a Trigger.
+The Task owns one or more modules and one or more elements.
+The Element is the lowest level entity and it owns the logic to execut a specific operation.
+#### Job
+#### Trigger
+#### Task
+#### Module
+#### Element
+
