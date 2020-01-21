@@ -31,5 +31,12 @@ namespace bS.Sked2.WebManagementConsole.Controllers
         {
             return engineUIService.GetJobs().FirstOrDefault(x=>x.Id == Guid.Parse(id));
         }
+
+        [HttpGet]
+        [Route("getemptyjobcreate")]
+        public IJobDefinitionCreate GetEmptyJobCreate(string id)
+        {
+            return engineUIService.GetCreateJob();
+        }
     }
 }
