@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Job } from './models/job';
 import { JobDetail } from './models/jobDetail';
 
@@ -7,14 +9,17 @@ import { JobDetail } from './models/jobDetail';
 })
 export class JobsService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  getJobs(): Job[] {
-    return JOBS;
+  getJobsUrl: string = 'api/engine/getjobs';
+  getJobDetailUrl: string = 'api/engine/getjob';
+
+  getJobs(): Observable<Job[]> {
+    return this.http.get<Job[]>(this.getJobsUrl)
   }
 
-  getJobCreate(): JobDetail {
-    return JOBDETAILNEW;
+  getJobCreate(): Observable<JobDetail> {
+    return of(JOBDETAILNEW);
   }
 
   createJobDetail(job: JobDetail): void {
@@ -25,8 +30,8 @@ export class JobsService {
     //TODO: Implementa logica per il salvataggio
   }
 
-  getJobDetail(id: string): JobDetail {
-    return JOBDETAIL;
+  getJobDetail(id: string): Observable<JobDetail> {
+    return this.http.get<JobDetail>(this.getJobDetailUrl + '/' + id);
   }
 }
 

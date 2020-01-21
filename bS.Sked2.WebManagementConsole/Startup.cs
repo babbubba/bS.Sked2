@@ -43,19 +43,20 @@ namespace bS.Sked2.WebManagementConsole
                 DatabaseEngineType = "sqlite",
                 Create = false,
                 Update = true,
+                UseExecutingAssemblyToo = false,
                 LookForEntitiesDllInCurrentDirectoryToo = false,
-                FoldersWhereLookingForEntitiesDll = new string []{ @"..\..\..\..\bS.Sked2.Extensions.Common\bin\Debug\netcoreapp3.0\" },
+                FoldersWhereLookingForEntitiesDll = new string[] { @"..\bS.Sked2.Extensions.Common\bin\Debug\netcoreapp3.0\" },
                 EntitiesFileNameScannerPatterns = new string[] { "bS.Sked2.Extensions.*.dll", "bS.Sked2.Model.dll" }
             };
 
             var engineUiServiceConfigx = new EngineUIServiceConfig
             {
-                ExtensionsFolder = @"..\..\..\..\bS.Sked2.Extensions.Common\bin\Debug\netcoreapp3.0\"
+                ExtensionsFolder = @"..\bS.Sked2.Extensions.Common\bin\Debug\netcoreapp3.0\"
             };
 
             var engineConfig = new EngineConfig
             {
-                ExtensionsFolder = @"..\..\..\..\bS.Sked2.Extensions.Common\bin\Debug\netcoreapp3.0\"
+                ExtensionsFolder = @"..\bS.Sked2.Extensions.Common\bin\Debug\netcoreapp3.0\"
             };
 
             // add logging
@@ -87,12 +88,15 @@ namespace bS.Sked2.WebManagementConsole
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
             }
 
             app.UseRouting();
+
+            //app.UseCors(builder => builder.WithOrigins("https://localhost:44323"));
 
             app.UseEndpoints(endpoints =>
             {

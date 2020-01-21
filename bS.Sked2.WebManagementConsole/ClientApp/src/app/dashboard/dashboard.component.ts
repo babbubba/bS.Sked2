@@ -9,7 +9,6 @@ import { JobDetail } from '../models/jobDetail';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
   constructor(private jobsService: JobsService) { }
 
   jobs: Job[];
@@ -22,20 +21,22 @@ export class DashboardComponent implements OnInit {
   }
 
   loadJobs() {
-    this.jobs = this.jobsService.getJobs();
+    this.jobsService.getJobs()
+      .subscribe(jobs => this.jobs = jobs);
   }
 
   onJobSelect(job: Job) {
     this.selectedJob = job;
     if (this.selectedJob != null) {
       this.disableAddJobButton = false;
-      this.selectedJobDetail = this.jobsService.getJobDetail(this.selectedJob.id);
+      this.jobsService.getJobDetail(this.selectedJob.id)
+        .subscribe(jobDetail => this.selectedJobDetail = jobDetail);
     }
     else {
       this.disableAddJobButton = true;
-      this.selectedJobDetail = this.jobsService.getJobCreate();
+      this.jobsService.getJobCreate()
+        .subscribe(jobCreate => this.selectedJobDetail = jobCreate);
     }
-
   }
 
 }

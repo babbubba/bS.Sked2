@@ -13,8 +13,8 @@ export class JodDetailComponent {
 
   @Input() jobDetail: JobDetail;
 
-  saveData(): void {
-    if (!this.jobDetail.id != null)
+  onJobSave(): void {
+    if (this.jobDetail.id != null)
       this.jobsService.saveJobDetail(this.jobDetail);
     else
       this.jobsService.createJobDetail(this.jobDetail);
