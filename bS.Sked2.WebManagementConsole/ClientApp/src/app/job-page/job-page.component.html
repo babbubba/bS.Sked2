@@ -1,9 +1,49 @@
-<h3>{{job.name}}</h3>
-<ul>
-  <li *ngFor="let task of tasks">
-    <h4>{{task.name}}</h4>
-  </li>
-</ul>
+<app-message></app-message>
+<div class="row">
+  <div class="col">
+    <div class="card text-white mb-4 bg-info">
+      <div class="card-body">
+        <h6 class="job m-0 font-weight-bold">Job: "{{job.name}}" <small class="job float-right">{{job.id}}</small></h6>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="tasks col-7">
+    <div class="tasks card">
+      <div class="tasks card-header">
+        <h6 class="m-0 font-weight-bold text-primary">
+          Tasks
+          <button class="btn btn-primary btn-sm float-right" [disabled]="disableAddTaskButton" (click)="addNewTask()">Add Task</button>
+        </h6>
+      </div>
+      <div class="tasks card-body">
+        <ul class="tasks list-group">
+          <li *ngFor="let task of tasks" class="tasks list-group-item" [class.active]="task === selectedTask" (click)="taskSelect(task)">
+            <app-task-preview [task]="task"></app-task-preview>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="triggers col-5">
+    <div class="triggers card">
+      <div class="triggers card-header">
+        <h6 class="m-0 font-weight-bold text-primary">
+          Triggers
+          <button class="btn btn-primary btn-sm float-right" [disabled]="disableAddTriggerButton" (click)="addNewTrigger()">Add Trigger</button>
+        </h6>
+      </div>
+      <div class="triggers card-body">
+        <ul class="triggers list-group">
+          <li *ngFor="let trigger of triggers" class="triggers list-group-item" [class.active]="trigger === selectedTrigger" (click)="triggerSelect(trigger)">
+            <app-trigger-preview [trigger]="trigger"></app-trigger-preview>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
   <p style="color: white">Loading data...</p>
 </ngx-spinner>

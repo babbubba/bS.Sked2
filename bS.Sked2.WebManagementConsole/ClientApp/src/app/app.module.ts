@@ -15,6 +15,8 @@ import { JobComponent } from './job/job.component';
 import { JodDetailComponent } from './jod-detail/jod-detail.component';
 import { MessageComponent } from './message/message.component';
 import { JobPageComponent } from './job-page/job-page.component';
+import { TaskPreviewComponent } from './task-preview/task-preview.component';
+import { TriggerPreviewComponent } from './trigger-preview/trigger-preview.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { JobPageComponent } from './job-page/job-page.component';
     JodDetailComponent,
     MessageComponent,
     JobPageComponent,
+    TaskPreviewComponent,
+    TriggerPreviewComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

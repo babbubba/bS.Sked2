@@ -4,6 +4,7 @@ import { Job } from '../models/job';
 import { Task } from '../models/task';
 import { JobsService } from '../jobs.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Trigger } from '../models/trigger';
 
 @Component({
   selector: 'app-job-page',
@@ -17,7 +18,18 @@ export class JobPageComponent implements OnInit {
   job: Job;
   tasks: Task[];
 
+  selectedTask: Task;
+  selectedTrigger: Trigger;
+
+  disableAddTaskButton: boolean = false;
+  disableAddTriggerButton: boolean = false;
+
+
   ngOnInit() {
+    this.loadData();
+  }
+
+  loadData() {
     this.spinnerService.show();
     this.routeParams.params.subscribe(params => {
       let jobId = params['id'];
@@ -31,8 +43,22 @@ export class JobPageComponent implements OnInit {
             });
         });
     });
+  }
 
-    // Load job data
+  taskSelect(task: Task) {
+
+  }
+
+  triggerSelect(trigger: Trigger) {
+
+  }
+
+  addNewTask() {
+
+  }
+
+  addNewTrigger() {
+
   }
 
 }
