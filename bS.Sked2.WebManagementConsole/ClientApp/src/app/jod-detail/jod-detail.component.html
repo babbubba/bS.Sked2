@@ -38,7 +38,7 @@
     Updated: {{jobDetail.lastUpdateDate | date:'short'}}
   </div>
   <div class="job-detail-buttons text-right">
-    <!--<button class="btn btn-danger">Cancel</button>-->
+    <a class="btn btn-primary" href="{{jobPagePath}}{{jobDetail.id}}" target="_blank">Open</a>
     <button class="btn btn-success" (click)="onJobSave()">Save</button>
   </div>
 </div>

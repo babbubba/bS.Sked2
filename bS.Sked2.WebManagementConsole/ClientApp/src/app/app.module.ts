@@ -37,6 +37,7 @@ import { JobPageComponent } from './job-page/job-page.component';
     RouterModule.forRoot([
       { path: '', component: DashboardComponent, pathMatch: 'full' },
       { path: 'monitor', component: MonitorComponent },
+      { path: 'job/:id', component: JobPageComponent },
     ])
   ],
   providers: [],
