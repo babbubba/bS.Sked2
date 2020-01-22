@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Job } from './models/job';
-import { JobDetail } from './models/jobDetail';
+import { JobEdit } from './models/jobEdit';
 import { MessageService, Verbosity } from './message.service';
 
 @Injectable({
@@ -15,9 +15,10 @@ export class JobsService {
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
   getJobsUrl: string = 'api/engine/getjobs';
-  getJobDetailUrl: string = 'api/engine/getjob';
-  getEmptyJobDetailUrl: string = 'api/engine/getemptyjobcreate';
-  createJobDetailUrl: string = 'api/engine/createjob';
+  getJobEditUrl: string = 'api/engine/getjobedit';
+  getJobCreateUrl: string = 'api/engine/getjobcreate';
+  createJobUrl: string = 'api/engine/createjob';
+  saveJobUrl: string = 'api/engine/savejob';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -26,36 +27,35 @@ export class JobsService {
   getJobs(): Observable<Job[]> {
     return this.http.get<Job[]>(this.getJobsUrl)
       .pipe(
-        //tap(_ => console.log('fetched jobs')),
         catchError(this.handleError<Job[]>('getJobs', []))
       );
   }
 
-  getJobCreate(): Observable<JobDetail> {
-    return this.http.get<JobDetail>(this.getEmptyJobDetailUrl)
+  getJobCreate(): Observable<JobEdit> {
+    return this.http.get<JobEdit>(this.getJobCreateUrl)
       .pipe(
-        //tap(_ => console.log('fetched empty job')),
-        catchError(this.handleError<JobDetail>('getJobCreate'))
+        catchError(this.handleError<JobEdit>('getJobCreate'))
       );
   }
 
-  createJobDetail(job: JobDetail): Observable<string> {
-    return this.http.put<string>(this.createJobDetailUrl, job, this.httpOptions)
+  createJob(job: JobEdit): Observable<string> {
+    return this.http.put<string>(this.createJobUrl, job, this.httpOptions)
       .pipe(
-        //tap(_ => console.log('created job')),
-        catchError(this.handleError<string>('createJobDetail'))
+        catchError(this.handleError<string>('createJob'))
       );
   }
 
-  saveJobDetail(job: JobDetail): void {
-    //TODO: Implementa logica per il salvataggio
+  saveJob(job: JobEdit): Observable<boolean> {
+    return this.http.put<boolean>(this.saveJobUrl, job, this.httpOptions)
+      .pipe(
+        catchError(this.handleError<boolean>('saveJob'))
+      );
   }
 
-  getJobDetail(id: string): Observable<JobDetail> {
-    return this.http.get<JobDetail>(this.getJobDetailUrl + '/' + id)
+  getJobEdit(id: string): Observable<JobEdit> {
+    return this.http.get<JobEdit>(this.getJobEditUrl + '/' + id)
       .pipe(
-        //tap(_ => console.log('fetched job')),
-        catchError(this.handleError<JobDetail>('getJobDetail'))
+        catchError(this.handleError<JobEdit>('getJobEdit'))
       );
   }
 

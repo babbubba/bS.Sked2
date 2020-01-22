@@ -26,16 +26,17 @@ namespace bS.Sked2.WebManagementConsole.Controllers
         {
             return engineUIService.GetJobs();
         }
+
         [HttpGet("{id}")]
-        [Route("getjob/{id}")]
-        public IJobDefinitionDetail GetJob(string id)
+        [Route("getjobedit/{id}")]
+        public IJobDefinitionEdit GetJobEdit(string id)
         {
-            return engineUIService.GetJobs().FirstOrDefault(x=>x.Id == Guid.Parse(id));
+            return engineUIService.GetEditJob(Guid.Parse(id));
         }
 
         [HttpGet]
-        [Route("getemptyjobcreate")]
-        public IJobDefinitionCreate GetEmptyJobCreate(string id)
+        [Route("getjobcreate")]
+        public IJobDefinitionCreate GetJobCreate()
         {
             return engineUIService.GetCreateJob();
         }
@@ -45,6 +46,14 @@ namespace bS.Sked2.WebManagementConsole.Controllers
         public string CreateJob(JobDefinitionCreateViewModel jobDefinition)
         {
             return engineUIService.CreateNewJob(jobDefinition).ToString();
+        }
+
+        [HttpPut]
+        [Route("savejob")]
+        public bool SaveJob(JobDefinitionEditViewModel jobDefinition)
+        {
+            engineUIService.EditJob(jobDefinition);
+            return true;
         }
     }
 }

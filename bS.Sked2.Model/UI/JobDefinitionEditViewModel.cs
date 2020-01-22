@@ -1,4 +1,5 @@
 ﻿using bS.Sked2.Structure.Engine.UI;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace bS.Sked2.Model.UI
@@ -9,6 +10,8 @@ namespace bS.Sked2.Model.UI
     /// <seealso cref="bS.Sked2.Structure.Engine.UI.IJobDefinitionEdit" />
     public class JobDefinitionEditViewModel : IJobDefinitionEdit
     {
+        [Required]
+        public Guid Id { get; set; }
         /// <summary>
         /// Gets or sets the description.
         /// </summary>

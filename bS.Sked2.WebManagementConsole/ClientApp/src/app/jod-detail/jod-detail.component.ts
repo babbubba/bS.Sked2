@@ -1,7 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { JobDetail } from '../models/jobDetail';
 import { JobsService } from '../jobs.service';
 import { MessageService, Verbosity } from '../message.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { JobEdit } from '../models/jobEdit';
 
 @Component({
   selector: 'app-jod-detail',
@@ -10,20 +11,27 @@ import { MessageService, Verbosity } from '../message.service';
 })
 export class JodDetailComponent {
 
-  constructor(private jobsService: JobsService, private messageService: MessageService) { }
+  constructor(private jobsService: JobsService, private messageService: MessageService, private spinnerService: NgxSpinnerService) { }
 
-  @Input() jobDetail: JobDetail;
+  @Input() jobDetail: JobEdit;
   @Output() jobSaved: EventEmitter<boolean> = new EventEmitter();
 
   onJobSave(): void {
+    this.spinnerService.show();
+
     if (this.jobDetail.id != null)
-      this.jobsService.saveJobDetail(this.jobDetail);
+      // save edited job
+      this.jobsService.saveJob(this.jobDetail)
+        .subscribe(result => {
+          if(result) this.messageService.display(`Job saved successfully.`, Verbosity.Success);
+          else this.messageService.display(`Job not saved.`, Verbosity.Error);
+          this.jobSaved.emit(true);
+        });
     else {
       // Create new Job
-      this.jobsService.createJobDetail(this.jobDetail)
+      this.jobsService.createJob(this.jobDetail)
         .subscribe(result => {
           this.messageService.display(`Job created with id: ${result}`, Verbosity.Success);
-          //this.jobDetail = null;
           this.jobSaved.emit(true);
         });
     }

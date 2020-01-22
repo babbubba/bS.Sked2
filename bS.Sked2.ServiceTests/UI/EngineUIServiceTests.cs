@@ -42,7 +42,7 @@ namespace bS.Sked2.Service.UI.Tests
             // Edit Job
             var jobEditVM = engineUIService.GetEditJob(jobId);
             jobEditVM.Description = "Job di prova creato con UI service (modificato).";
-            engineUIService.EditJob(jobId, jobEditVM);
+            engineUIService.EditJob(jobEditVM);
 
             // Create task
             var taskVM = engineUIService.GetCreateTask();

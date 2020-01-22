@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace bS.Sked2.Structure.Engine.UI
 {
@@ -7,6 +8,8 @@ namespace bS.Sked2.Structure.Engine.UI
     /// </summary>
     public interface IJobDefinitionEdit
     {
+        [Required]
+        Guid Id {get;set;}
         /// <summary>
         /// Gets or sets the description.
         /// </summary>

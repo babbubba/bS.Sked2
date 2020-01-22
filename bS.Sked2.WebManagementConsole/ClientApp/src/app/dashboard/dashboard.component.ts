@@ -1,8 +1,8 @@
 import { Component, OnInit} from '@angular/core';
 import { JobsService } from '../jobs.service';
 import { Job } from '../models/job';
-import { JobDetail } from '../models/jobDetail';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { JobEdit } from '../models/jobEdit';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
 
   jobs: Job[];
   selectedJob: Job;
-  selectedJobDetail: JobDetail;
+  selectedJobEdit: JobEdit;
   showJobDetail: boolean = false;
   disableAddJobButton: boolean = false;
 
@@ -37,9 +37,9 @@ export class DashboardComponent implements OnInit {
     this.selectedJob = job;
     if (this.selectedJob != null) {
       this.disableAddJobButton = false;
-      this.jobsService.getJobDetail(this.selectedJob.id)
-        .subscribe(jobDetail => {
-          this.selectedJobDetail = jobDetail;
+      this.jobsService.getJobEdit(this.selectedJob.id)
+        .subscribe(result => {
+          this.selectedJobEdit = result;
           this.showJobDetail = true;
           this.spinnerService.hide(); 
         });
@@ -47,8 +47,8 @@ export class DashboardComponent implements OnInit {
     else {
       this.disableAddJobButton = true;
       this.jobsService.getJobCreate()
-        .subscribe(jobCreate => {
-          this.selectedJobDetail = jobCreate;
+        .subscribe(result => {
+          this.selectedJobEdit = result;
           this.showJobDetail = true;
           this.spinnerService.hide(); 
         });

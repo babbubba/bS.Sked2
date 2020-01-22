@@ -1,10 +1,9 @@
-﻿export class JobDetail {
+export class JobEdit {
     id: string;
     name: string;
     description: string;
     failIfAnyTaskHasError: boolean;
     failIfAnyTaskHasWarning: boolean;
     isEnabled: boolean;
-    creationDate: Date;
-    lastUpdateDate: Date;
 }
+

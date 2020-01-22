@@ -96,11 +96,11 @@ namespace bS.Sked2.Service.UI
         /// </summary>
         /// <param name="jobId">The job identifier.</param>
         /// <param name="jobDefinition">The job definition.</param>
-        public void EditJob(Guid jobId, IJobDefinitionEdit jobDefinition)
+        public void EditJob(IJobDefinitionEdit jobDefinition)
         {
             using (var transaction = uow.BeginTransaction())
             {
-                var job = engineRepository.GetJobById(jobId);
+                var job = engineRepository.GetJobById(jobDefinition.Id);
                 job.Name = jobDefinition.Name;
                 job.Description = jobDefinition.Description;
                 job.FailIfAnyTaskHasError = jobDefinition.FailIfAnyTaskHasError;
@@ -133,6 +133,7 @@ namespace bS.Sked2.Service.UI
             var entry = engineRepository.GetJobById(jobId);
             return new JobDefinitionEditViewModel
             {
+                Id = entry.Id,
                 Name = entry.Name,
                 Description = entry.Description,
                 FailIfAnyTaskHasError = entry.FailIfAnyTaskHasError,

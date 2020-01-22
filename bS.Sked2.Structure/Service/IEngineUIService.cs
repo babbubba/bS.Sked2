@@ -233,7 +233,7 @@ namespace bS.Sked2.Structure.Service
         /// </summary>
         /// <param name="jobId">The job identifier.</param>
         /// <param name="jobDefinition">The job definition.</param>
-        void EditJob(Guid jobId, IJobDefinitionEdit jobDefinition);
+        void EditJob(IJobDefinitionEdit jobDefinition);
 
         /// <summary>
         /// Gets the new job.
