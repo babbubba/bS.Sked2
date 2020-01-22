@@ -2,6 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import { JobsService } from '../jobs.service';
 import { Job } from '../models/job';
 import { JobDetail } from '../models/jobDetail';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,7 +10,7 @@ import { JobDetail } from '../models/jobDetail';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  constructor(private jobsService: JobsService) { }
+  constructor(private jobsService: JobsService, private spinnerService: NgxSpinnerService) { }
 
   jobs: Job[];
   selectedJob: Job;
@@ -22,11 +23,17 @@ export class DashboardComponent implements OnInit {
   }
 
   loadJobs() {
+    this.spinnerService.show(); 
     this.jobsService.getJobs()
-      .subscribe(jobs => this.jobs = jobs);
+      .subscribe(jobs => {
+        this.jobs = jobs;
+        this.spinnerService.hide(); 
+      });
   }
 
   onJobSelect(job: Job) {
+    this.spinnerService.show(); 
+
     this.selectedJob = job;
     if (this.selectedJob != null) {
       this.disableAddJobButton = false;
@@ -34,6 +41,7 @@ export class DashboardComponent implements OnInit {
         .subscribe(jobDetail => {
           this.selectedJobDetail = jobDetail;
           this.showJobDetail = true;
+          this.spinnerService.hide(); 
         });
     }
     else {
@@ -42,6 +50,7 @@ export class DashboardComponent implements OnInit {
         .subscribe(jobCreate => {
           this.selectedJobDetail = jobCreate;
           this.showJobDetail = true;
+          this.spinnerService.hide(); 
         });
     }
   }
