@@ -1,15 +1,5 @@
-ul.jobs {
-  height: 85vh;
+div.jobs.card-body {
+  height: 80vh;
   overflow-y: scroll;
 }
 
-ul.jobs > li,
-div.col-3.job-detail {
-  padding: 4px;
-}
-
-li.jobs.selected {
-  background-color: antiquewhite;
-  margin: 4px;
-  padding: 0px !important;
-}
