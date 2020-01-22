@@ -1,3 +1,4 @@
+<app-message></app-message>
 <h2>Jobs <button class="btn btn-primary float-right" [disabled]="disableAddJobButton" (click)="onJobSelect()">Add new Job</button></h2>
 <div class="row">
   <div class="col">
@@ -7,7 +8,7 @@
       </li>
     </ul>
   </div>
-  <div *ngIf="selectedJobDetail" class="col-3 job-detail">
-    <app-jod-detail [jobDetail]="selectedJobDetail"></app-jod-detail>
+  <div *ngIf="showJobDetail" class="col-3 job-detail">
+    <app-jod-detail [jobDetail]="selectedJobDetail" (jobSaved) ="jobDetailSaved($event)"></app-jod-detail>
   </div>
 </div>

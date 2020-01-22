@@ -11,6 +11,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MonitorComponent } from './monitor/monitor.component';
 import { JobComponent } from './job/job.component';
 import { JodDetailComponent } from './jod-detail/jod-detail.component';
+import { MessageComponent } from './message/message.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { JodDetailComponent } from './jod-detail/jod-detail.component';
     MonitorComponent,
     JobComponent,
     JodDetailComponent,
+    MessageComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

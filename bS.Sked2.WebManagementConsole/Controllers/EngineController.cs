@@ -1,4 +1,5 @@
-﻿using bS.Sked2.Structure.Engine.UI;
+﻿using bS.Sked2.Model.UI;
+using bS.Sked2.Structure.Engine.UI;
 using bS.Sked2.Structure.Service;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -37,6 +38,13 @@ namespace bS.Sked2.WebManagementConsole.Controllers
         public IJobDefinitionCreate GetEmptyJobCreate(string id)
         {
             return engineUIService.GetCreateJob();
+        }
+
+        [HttpPut]
+        [Route("createjob")]
+        public string CreateJob(JobDefinitionCreateViewModel jobDefinition)
+        {
+            return engineUIService.CreateNewJob(jobDefinition).ToString();
         }
     }
 }

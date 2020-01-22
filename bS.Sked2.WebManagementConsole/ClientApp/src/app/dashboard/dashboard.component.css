@@ -1,3 +1,8 @@
+ul.jobs {
+  height: 85vh;
+  overflow-y: scroll;
+}
+
 ul.jobs > li,
 div.col-3.job-detail {
   padding: 4px;
