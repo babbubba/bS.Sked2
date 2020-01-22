@@ -11,6 +11,8 @@ namespace bS.Sked2.Structure.Engine.UI
         bool FailIfAnyElementHasWarning { get; set; }
         int Position { get; set; }
         bool IsEnabled { get; set; }
+        Guid ParentJobId { get; set; }
+
         DateTime? CreationDate { get; set; }
         DateTime? LastUpdateDate { get; set; }
     }

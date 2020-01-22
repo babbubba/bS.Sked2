@@ -1,2 +1,9 @@
-<p>job-page works!</p>
-{{jobId}}
+<h3>{{job.name}}</h3>
+<ul>
+  <li *ngFor="let task of tasks">
+    <h4>{{task.name}}</h4>
+  </li>
+</ul>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+  <p style="color: white">Loading data...</p>
+</ngx-spinner>

@@ -6,7 +6,7 @@ namespace bS.Sked2.Model.UI
     /// <summary>
     ///
     /// </summary>
-    /// <seealso cref="bS.Sked2.Structure.Engine.UI.ITaskDefinitionDetail" />
+    /// <seealso cref="ITaskDefinitionDetail" />
     public class TaskDefinitionDetailViewModel : ITaskDefinitionDetail
     {
         /// <summary>
@@ -48,6 +48,14 @@ namespace bS.Sked2.Model.UI
         /// The identifier.
         /// </value>
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the parent job identifier.
+        /// </summary>
+        /// <value>
+        /// The parent job identifier.
+        /// </value>
+        public Guid ParentJobId { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is enabled.

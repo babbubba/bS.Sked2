@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Job } from '../models/job';
+import { Task } from '../models/task';
+import { JobsService } from '../jobs.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-job-page',
@@ -8,14 +12,27 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class JobPageComponent implements OnInit {
 
-  constructor(private routeParams: ActivatedRoute) { }
+  constructor(private routeParams: ActivatedRoute, private jobService: JobsService, private spinnerService: NgxSpinnerService) { }
 
-  jobId: string;
+  job: Job;
+  tasks: Task[];
 
   ngOnInit() {
+    this.spinnerService.show();
     this.routeParams.params.subscribe(params => {
-      this.jobId = params['id'];
+      let jobId = params['id'];
+      this.jobService.getJob(jobId)
+        .subscribe(result => {
+          this.job = result;
+          this.jobService.getJobTasks(jobId)
+            .subscribe(result => {
+              this.tasks = result;
+              this.spinnerService.hide();
+            });
+        });
     });
+
+    // Load job data
   }
 
 }

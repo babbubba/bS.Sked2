@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Job } from './models/job';
 import { JobEdit } from './models/jobEdit';
 import { MessageService, Verbosity } from './message.service';
+import { Task } from './models/task';
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +20,18 @@ export class JobsService {
   getJobCreateUrl: string = 'api/engine/getjobcreate';
   createJobUrl: string = 'api/engine/createjob';
   saveJobUrl: string = 'api/engine/savejob';
+  getJobTasksUrl: string = 'api/engine/getjobtasks';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
+
+  getJob(id:string): Observable<Job> {
+    return this.http.get<Job>(this.getJobEditUrl + '/' + id)
+      .pipe(
+        catchError(this.handleError<Job>('getJob'))
+      );
+  }
 
   getJobs(): Observable<Job[]> {
     return this.http.get<Job[]>(this.getJobsUrl)
@@ -56,6 +65,13 @@ export class JobsService {
     return this.http.get<JobEdit>(this.getJobEditUrl + '/' + id)
       .pipe(
         catchError(this.handleError<JobEdit>('getJobEdit'))
+      );
+  }
+
+  getJobTasks(jobId: string): Observable<Task[]> {
+    return this.http.get<Task[]>(this.getJobTasksUrl + '/' + jobId)
+      .pipe(
+        catchError(this.handleError<Task[]>('getJobEdit'))
       );
   }
 

@@ -55,5 +55,12 @@ namespace bS.Sked2.WebManagementConsole.Controllers
             engineUIService.EditJob(jobDefinition);
             return true;
         }
+
+        [HttpGet("{id}")]
+        [Route("getjobtasks/{id}")]
+        public IEnumerable<ITaskDefinitionDetail> GetJobTasks(string id)
+        {
+            return engineUIService.GetTasks().Where(x => x.ParentJobId == Guid.Parse(id));
+        }
     }
 }

@@ -134,7 +134,8 @@ namespace bS.Sked2.Service.UI
                    Position = t.Position,
                    IsEnabled = t.IsEnabled,
                    CreationDate = t.CreationDate,
-                   LastUpdateDate = t.LastUpdateDate
+                   LastUpdateDate = t.LastUpdateDate,
+                   ParentJobId = t.ParentJob.Id
                });
         }
 
