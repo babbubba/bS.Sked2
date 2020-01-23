@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { Job } from '../models/job';
 import { Task } from '../models/task';
 import { JobsService } from '../jobs.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Trigger } from '../models/trigger';
+import { AddEditTaskModalComponent } from '../add-edit-task-modal/add-edit-task-modal.component';
 
 @Component({
   selector: 'app-job-page',
@@ -13,7 +16,7 @@ import { Trigger } from '../models/trigger';
 })
 export class JobPageComponent implements OnInit {
 
-  constructor(private routeParams: ActivatedRoute, private jobService: JobsService, private spinnerService: NgxSpinnerService) { }
+  constructor(private routeParams: ActivatedRoute, private jobService: JobsService, private spinnerService: NgxSpinnerService, private modalService: NgbModal) { }
 
   job: Job;
   tasks: Task[];
@@ -23,6 +26,8 @@ export class JobPageComponent implements OnInit {
 
   disableAddTaskButton: boolean = false;
   disableAddTriggerButton: boolean = false;
+
+  //AddEditTaskModalComponent
 
 
   ngOnInit() {
@@ -54,6 +59,23 @@ export class JobPageComponent implements OnInit {
   }
 
   addNewTask() {
+    let t = new Task();
+    t.name = "pippo";
+    t.description = "pluto";
+    t.failIfAnyElementHasError = true;
+    t.failIfAnyElementHasWarning = false;
+    t.isEnabled = true;
+    const modalAddNewTask = this.modalService.open(AddEditTaskModalComponent);
+    modalAddNewTask.componentInstance.task = t;
+    modalAddNewTask.result
+      .then(res => {
+        //save or create
+        console.log(res);
+      })
+      .catch(err => {
+        //dismiss
+        console.error(err);
+      });
 
   }
 

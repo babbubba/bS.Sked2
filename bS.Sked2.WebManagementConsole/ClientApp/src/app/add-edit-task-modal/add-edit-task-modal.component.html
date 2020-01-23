@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{isAdding ? 'Add new' : 'Edit'}} Task</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('cancel')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="name" [(ngModel)]="task.name" placeholder="name">
+    <div class="invalid-feedback">
+      Valid name is required.
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea class="form-control" id="description" [(ngModel)]="task.description" placeholder="description" rows="3"></textarea>
+    <div class="invalid-feedback">
+      Valid description is required.
+    </div>
+  </div>
+  <div class="form-group form-check" *ngIf="task.isEnabled">
+    <input class="form-check-input" type="checkbox" [(ngModel)]="task.isEnabled" id="isEnabled">
+    <label class="form-check-label" for="isEnabled">
+      Enabled
+    </label>
+  </div>
+  <div class="form-group form-check">
+    <input class="form-check-input" type="checkbox" [(ngModel)]="task.failIfAnyElementHasError" id="failIfAnyElementHasError">
+    <label class="form-check-label" for="failIfAnyElementHasError">
+      Fails if any element has error
+    </label>
+  </div>
+  <div class="form-group form-check">
+    <input class="form-check-input" type="checkbox" [(ngModel)]="task.failIfAnyElementHasWarning" id="failIfAnyElementHasWarning">
+    <label class="form-check-label" for="failIfAnyElementHasWarning">
+      Fails if any element has warning
+    </label>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('SaveOrCreate')">{{isAdding ? 'Create' : 'Save'}}</button>
+</div>
