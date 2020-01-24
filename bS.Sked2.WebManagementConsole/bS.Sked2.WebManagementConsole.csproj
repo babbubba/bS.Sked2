@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\baseService.ts" />
     <None Remove="ClientApp\src\app\element.ts" />
     <None Remove="ClientApp\src\app\models\task.ts" />
     <None Remove="ClientApp\src\app\models\trigger.ts" />
@@ -37,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\baseService.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\element.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\task.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\trigger.ts" />

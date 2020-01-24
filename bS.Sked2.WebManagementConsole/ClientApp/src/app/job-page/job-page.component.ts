@@ -76,7 +76,6 @@ export class JobPageComponent implements OnInit {
         //dismiss
         console.error(err);
       });
-
   }
 
   addNewTrigger() {

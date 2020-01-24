@@ -20,6 +20,9 @@ import { TriggerPreviewComponent } from './trigger-preview/trigger-preview.compo
 import { AddEditTaskModalComponent } from './add-edit-task-modal/add-edit-task-modal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { ReactiveFormsModule } from '@angular/forms';
+import { ErrorIntercept } from './error.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,6 +45,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     NgxSpinnerModule,
     NgbModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: DashboardComponent, pathMatch: 'full' },
       { path: 'monitor', component: MonitorComponent },
@@ -52,6 +56,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AddEditTaskModalComponent,
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorIntercept,
+      multi: true
+    }
     
   ],
   bootstrap: [

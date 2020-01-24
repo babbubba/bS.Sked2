@@ -3,6 +3,7 @@ import { JobsService } from '../jobs.service';
 import { Job } from '../models/job';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { JobEdit } from '../models/jobEdit';
+import { MessageService, Verbosity } from '../message.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +11,7 @@ import { JobEdit } from '../models/jobEdit';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  constructor(private jobsService: JobsService, private spinnerService: NgxSpinnerService) { }
+  constructor(private jobsService: JobsService, private spinnerService: NgxSpinnerService, private messageService: MessageService) { }
 
   jobs: Job[];
   selectedJob: Job;
@@ -25,10 +26,14 @@ export class DashboardComponent implements OnInit {
   loadJobs() {
     this.spinnerService.show(); 
     this.jobsService.getJobs()
-      .subscribe(jobs => {
-        this.jobs = jobs;
+      .subscribe(result => {
+        this.jobs = result;
         this.spinnerService.hide(); 
-      });
+      },
+        error => {
+          this.spinnerService.hide();
+          this.messageService.display(`Error loading jobs.\n${error}`, Verbosity.Error)
+        });
   }
 
   onJobSelect(job: Job) {
