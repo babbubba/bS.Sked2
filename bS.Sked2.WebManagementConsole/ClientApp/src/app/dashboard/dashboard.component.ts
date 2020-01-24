@@ -47,7 +47,11 @@ export class DashboardComponent implements OnInit {
           this.selectedJobEdit = result;
           this.showJobDetail = true;
           this.spinnerService.hide(); 
-        });
+        },
+          error => {
+            this.spinnerService.hide();
+            this.messageService.display(`Error loading job to edit.\n${error}`, Verbosity.Error)
+          });
     }
     else {
       this.disableAddJobButton = true;
@@ -56,10 +60,15 @@ export class DashboardComponent implements OnInit {
           this.selectedJobEdit = result;
           this.showJobDetail = true;
           this.spinnerService.hide(); 
-        });
+        },
+          error => {
+            this.spinnerService.hide();
+            this.messageService.display(`Error loading jobs to create.\n${error}`, Verbosity.Error)
+          });
     }
   }
 
+  // Child component emit this event when save a new Job
   jobDetailSaved($event) {
     if ($event) {
       this.showJobDetail = false;

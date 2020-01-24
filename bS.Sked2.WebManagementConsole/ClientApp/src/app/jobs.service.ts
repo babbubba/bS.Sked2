@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { Job } from './models/job';
 import { JobEdit } from './models/jobEdit';
-import { Task } from './models/task';
 import { BaseService } from './baseService';
 
 @Injectable({
@@ -21,7 +20,6 @@ export class JobsService extends BaseService  {
   getJobCreateUrl: string = 'api/engine/getjobcreate';
   createJobUrl: string = 'api/engine/createjob';
   saveJobUrl: string = 'api/engine/savejob';
-  getJobTasksUrl: string = 'api/engine/getjobtasks';
 
   getJob(id:string): Observable<Job> {
     return this.http.get<Job>(this.getJobEditUrl + '/' + id);
@@ -47,8 +45,6 @@ export class JobsService extends BaseService  {
     return this.http.get<JobEdit>(this.getJobEditUrl + '/' + id);
   }
 
-  getJobTasks(jobId: string): Observable<Task[]> {
-    return this.http.get<Task[]>(this.getJobTasksUrl + '/' + jobId);
-  }
+ 
 
 }
