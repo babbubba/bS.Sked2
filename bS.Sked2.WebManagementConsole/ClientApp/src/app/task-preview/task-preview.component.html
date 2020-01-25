@@ -1,9 +1,9 @@
 <div class="media">
   <div class="media-body">
-    <h5 class="card-title">{{task.name}}</h5>
+    <h5 class="card-title">{{task.name}}<span *ngIf="!task.isEnabled" class="badge badge-secondary float-right">Disabled</span></h5>
     <h6 class="card-subtitle mb-2 text-muted">{{task.id}}</h6>
     <p class="card-text">{{task.description}}</p>
-    <a (click)="editTask()" class="card-link">Edit</a>
-    <a (click)="openTask()" class="card-link">Open</a>
+    <button (click)="editTask()" class="btn btn-sm card-link border-warning">Edit</button>
+    <button (click)="openTask()" class="btn btn-sm card-link border-success">Open</button>
   </div>
 </div>
