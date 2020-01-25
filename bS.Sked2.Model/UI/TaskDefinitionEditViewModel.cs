@@ -8,6 +8,9 @@ namespace bS.Sked2.Model.UI
 {
     public class TaskDefinitionEditViewModel : ITaskDefinitionEdit
     {
+        [Required]
+        public Guid Id { get; set; }
+
         /// <summary>
         /// Gets or sets the description.
         /// </summary>

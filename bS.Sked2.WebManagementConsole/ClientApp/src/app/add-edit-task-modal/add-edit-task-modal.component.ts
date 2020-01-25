@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-//import { FormGroup, FormControl } from '@angular/forms';
 import { Task } from '../models/task';
+import { TasksService } from '../tasks.service';
+import { MessageService, Verbosity } from '../message.service';
 
 @Component({
   selector: 'app-add-edit-task-modal',
@@ -10,43 +10,54 @@ import { Task } from '../models/task';
   styleUrls: ['./add-edit-task-modal.component.css']
 })
 export class AddEditTaskModalComponent implements OnInit {
-
   @Input() task: Task;
   actionType: string;
-  form: FormGroup;
-  submitted = false;
-  
+  submitted: boolean;
 
-  constructor(public activeModal: NgbActiveModal, private fb: FormBuilder) {
+  constructor(public activeModal: NgbActiveModal,/* private fb: FormBuilder,*/ private tasksService: TasksService, private messageService: MessageService) {
     this.actionType = "Add";
+    this.submitted = false;
   }
 
   ngOnInit() {
     if (this.task.id != null) {
       this.actionType = "Edit";
     }
-
-    this.form = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(50)]],
-      description: ['', [Validators.required, Validators.maxLength(250)]],
-      isEnabled: [''],
-      failIfAnyElementHasError: [''],
-      failIfAnyElementHasWarning: [''],
-    });
   }
 
-  // convenience getter for easy access to form fields
-  get f() { return this.form.controls; }
-
-  saveOrUpdate() {
+  saveOrUpdate(form) {
     this.submitted = true;
-
     // stop here if form is invalid
-    if (this.form.invalid) {
-      console.warn(this.f.name.errors)
+    if (form.invalid) {
       return;
     }
-    this.activeModal.close('Success');
-  }
 
+    if (this.actionType == "Add") {
+      this.tasksService.createTask(this.task)
+        .subscribe(
+          result => {
+            //success
+            this.activeModal.close('Success');
+          },
+          error => {
+            this.messageService.display(`Task was not created: ${error}`, Verbosity.Error);
+            return;
+          });
+      this.messageService.display(`The Task '${this.task.name}' has been created for this Job.`);
+    }
+    else if (this.actionType == "Edit") {
+      this.tasksService.editTask(this.task)
+        .subscribe(
+          result => {
+            //success
+            this.activeModal.close('Success');
+          },
+          error => {
+            this.messageService.display(`Task was not updated: ${error}`, Verbosity.Error);
+            return;
+          });
+      this.messageService.display(`The Task '${this.task.name}' has been updated.`);
+    }
+
+  }
 }

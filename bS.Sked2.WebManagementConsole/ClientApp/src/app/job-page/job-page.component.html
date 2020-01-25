@@ -19,7 +19,7 @@
       </div>
       <div class="tasks card-body">
         <ul class="tasks list-group">
-          <li *ngFor="let task of tasks" class="tasks list-group-item" [class.active]="task === selectedTask" (click)="taskSelect(task)">
+          <li *ngFor="let task of tasks" class="tasks list-group-item" [class.bg-light]="!task.isEnabled">
             <app-task-preview [task]="task"></app-task-preview>
           </li>
         </ul>
@@ -36,7 +36,7 @@
       </div>
       <div class="triggers card-body">
         <ul class="triggers list-group">
-          <li *ngFor="let trigger of triggers" class="triggers list-group-item" [class.active]="trigger === selectedTrigger" (click)="triggerSelect(trigger)">
+          <li *ngFor="let trigger of triggers" class="triggers list-group-item">
             <app-trigger-preview [trigger]="trigger"></app-trigger-preview>
           </li>
         </ul>

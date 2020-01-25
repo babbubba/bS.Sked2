@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="saveOrUpdate()">
+<form (ngSubmit)="saveOrUpdate(taskForm)" #taskForm="ngForm">
 
   <div class="modal-header">
     <h4 class="modal-title">{{actionType}} Task</h4>
@@ -10,40 +10,37 @@
 
     <div class="form-group">
       <label>Name</label>
-      <input type="text" class="form-control" formControlName="name">
-      <div *ngIf="submitted && f.name.errors" class="text-danger">
-        <div *ngIf="f.name.errors.required">Name is required</div>
-        <div *ngIf="f.name.errors.maxlength">Name must be max 50 characters</div>
+      <input type="text" class="form-control" [(ngModel)]="task.name" name="name" #name="ngModel" required maxlength="50">
+      <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger">
+        <div *ngIf="name.errors.required">Name is required</div>
+        <div *ngIf="name.errors.maxlength">Name must be max 50 characters</div>
       </div>
     </div>
     <div class="form-group">
       <label>Description</label>
-      <textarea type="text" class="form-control" formControlName="description" rows="4"></textarea>
-      <div *ngIf="submitted && f.description.errors" class="text-danger">
-        <div *ngIf="f.description.errors.required">Description is required</div>
-        <div *ngIf="f.description.errors.maxlength">Description must be max 250 characters</div>
+      <textarea type="text" class="form-control" [(ngModel)]="task.description" name="description" #description="ngModel" rows="4" required maxlength="250"></textarea>
+      <div *ngIf="description.invalid && (description.dirty || description.touched)" class="text-danger">
+        <div *ngIf="description.errors.required">Description is required</div>
+        <div *ngIf="description.errors.maxlength">Description must be max 250 characters</div>
       </div>
     </div>
-    <div class="form-group">
-      <label>Enabled</label>
-      <input class="form-check-input" type="checkbox" formControlName="isEnabled">
-      <div *ngIf="submitted && f.isEnabled.errors" class="text-danger">
-        <div *ngIf="f.isEnabled.errors.required">This is required</div>
-      </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" [(ngModel)]="task.isEnabled" name="isEnabled" #isEnabled="ngModel">
+      <label  class="form-check-label">Enabled</label>
     </div>
-    <div class="form-group">
-      <label>Fail if any element has error</label>
-      <input class="form-check-input" type="checkbox" formControlName="failIfAnyElementHasError">
-      <div *ngIf="submitted && f.failIfAnyElementHasError.errors" class="text-danger">
-        <div *ngIf="f.failIfAnyElementHasError.errors.required">This is required</div>
-      </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" [(ngModel)]="task.failIfAnyElementHasError" name="failIfAnyElementHasError" #failIfAnyElementHasError="ngModel">
+      <label class="form-check-label">Fail if any element has error</label>
+      <small class="form-text text-muted">
+        If enable this and one or more errors occur during Task execution the task will be aborted, otherwise it will try to continue untill task execution finish.
+      </small>
     </div>
-    <div class="form-group">
-      <label>Fail if any element has warning</label>
-      <input class="form-check-input" type="checkbox" formControlName="failIfAnyElementHasWarning">
-      <div *ngIf="submitted && f.failIfAnyElementHasWarning.errors" class="text-danger">
-        <div *ngIf="f.failIfAnyElementHasWarning.errors.required">This is required</div>
-      </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" [(ngModel)]="task.failIfAnyElementHasWarning" name="failIfAnyElementHasWarning" #failIfAnyElementHasWarning="ngModel">
+      <label class="form-check-label">Fail if any element has warning</label>
+      <small class="form-text text-muted">
+        If enable this and one or more warning occur during Task execution the task will be aborted, otherwise it will try to continue untill task execution finish.
+      </small>
     </div>
   </div>
   <div class="modal-footer">

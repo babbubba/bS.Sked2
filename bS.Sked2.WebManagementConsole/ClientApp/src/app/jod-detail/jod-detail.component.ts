@@ -16,8 +16,6 @@ export class JodDetailComponent implements OnInit {
   @Input() jobDetail: JobEdit;
   @Output() jobSaved: EventEmitter<boolean> = new EventEmitter();
 
-  jobPagePath: string;
-
   onJobSave(): void {
     this.spinnerService.show();
 
@@ -41,6 +39,6 @@ export class JodDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.jobPagePath = window.location.origin + '/job/';
+    
   }
 }

@@ -53,28 +53,36 @@ namespace bS.Sked2.Service.UI
         /// <returns></returns>
         public Guid CreateNewTask(ITaskDefinitionCreate taskDefinition)
         {
-            var taskEntity = new TaskEntry
-            {
-                Description = taskDefinition.Description,
-                FailIfAnyElementHasError = taskDefinition.FailIfAnyElementHasError,
-                FailIfAnyElementHasWarning = taskDefinition.FailIfAnyElementHasWarning,
-                IsEnabled = true,
-                Name = taskDefinition.Name
-            };
-
+            Guid result;
             using (var transaction = uow.BeginTransaction())
             {
+                var parentJobEntry = engineRepository.GetJobById(Guid.Parse(taskDefinition.ParentJobId));
+                var taskEntity = new TaskEntry
+                {
+                    Description = taskDefinition.Description,
+                    FailIfAnyElementHasError = taskDefinition.FailIfAnyElementHasError,
+                    FailIfAnyElementHasWarning = taskDefinition.FailIfAnyElementHasWarning,
+                    IsEnabled = taskDefinition.IsEnabled,
+                    Name = taskDefinition.Name,
+                    ParentJob = parentJobEntry,
+                    Position = parentJobEntry.Tasks.Select(e => e.Position).DefaultIfEmpty().Max() + 1
+                };
+                parentJobEntry.Tasks.Add(taskEntity);
+
                 engineRepository.CreateTask(taskEntity);
+                engineRepository.UpdateJob(parentJobEntry);
+
+                result = taskEntity.Id;
             }
 
-            return taskEntity.Id;
+            return result;
         }
 
-        public void EditTask(Guid taskId, ITaskDefinitionEdit taskDefinition)
+        public void EditTask(ITaskDefinitionEdit taskDefinition)
         {
             using (var transaction = uow.BeginTransaction())
             {
-                var entry = engineRepository.GetTaskById(taskId);
+                var entry = engineRepository.GetTaskById(taskDefinition.Id);
                 entry.Name = taskDefinition.Name;
                 entry.Description = taskDefinition.Description;
                 entry.FailIfAnyElementHasError = taskDefinition.FailIfAnyElementHasError;
@@ -122,7 +130,7 @@ namespace bS.Sked2.Service.UI
         public IEnumerable<ITaskDefinitionDetail> GetTasks()
         {
             return engineRepository.GetTasks()
-               .Where(t => !t.IsDeleted && t.IsEnabled)
+               .Where(t => !t.IsDeleted)
                .OrderBy(t => t.Position)
                .Select(t => new TaskDefinitionDetailViewModel
                {
@@ -135,7 +143,8 @@ namespace bS.Sked2.Service.UI
                    IsEnabled = t.IsEnabled,
                    CreationDate = t.CreationDate,
                    LastUpdateDate = t.LastUpdateDate,
-                   ParentJobId = t.ParentJob.Id
+                   ParentJobId = t.ParentJob.Id,
+       
                });
         }
 

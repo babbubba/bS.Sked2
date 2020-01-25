@@ -43,8 +43,9 @@
     </div>
   </div>
   <div class="card-footer text-right">
+
+    <a class="btn btn-primary btn-sm" routerLink="/job/{{jobDetail.id}}">Open</a>
     
-    <a class="btn btn-primary btn-sm" href="{{jobPagePath}}{{jobDetail.id}}" target="_blank">Open</a>
     <button class="btn btn-success btn-sm" (click)="onJobSave()">Save</button>
   </div>
 </div>

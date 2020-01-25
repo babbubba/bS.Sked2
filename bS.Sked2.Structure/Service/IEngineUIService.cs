@@ -161,7 +161,7 @@ namespace bS.Sked2.Structure.Service
         /// </summary>
         /// <param name="taskId">The task identifier.</param>
         /// <param name="taskDefinition">The task definition.</param>
-        void EditTask(Guid taskId, ITaskDefinitionEdit taskDefinition);
+        void EditTask(ITaskDefinitionEdit taskDefinition);
 
         /// <summary>
         /// Gets the create task.

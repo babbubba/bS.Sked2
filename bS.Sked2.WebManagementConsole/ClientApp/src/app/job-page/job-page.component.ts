@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 import { Job } from '../models/job';
 import { Task } from '../models/task';
 import { JobsService } from '../jobs.service';
@@ -16,8 +15,8 @@ import { MessageService, Verbosity } from '../message.service';
   templateUrl: './job-page.component.html',
   styleUrls: ['./job-page.component.css']
 })
-export class JobPageComponent implements OnInit {
 
+export class JobPageComponent implements OnInit {
   constructor(
     private routeParams: ActivatedRoute,
     private messageService: MessageService,
@@ -28,9 +27,6 @@ export class JobPageComponent implements OnInit {
 
   job: Job;
   tasks: Task[];
-
-  selectedTask: Task;
-  selectedTrigger: Trigger;
 
   disableAddTaskButton: boolean = false;
   disableAddTriggerButton: boolean = false;
@@ -59,36 +55,29 @@ export class JobPageComponent implements OnInit {
       });
   }
 
-  taskSelect(task: Task) {
-
-  }
-
-  triggerSelect(trigger: Trigger) {
+  openTask() {
 
   }
 
   addNewTask() {
-    let t = new Task();
-    t.name = "pippo";
-    t.description = "pluto";
-    t.failIfAnyElementHasError = true;
-    t.failIfAnyElementHasWarning = false;
-    t.isEnabled = true;
-    const modalAddNewTask = this.modalService.open(AddEditTaskModalComponent);
-    modalAddNewTask.componentInstance.task = t;
-    modalAddNewTask.result
-      .then(res => {
-        //save or create
-        console.log(res);
-      })
-      .catch(err => {
-        //dismiss
-        console.error(err);
-      });
+    this.taskService.getTaskCreate()
+      .subscribe(
+        result => {
+          result.parentJobId = this.job.id;
+          const modalAddNewTask = this.modalService.open(AddEditTaskModalComponent);
+          modalAddNewTask.componentInstance.task = result;
+          modalAddNewTask.result
+            .then(res => {
+              if (res === "Success") {
+                //save or create success then reload data
+                this.loadData();
+              }
+            })
+            .catch(err => { });
+        },
+        error => { });
   }
 
   addNewTrigger() {
-
   }
-
 }

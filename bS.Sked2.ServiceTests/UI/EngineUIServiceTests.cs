@@ -53,11 +53,6 @@ namespace bS.Sked2.Service.UI.Tests
             // Add task to job
             engineUIService.AddTaskToJob(jobId, taskId);
 
-            // Edit the task
-            var taskEditVM = engineUIService.GetEditTask(taskId);
-            taskEditVM.Description = "Task di prova creato con UI service (modificato).";
-            engineUIService.EditTask(taskId, taskEditVM);
-
             // Create the module
             var moduleVM = engineUIService.GetCreateModule();
             moduleVM.Name = "Modulo di prova(Common)";

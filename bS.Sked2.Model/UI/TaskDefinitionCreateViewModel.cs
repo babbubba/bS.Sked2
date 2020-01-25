@@ -44,5 +44,9 @@ namespace bS.Sked2.Model.UI
         /// </value>
         [StringLength(50), Required]
         public string Name { get; set; }
+        [Required]
+        public bool IsEnabled { get; set; }
+        [Required]
+        public string ParentJobId { get; set; }
     }
 }
