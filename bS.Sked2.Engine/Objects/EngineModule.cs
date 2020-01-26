@@ -51,6 +51,8 @@ namespace bS.Sked2.Engine.Objects
 
         public abstract void Init();
 
+        public override Guid? EntityId => moduleEntry?.Id;
+
         /// <summary>
         /// Registers the input properties.
         /// </summary>

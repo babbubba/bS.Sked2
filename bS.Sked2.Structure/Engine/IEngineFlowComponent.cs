@@ -40,6 +40,7 @@ namespace bS.Sked2.Structure.Engine
         /// The instance identifier.
         /// </value>
         Guid? InstanceID { get; }
+        Guid? EntityId { get; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is running.

@@ -78,6 +78,8 @@ namespace bS.Sked2.Engine.Objects
         public IEngineModule ParentEngineModule { get; set; }
         public ITaskEntry ParentTask { get => elementEntry.ParentTask; }
 
+        public override Guid? EntityId => elementEntry?.Id;
+
         /// <summary>
         /// Determines whether this instance [can be executed].
         /// </summary>

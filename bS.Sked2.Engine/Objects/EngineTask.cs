@@ -76,6 +76,8 @@ namespace bS.Sked2.Engine.Objects
         /// </value>
         public IJobEntry ParentJob { get => taskEntry.ParentJob; }
 
+        public override Guid? EntityId => taskEntry?.Id;
+
         /// <summary>
         /// Determines whether this instance [can be executed].
         /// </summary>

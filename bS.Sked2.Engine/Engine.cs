@@ -25,6 +25,9 @@ namespace bS.Sked2.Engine
         private readonly IDbContext dbContext;
         private readonly IServiceCollection services;
 
+        public event IEngine.JobStarted OnJobStarted;
+        public event IEngine.TaskStarted OnTaskStarted;
+
         public IEngineConfig Configuration { get; }
         public IServiceProvider ServiceProvider => serviceProvider;
 
@@ -110,6 +113,7 @@ namespace bS.Sked2.Engine
             }
 
             // Execute job
+            if (OnJobStarted != null) OnJobStarted.Invoke((Guid)job.EntityId);
             job.Start();
 
             // Stop tjobask
@@ -149,6 +153,7 @@ namespace bS.Sked2.Engine
             }
 
             // Execute task
+            if (OnTaskStarted != null) OnTaskStarted.Invoke((Guid)task.EntityId);
             task.Start();
 
             // Stop task

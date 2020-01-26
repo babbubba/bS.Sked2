@@ -39,5 +39,11 @@ namespace bS.Sked2.Structure.Engine
         void Init();
 
         IServiceProvider ServiceProvider { get; }
+
+        delegate void JobStarted(Guid jobId);
+        event JobStarted OnJobStarted;
+
+        delegate void TaskStarted(Guid taskId);
+        event TaskStarted OnTaskStarted;
     }
 }

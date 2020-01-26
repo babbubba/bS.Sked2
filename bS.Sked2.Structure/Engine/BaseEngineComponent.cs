@@ -91,6 +91,8 @@ namespace bS.Sked2.Structure.Engine
         /// </value>
         public bool HasCompleted => instance.BeginTime != null && !instance.IsPaused && instance.EndTime != null;
 
+        public abstract Guid? EntityId { get; }
+
         /// <summary>
         /// Starts this instance.
         /// </summary>

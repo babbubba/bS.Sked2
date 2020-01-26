@@ -8,6 +8,7 @@ using bS.Sked2.Service.UI;
 using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
+using bS.Sked2.WebManagementConsole.Hub;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,6 +37,8 @@ namespace bS.Sked2.WebManagementConsole
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddSignalR();
 
             var dbContext = new DbContext
             {
@@ -70,6 +73,7 @@ namespace bS.Sked2.WebManagementConsole
             services.AddSingleton<IEngine, Engine.Engine>();
             services.AddSingleton<IEngineUIServiceConfig>(engineUiServiceConfigx);
             services.AddTransient<IEngineUIService, EngineUIService>();
+            services.AddHostedService<EngineHostedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -116,6 +120,11 @@ namespace bS.Sked2.WebManagementConsole
                 {
                     spa.UseAngularCliServer(npmScript: "start");
                 }
+            });
+
+            app.UseSignalR(route =>
+            {
+                route.MapHub<NotificationHub>("/notificationHub");
             });
         }
     }

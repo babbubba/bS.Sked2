@@ -1,12 +1,30 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
+import * as signalR from '@microsoft/signalr'; 
 
 @Injectable({
   providedIn: 'root'
 })
-export class MessageService {
+export class MessageService implements OnInit {
 
   constructor() { }
 
+  ngOnInit() {
+    const connection = new signalR.HubConnectionBuilder()
+      .configureLogging(signalR.LogLevel.Information)
+      .withUrl("https://localhost:44323/notificationhub")
+      .build();
+
+    connection.start().then(function () {
+      console.log('SignalR Connected!');
+    }).catch(function (err) {
+      return console.error(err.toString());
+    });
+
+    connection.on("JobStarted", () => {
+      //this.getEmployeeData();
+    }); 
+
+}
   message: string = '';
   show: boolean = false;
   verbosity: Verbosity;

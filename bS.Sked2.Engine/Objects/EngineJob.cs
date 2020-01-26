@@ -32,6 +32,8 @@ namespace bS.Sked2.Engine.Objects
             this.engine = engine;
         }
 
+        public override Guid? EntityId => jobEntry?.Id;
+
         /// <summary>
         /// Determines whether this instance [can be executed].
         /// </summary>
