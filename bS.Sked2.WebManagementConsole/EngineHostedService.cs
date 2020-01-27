@@ -37,17 +37,18 @@ namespace bS.Sked2.WebManagementConsole
 
         private void Engine_OnTaskStarted(Guid taskId)
         {
-            hubContext.Clients.All.SendAsync("TaskStart", taskId.ToString());
+            hubContext.Clients.All.SendAsync("TaskStarted", taskId.ToString());
         }
 
         private void Engine_OnJobStarted(Guid jobId)
         {
-            hubContext.Clients.All.SendAsync("JobStart", jobId.ToString());
+            hubContext.Clients.All.SendAsync("JobStarted", jobId.ToString());
         }
 
         private void DoWork(object state)
         {
-           
+            hubContext.Clients.All.SendAsync("JobStarted", "prova");
+            hubContext.Clients.All.SendAsync("TaskStarted", "prova");
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

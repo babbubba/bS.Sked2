@@ -1,14 +1,12 @@
 import { Injectable, OnInit } from '@angular/core';
-import * as signalR from '@microsoft/signalr'; 
+import * as signalR from '@microsoft/signalr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor() {
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
       .withUrl("https://localhost:44323/notificationhub")
@@ -20,11 +18,16 @@ export class MessageService implements OnInit {
       return console.error(err.toString());
     });
 
-    connection.on("JobStarted", () => {
-      //this.getEmployeeData();
-    }); 
+    connection.on("JobStarted", (jobId) => {
+      console.log(`Job Started: ${jobId}`);
+      this.display(`Job '${jobId}' started.`)
+    });
+  }
 
-}
+  ngOnInit() {
+    
+
+  }
   message: string = '';
   show: boolean = false;
   verbosity: Verbosity;

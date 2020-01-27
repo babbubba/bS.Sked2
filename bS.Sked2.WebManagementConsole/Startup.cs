@@ -11,6 +11,7 @@ using bS.Sked2.Structure.Service;
 using bS.Sked2.WebManagementConsole.Hub;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
@@ -100,6 +101,16 @@ namespace bS.Sked2.WebManagementConsole
 
             app.UseRouting();
 
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapHub<MyHub>("/myhub", options =>
+            //    {
+            //        options.Transports =
+            //            HttpTransportType.WebSockets |
+            //            HttpTransportType.LongPolling;
+            //    });
+            //});
+
             //app.UseCors(builder => builder.WithOrigins("https://localhost:44323"));
 
             app.UseEndpoints(endpoints =>
@@ -107,6 +118,13 @@ namespace bS.Sked2.WebManagementConsole
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+
+                endpoints.MapHub<NotificationHub>("/notificationHub", options =>
+                {
+                    options.Transports =
+                        HttpTransportType.WebSockets |
+                        HttpTransportType.LongPolling;
+                });
             });
 
             app.UseSpa(spa =>
@@ -122,10 +140,10 @@ namespace bS.Sked2.WebManagementConsole
                 }
             });
 
-            app.UseSignalR(route =>
-            {
-                route.MapHub<NotificationHub>("/notificationHub");
-            });
+            //app.UseSignalR(route =>
+            //{
+            //    route.MapHub<NotificationHub>("/notificationHub");
+            //});
         }
     }
 }
