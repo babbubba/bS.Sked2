@@ -119,7 +119,7 @@ namespace bS.Sked2.WebManagementConsole
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
 
-                endpoints.MapHub<NotificationHub>("/notificationHub", options =>
+                endpoints.MapHub<MessageNotificationHub>("/messagenotificationHub", options =>
                 {
                     options.Transports =
                         HttpTransportType.WebSockets |

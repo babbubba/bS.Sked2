@@ -14,6 +14,7 @@ using bS.Sked2.Structure.Service.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using static bS.Sked2.Structure.Engine.IEngine;
 
 namespace bS.Sked2.Engine
 {
@@ -25,8 +26,34 @@ namespace bS.Sked2.Engine
         private readonly IDbContext dbContext;
         private readonly IServiceCollection services;
 
-        public event IEngine.JobStarted OnJobStarted;
-        public event IEngine.TaskStarted OnTaskStarted;
+        /// <summary>
+        /// Occurs when [job started].
+        /// </summary>
+        public event JobStartableEvent JobStarted;
+        /// <summary>
+        /// Occurs when [task started].
+        /// </summary>
+        public event TaskStartableEbent TaskStarted;
+        /// <summary>
+        /// Occurs when [job finished].
+        /// </summary>
+        public event JobStartableEvent JobFinished;
+        /// <summary>
+        /// Occurs when [task finished].
+        /// </summary>
+        public event TaskStartableEbent TaskFinished;
+        /// <summary>
+        /// Occurs when [element started].
+        /// </summary>
+        public event ElementStartableEvent ElementStarted;
+        /// <summary>
+        /// Occurs when [element finished].
+        /// </summary>
+        public event ElementStartableEvent ElementFinished;
+        /// <summary>
+        /// Occurs when [module inited].
+        /// </summary>
+        public event ModuleStartableEvent ModuleInited;
 
         public IEngineConfig Configuration { get; }
         public IServiceProvider ServiceProvider => serviceProvider;
@@ -68,10 +95,13 @@ namespace bS.Sked2.Engine
             }
 
             // Execute element
+            if (ElementStarted != null) ElementStarted.Invoke((Guid)element.EntityId, (Guid)element.InstanceID);
             element.Start();
 
             // stop element
             element.Stop();
+            if (ElementFinished != null) ElementFinished.Invoke((Guid)element.EntityId, (Guid)element.InstanceID);
+
 
             if (element.HasErrors)
             {
@@ -113,11 +143,13 @@ namespace bS.Sked2.Engine
             }
 
             // Execute job
-            if (OnJobStarted != null) OnJobStarted.Invoke((Guid)job.EntityId);
+            if (JobStarted != null) JobStarted.Invoke((Guid)job.EntityId, (Guid)job.InstanceID);
             job.Start();
 
-            // Stop tjobask
+            // Stop the job
             job.Stop();
+            if (JobStarted != null) JobFinished.Invoke((Guid)job.EntityId, (Guid)job.InstanceID);
+
 
             if (job.HasErrors)
             {
@@ -153,11 +185,13 @@ namespace bS.Sked2.Engine
             }
 
             // Execute task
-            if (OnTaskStarted != null) OnTaskStarted.Invoke((Guid)task.EntityId);
+            if (TaskStarted != null) TaskStarted.Invoke((Guid)task.EntityId, (Guid)task.InstanceID);
             task.Start();
 
             // Stop task
             task.Stop();
+            if (TaskStarted != null) TaskFinished.Invoke((Guid)task.EntityId, (Guid)task.InstanceID);
+
 
             if (task.HasErrors)
             {

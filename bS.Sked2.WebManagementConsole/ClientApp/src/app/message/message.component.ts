@@ -14,7 +14,7 @@ export class MessageComponent implements OnInit {
   }
 
   getAlertClass() : string {
-    switch (this.messageService.verbosity) {
+    switch (this.messageService.messageVerbosity) {
       case Verbosity.Info:
         return 'alert-primary';
       case Verbosity.Success:
@@ -27,7 +27,7 @@ export class MessageComponent implements OnInit {
   }
 
   getAlertTitle(): string {
-    switch (this.messageService.verbosity) {
+    switch (this.messageService.messageVerbosity) {
       case Verbosity.Info:
         return 'Info';
       case Verbosity.Success:

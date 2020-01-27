@@ -38,12 +38,50 @@ namespace bS.Sked2.Structure.Engine
         /// </summary>
         void Init();
 
+        /// <summary>
+        /// Gets the service provider for internal dependency injecton.
+        /// </summary>
+        /// <value>
+        /// The service provider.
+        /// </value>
         IServiceProvider ServiceProvider { get; }
 
-        delegate void JobStarted(Guid jobId);
-        event JobStarted OnJobStarted;
+        /// <summary>
+        /// Delegate job's event
+        /// </summary>
+        /// <param name="jobId">The job identifier.</param>
+        /// <param name="instanceId">The instance identifier.</param>
+        delegate void JobStartableEvent(Guid jobId, Guid instanceId);
 
-        delegate void TaskStarted(Guid taskId);
-        event TaskStarted OnTaskStarted;
+        /// <summary>
+        ///  Delegate task's event
+        /// </summary>
+        /// <param name="taskId">The task identifier.</param>
+        /// <param name="instanceId">The instance identifier.</param>
+        delegate void TaskStartableEbent(Guid taskId, Guid instanceId);
+
+        /// <summary>
+        ///  Delegate element's event
+        /// </summary>
+        /// <param name="elementId">The element identifier.</param>
+        /// <param name="instanceId">The instance identifier.</param>
+        delegate void ElementStartableEvent(Guid elementId, Guid instanceId);
+
+        /// <summary>
+        /// Delegate module's event
+        /// </summary>
+        /// <param name="moduleId">The module identifier.</param>
+        delegate void ModuleStartableEvent(Guid moduleId);
+
+        event JobStartableEvent JobStarted;
+        event JobStartableEvent JobFinished;
+
+        event TaskStartableEbent TaskStarted;
+        event TaskStartableEbent TaskFinished;
+
+        event ElementStartableEvent ElementStarted;
+        event ElementStartableEvent ElementFinished;
+
+        event ModuleStartableEvent ModuleInited;
     }
 }
