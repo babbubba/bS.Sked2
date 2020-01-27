@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable, OnInit, TemplateRef   } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 
 @Injectable({
@@ -38,6 +38,7 @@ export class MessageService implements OnInit {
   showNotify: boolean = false;
   messageVerbosity: Verbosity;
   notifyVerbosity: Verbosity;
+  toasts: any[] = [];
 
   display(message: string, verbosity: Verbosity = 0): void {
     this.message = message;
@@ -54,9 +55,31 @@ export class MessageService implements OnInit {
   }
 
   notify(notifyMessage: string, verbosity: Verbosity = 0): void {
-    this.notifyMessage = notifyMessage;
-    this.showNotify = true;
-    this.notifyVerbosity = verbosity;
+    //this.notifyMessage = notifyMessage;
+    //this.showNotify = true;
+    //this.notifyVerbosity = verbosity;
+    let className = '';
+    switch (verbosity) {
+      case Verbosity.Info:
+        className = 'bg-info text-light'
+        break;
+      case Verbosity.Error:
+        className = 'bg-danger text-light'
+        break;
+      case Verbosity.Warning:
+        className = 'bg-warning text-light'
+        break;
+      case Verbosity.Success:
+        className = 'bg-success text-light'
+        break;
+    }
+
+    this.showToast(notifyMessage, {
+      headertext: 'Notify',
+      classname: className,
+      delay: 6000,
+      autohide: true
+    });
   }
 
   hideNotify() {
@@ -66,6 +89,16 @@ export class MessageService implements OnInit {
   clearNotify() {
     this.notifyMessage = '';
     this.showNotify = false;
+  }
+
+  // Push new Toasts to array with content and options
+  showToast(textOrTpl: string | TemplateRef<any>, options: any = {}) {
+    this.toasts.push({ textOrTpl, ...options });
+  }
+
+  // Callback method to remove Toast DOM element from view
+  remove(toast) {
+    this.toasts = this.toasts.filter(t => t !== toast);
   }
 }
 

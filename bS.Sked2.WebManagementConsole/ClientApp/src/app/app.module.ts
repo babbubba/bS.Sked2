@@ -22,6 +22,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { ErrorIntercept } from './error.interceptor';
+import { ToastComponent } from './toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { ErrorIntercept } from './error.interceptor';
     TaskPreviewComponent,
     TriggerPreviewComponent,
     AddEditTaskModalComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
