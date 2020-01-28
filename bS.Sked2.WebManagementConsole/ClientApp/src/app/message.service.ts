@@ -22,9 +22,8 @@ export class MessageService implements OnInit {
       this.display(message, severity);
     });
 
-    connection.on("DisplayNotify", (message, severity) => {
-      this.notify(message, severity);
-      console.log("Notify: " + message);
+    connection.on("DisplayNotify", (title, message, severity) => {
+      this.notify(title, message, severity);
     });
   }
 
@@ -54,7 +53,7 @@ export class MessageService implements OnInit {
     this.showMessage = false;
   }
 
-  notify(notifyMessage: string, verbosity: Verbosity = 0): void {
+  notify(notifyTitle: string, notifyMessage: string, verbosity: Verbosity = 0): void {
     //this.notifyMessage = notifyMessage;
     //this.showNotify = true;
     //this.notifyVerbosity = verbosity;
@@ -75,7 +74,7 @@ export class MessageService implements OnInit {
     }
 
     this.showToast(notifyMessage, {
-      headertext: 'Notify',
+      headertext: notifyTitle,
       classname: className,
       delay: 6000,
       autohide: true
@@ -97,7 +96,7 @@ export class MessageService implements OnInit {
   }
 
   // Callback method to remove Toast DOM element from view
-  remove(toast) {
+  removeToast(toast) {
     this.toasts = this.toasts.filter(t => t !== toast);
   }
 }

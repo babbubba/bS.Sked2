@@ -80,8 +80,11 @@ namespace bS.Sked2.WebManagementConsole
 
         private void DoWork(object state)
         {
+            Random random = new Random();
+            int number = random.Next(0, 4) * 10;
             //hubContext.Clients.All.SendAsync("SendMessage", "Messaggio di prova", MessageSeverity.Error);
-            hubContext.Clients.All.SendAsync("DisplayNotify", "Messaggio di prova", MessageSeverity.Error);
+            //hubContext.Clients.All.SendAsync("DisplayNotify", "Titolo di prova", "Messaggio di prova", MessageSeverity.Error);
+            hubContext.Clients.All.SendAsync("DisplayNotify", "Titolo di prova", "Messaggio di prova", number);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

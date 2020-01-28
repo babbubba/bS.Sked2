@@ -14,9 +14,9 @@ namespace bS.Sked2.WebManagementConsole.Hub
             await Clients.All.SendAsync("DisplayMessage", message, severity);
         }
 
-        public async Task DisplayNotify(string message, MessageSeverity severity)
+        public async Task DisplayNotify(string title, string message, MessageSeverity severity)
         {
-            await Clients.All.SendAsync("DisplayNotify", message, severity);
+            await Clients.All.SendAsync("DisplayNotify", title, message, severity);
         }
     }
 }
