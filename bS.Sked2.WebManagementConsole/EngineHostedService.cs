@@ -17,14 +17,19 @@ namespace bS.Sked2.WebManagementConsole
     /// <seealso cref="IHostedService" />
     public class EngineHostedService : IHostedService
     {
-        public EngineHostedService(IEngine engine, IHubContext<MessageNotificationHub> hubContext)
+        public EngineHostedService(
+            IEngine engine, 
+            IHubContext<MessageNotificationHub> messageNotificationHubContext,
+            IHubContext<EngineNotificationHub> engineNotificationHubContext)
         {
             this.engine = engine;
-            this.hubContext = hubContext;
+            this.messageNotificationHubContext = messageNotificationHubContext;
+            this.engineNotificationHubContext = engineNotificationHubContext;
         }
         private Timer timer;
         private readonly IEngine engine;
-        private readonly IHubContext<MessageNotificationHub> hubContext;
+        private readonly IHubContext<MessageNotificationHub> messageNotificationHubContext;
+        private readonly IHubContext<EngineNotificationHub> engineNotificationHubContext;
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
@@ -40,51 +45,136 @@ namespace bS.Sked2.WebManagementConsole
 
             timer = new Timer(DoWork, null, TimeSpan.Zero,
             TimeSpan.FromSeconds(5));
+
+            messageNotificationHubContext.Clients.All.SendAsync(
+               "DisplayNotify",
+               "Engine service started",
+               "The Engine Service was inited and started.",
+               MessageSeverity.Info);
+
             return Task.CompletedTask;
         }
 
         private void Engine_ElementFinished(Guid elementId, Guid instanceId, bool success)
         {
-            hubContext.Clients.All.SendAsync("ElementFinished", elementId.ToString(), instanceId.ToString(), success);
+            engineNotificationHubContext.Clients.All.SendAsync("ElementFinished", elementId.ToString(), instanceId.ToString(), success);
+            
+            MessageSeverity severity;
+            string message;
+            
+            if (success)
+            {
+                message = $"Element {instanceId.ToString()} finished execution succesfully";
+                severity = MessageSeverity.Success;
+            }
+            else
+            {
+                message = $"Element {instanceId.ToString()} failed execution.";
+                severity = MessageSeverity.Error;
+            }
+
+            messageNotificationHubContext.Clients.All.SendAsync(
+                "DisplayNotify", 
+                $"Element finish",
+                message,
+                severity);
+
         }
 
         private void Engine_TaskFinished(Guid taskId, Guid instanceId, bool success)
         {
-            hubContext.Clients.All.SendAsync("TaskFinished", taskId.ToString(), instanceId.ToString(), success);
+            engineNotificationHubContext.Clients.All.SendAsync("TaskFinished", taskId.ToString(), instanceId.ToString(), success);
+
+            MessageSeverity severity;
+            string message;
+
+            if (success)
+            {
+                message = $"Task {instanceId.ToString()} finished execution succesfully";
+                severity = MessageSeverity.Success;
+            }
+            else
+            {
+                message = $"Task {instanceId.ToString()} failed execution.";
+                severity = MessageSeverity.Error;
+            }
+
+            messageNotificationHubContext.Clients.All.SendAsync(
+                "DisplayNotify",
+                $"Task finish",
+                message,
+                severity);
         }
 
         private void Engine_JobFinished(Guid jobId, Guid instanceId, bool success)
         {
-            hubContext.Clients.All.SendAsync("JobFinished", jobId.ToString(), instanceId.ToString(), success);
+            engineNotificationHubContext.Clients.All.SendAsync("JobFinished", jobId.ToString(), instanceId.ToString(), success);
+
+            MessageSeverity severity;
+            string message;
+
+            if (success)
+            {
+                message = $"Job {instanceId.ToString()} finished execution succesfully";
+                severity = MessageSeverity.Success;
+            }
+            else
+            {
+                message = $"Job {instanceId.ToString()} failed execution.";
+                severity = MessageSeverity.Error;
+            }
+
+            messageNotificationHubContext.Clients.All.SendAsync(
+                "DisplayNotify",
+                $"Job finish",
+                message,
+                severity);
         }
 
         private void Engine_ModuleInited(Guid moduleId, bool success)
         {
-            hubContext.Clients.All.SendAsync("ModuleInited", moduleId.ToString(), success);
+            engineNotificationHubContext.Clients.All.SendAsync("ModuleInited", moduleId.ToString(), success);
         }
 
         private void Engine_ElementStarted(Guid elementId, Guid instanceId)
         {
-            hubContext.Clients.All.SendAsync("ElementStarted", elementId.ToString(), instanceId.ToString());
+            engineNotificationHubContext.Clients.All.SendAsync("ElementStarted", elementId.ToString(), instanceId.ToString());
+
+            messageNotificationHubContext.Clients.All.SendAsync(
+             "DisplayNotify",
+             $"Element start",
+             $"Element {instanceId.ToString()} start",
+             MessageSeverity.Info);
         }
 
         private void Engine_OnTaskStarted(Guid taskId, Guid instanceId)
         {
-            hubContext.Clients.All.SendAsync("TaskStarted", taskId.ToString(), instanceId.ToString());
+            engineNotificationHubContext.Clients.All.SendAsync("TaskStarted", taskId.ToString(), instanceId.ToString());
+
+            messageNotificationHubContext.Clients.All.SendAsync(
+            "DisplayNotify",
+            $"Task start",
+            $"Task {instanceId.ToString()} start",
+            MessageSeverity.Info);
         }
 
         private void Engine_OnJobStarted(Guid jobId, Guid instanceId)
         {
-            hubContext.Clients.All.SendAsync("JobStarted", jobId.ToString(), instanceId.ToString());
+            engineNotificationHubContext.Clients.All.SendAsync("JobStarted", jobId.ToString(), instanceId.ToString());
+
+            messageNotificationHubContext.Clients.All.SendAsync(
+            "DisplayNotify",
+            $"Job start",
+            $"Job {instanceId.ToString()} start",
+            MessageSeverity.Info);
         }
 
         private void DoWork(object state)
         {
-            Random random = new Random();
-            int number = random.Next(0, 4) * 10;
-            //hubContext.Clients.All.SendAsync("SendMessage", "Messaggio di prova", MessageSeverity.Error);
-            //hubContext.Clients.All.SendAsync("DisplayNotify", "Titolo di prova", "Messaggio di prova", MessageSeverity.Error);
-            hubContext.Clients.All.SendAsync("DisplayNotify", "Titolo di prova", "Messaggio di prova", number);
+            //Random random = new Random();
+            //int number = random.Next(0, 4) * 10;
+            //messageNotificationHubContext.Clients.All.SendAsync("DisplayNotify", "Titolo di prova", "Messaggio di prova", number);
+           
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

@@ -18,14 +18,28 @@ namespace bS.Sked2.WebManagementConsole.Hub
             await Clients.All.SendAsync("TaskStarted", taskId, instanceId);
         }
 
-        public async Task Jobfinished(string jobId, string instanceId)
+        public async Task ElementStarted(string taskId, string instanceId)
         {
-            await Clients.All.SendAsync("Jobfinished", jobId, instanceId);
+            await Clients.All.SendAsync("ElementStarted", taskId, instanceId);
+        }
+        public async Task ModuleInited(string taskId, string instanceId, bool success)
+        {
+            await Clients.All.SendAsync("ModuleInited", taskId, instanceId, success);
         }
 
-        public async Task Taskfinished(string taskId, string instanceId)
+        public async Task Jobfinished(string jobId, string instanceId, bool success)
         {
-            await Clients.All.SendAsync("Taskfinished", taskId, instanceId);
+            await Clients.All.SendAsync("Jobfinished", jobId, instanceId, success);
+        }
+
+        public async Task Taskfinished(string taskId, string instanceId, bool success)
+        {
+            await Clients.All.SendAsync("Taskfinished", taskId, instanceId, success);
+        }
+
+        public async Task Elementfinished(string taskId, string instanceId, bool success)
+        {
+            await Clients.All.SendAsync("Elementfinished", taskId, instanceId, success);
         }
     }
 }

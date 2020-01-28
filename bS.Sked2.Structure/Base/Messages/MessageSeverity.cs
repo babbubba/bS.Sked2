@@ -26,8 +26,13 @@
         Error = 30,
 
         /// <summary>
+        /// The success
+        /// </summary>
+        Success = 40,
+
+        /// <summary>
         /// The fatal
         /// </summary>
-        Fatal = 40
+        Fatal = 50
     }
 }
