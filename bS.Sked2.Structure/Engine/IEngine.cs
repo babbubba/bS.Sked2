@@ -51,37 +51,41 @@ namespace bS.Sked2.Structure.Engine
         /// </summary>
         /// <param name="jobId">The job identifier.</param>
         /// <param name="instanceId">The instance identifier.</param>
-        delegate void JobStartableEvent(Guid jobId, Guid instanceId);
+        /// <param name="success">if set to <c>true</c> [success].</param>
+        delegate void JobFinishedEvent(Guid jobId, Guid instanceId, bool success);
+        delegate void JobStartedEvent(Guid jobId, Guid instanceId);
 
         /// <summary>
         ///  Delegate task's event
         /// </summary>
         /// <param name="taskId">The task identifier.</param>
         /// <param name="instanceId">The instance identifier.</param>
-        delegate void TaskStartableEbent(Guid taskId, Guid instanceId);
+        delegate void TaskFinishedEvent(Guid taskId, Guid instanceId, bool success);
+        delegate void TaskStartedEvent(Guid taskId, Guid instanceId);
 
         /// <summary>
         ///  Delegate element's event
         /// </summary>
         /// <param name="elementId">The element identifier.</param>
         /// <param name="instanceId">The instance identifier.</param>
-        delegate void ElementStartableEvent(Guid elementId, Guid instanceId);
+        delegate void ElementStartedEvent(Guid elementId, Guid instanceId);
+        delegate void ElementFinishedEvent(Guid elementId, Guid instanceId, bool success);
 
         /// <summary>
         /// Delegate module's event
         /// </summary>
         /// <param name="moduleId">The module identifier.</param>
-        delegate void ModuleStartableEvent(Guid moduleId);
+        delegate void ModuleInitedEvent(Guid moduleId, bool success);
 
-        event JobStartableEvent JobStarted;
-        event JobStartableEvent JobFinished;
+        event JobStartedEvent JobStarted;
+        event JobFinishedEvent JobFinished;
 
-        event TaskStartableEbent TaskStarted;
-        event TaskStartableEbent TaskFinished;
+        event TaskStartedEvent TaskStarted;
+        event TaskFinishedEvent TaskFinished;
 
-        event ElementStartableEvent ElementStarted;
-        event ElementStartableEvent ElementFinished;
+        event ElementStartedEvent ElementStarted;
+        event ElementFinishedEvent ElementFinished;
 
-        event ModuleStartableEvent ModuleInited;
+        event ModuleInitedEvent ModuleInited;
     }
 }

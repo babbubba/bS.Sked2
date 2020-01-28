@@ -304,6 +304,7 @@ namespace bS.Sked2.Engine.Objects
 
             // Add a message to notify the element started
             AddMessage("Element execution started.");
+
         }
 
         /// <summary>

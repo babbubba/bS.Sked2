@@ -43,24 +43,24 @@ namespace bS.Sked2.WebManagementConsole
             return Task.CompletedTask;
         }
 
-        private void Engine_ElementFinished(Guid elementId, Guid instanceId)
+        private void Engine_ElementFinished(Guid elementId, Guid instanceId, bool success)
         {
-            hubContext.Clients.All.SendAsync("ElementFinished", elementId.ToString(), instanceId.ToString());
+            hubContext.Clients.All.SendAsync("ElementFinished", elementId.ToString(), instanceId.ToString(), success);
         }
 
-        private void Engine_TaskFinished(Guid taskId, Guid instanceId)
+        private void Engine_TaskFinished(Guid taskId, Guid instanceId, bool success)
         {
-            hubContext.Clients.All.SendAsync("TaskFinished", taskId.ToString(), instanceId.ToString());
+            hubContext.Clients.All.SendAsync("TaskFinished", taskId.ToString(), instanceId.ToString(), success);
         }
 
-        private void Engine_JobFinished(Guid jobId, Guid instanceId)
+        private void Engine_JobFinished(Guid jobId, Guid instanceId, bool success)
         {
-            hubContext.Clients.All.SendAsync("JobFinished", jobId.ToString(), instanceId.ToString());
+            hubContext.Clients.All.SendAsync("JobFinished", jobId.ToString(), instanceId.ToString(), success);
         }
 
-        private void Engine_ModuleInited(Guid moduleId)
+        private void Engine_ModuleInited(Guid moduleId, bool success)
         {
-            hubContext.Clients.All.SendAsync("ModuleInited", moduleId.ToString());
+            hubContext.Clients.All.SendAsync("ModuleInited", moduleId.ToString(), success);
         }
 
         private void Engine_ElementStarted(Guid elementId, Guid instanceId)

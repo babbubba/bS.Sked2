@@ -29,31 +29,31 @@ namespace bS.Sked2.Engine
         /// <summary>
         /// Occurs when [job started].
         /// </summary>
-        public event JobStartableEvent JobStarted;
+        public event JobStartedEvent JobStarted;
         /// <summary>
         /// Occurs when [task started].
         /// </summary>
-        public event TaskStartableEbent TaskStarted;
+        public event TaskStartedEvent TaskStarted;
         /// <summary>
         /// Occurs when [job finished].
         /// </summary>
-        public event JobStartableEvent JobFinished;
+        public event JobFinishedEvent JobFinished;
         /// <summary>
         /// Occurs when [task finished].
         /// </summary>
-        public event TaskStartableEbent TaskFinished;
+        public event TaskFinishedEvent TaskFinished;
         /// <summary>
         /// Occurs when [element started].
         /// </summary>
-        public event ElementStartableEvent ElementStarted;
+        public event ElementStartedEvent ElementStarted;
         /// <summary>
         /// Occurs when [element finished].
         /// </summary>
-        public event ElementStartableEvent ElementFinished;
+        public event ElementFinishedEvent ElementFinished;
         /// <summary>
         /// Occurs when [module inited].
         /// </summary>
-        public event ModuleStartableEvent ModuleInited;
+        public event ModuleInitedEvent ModuleInited;
 
         public IEngineConfig Configuration { get; }
         public IServiceProvider ServiceProvider => serviceProvider;
@@ -100,7 +100,6 @@ namespace bS.Sked2.Engine
 
             // stop element
             element.Stop();
-            if (ElementFinished != null) ElementFinished.Invoke((Guid)element.EntityId, (Guid)element.InstanceID);
 
 
             if (element.HasErrors)
@@ -108,6 +107,7 @@ namespace bS.Sked2.Engine
                 element.AddMessage($"The element (instance: {element.InstanceID}) was not executed cause one or more errors occurs.", MessageSeverity.Error);
                 if (element.ParentTask.FailIfAnyElementHasError)
                 {
+                    if (ElementFinished != null) ElementFinished.Invoke((Guid)element.EntityId, (Guid)element.InstanceID, false);
                     throw new EngineException(logger, $"The element (instance: {element.InstanceID}) was not executed cause one or more errors occurs. This task was aborted.");
                 }
             }
@@ -116,9 +116,12 @@ namespace bS.Sked2.Engine
                 element.AddMessage($"The element (instance: {element.InstanceID}) was executed but one or more warning occurs.", MessageSeverity.Warning);
                 if (element.ParentTask.FailIfAnyElementHasWarning)
                 {
+                    if (ElementFinished != null) ElementFinished.Invoke((Guid)element.EntityId, (Guid)element.InstanceID, false);
                     throw new EngineException(logger, $"The element (instance: {element.InstanceID}) was executed but one or more warning occurs. This task was aborted.");
                 }
             }
+            if (ElementFinished != null) ElementFinished.Invoke((Guid)element.EntityId, (Guid)element.InstanceID, true) ;
+
         }
 
         public void ExecuteJob(Guid jobId)
@@ -148,19 +151,20 @@ namespace bS.Sked2.Engine
 
             // Stop the job
             job.Stop();
-            if (JobStarted != null) JobFinished.Invoke((Guid)job.EntityId, (Guid)job.InstanceID);
-
 
             if (job.HasErrors)
             {
+                if (JobFinished != null) JobFinished.Invoke((Guid)job.EntityId, (Guid)job.InstanceID, false);
                 job.AddMessage($"The job (instance: {job.InstanceID}) was not executed cause one or more errors occurs.", MessageSeverity.Error);
                 throw new EngineException(logger, $"The job (instance: {job.InstanceID}) was not executed cause one or more errors occurs. This job was aborted.");
             }
             else if (job.HasWarnings)
             {
+                if (JobFinished != null) JobFinished.Invoke((Guid)job.EntityId, (Guid)job.InstanceID, false);
                 job.AddMessage($"The job (instance: {job.InstanceID}) was executed but one or more warning occurs.", MessageSeverity.Warning);
                 throw new EngineException(logger, $"The job (instance: {job.InstanceID}) was executed but one or more warning occurs. This job was aborted.");
             }
+            if (JobFinished != null) JobFinished.Invoke((Guid)job.EntityId, (Guid)job.InstanceID,true);
         }
 
         /// <summary>
@@ -190,7 +194,6 @@ namespace bS.Sked2.Engine
 
             // Stop task
             task.Stop();
-            if (TaskStarted != null) TaskFinished.Invoke((Guid)task.EntityId, (Guid)task.InstanceID);
 
 
             if (task.HasErrors)
@@ -198,6 +201,8 @@ namespace bS.Sked2.Engine
                 task.AddMessage($"The task (instance: {task.InstanceID}) was not executed cause one or more errors occurs.", MessageSeverity.Error);
                 if (task.ParentJob.FailIfAnyTaskHasError)
                 {
+                    if (TaskFinished != null) TaskFinished.Invoke((Guid)task.EntityId, (Guid)task.InstanceID, false);
+
                     throw new EngineException(logger, $"The task (instance: {task.InstanceID}) was not executed cause one or more errors occurs. This job was aborted.");
                 }
             }
@@ -206,9 +211,13 @@ namespace bS.Sked2.Engine
                 task.AddMessage($"The task (instance: {task.InstanceID}) was executed but one or more warning occurs.", MessageSeverity.Warning);
                 if (task.ParentJob.FailIfAnyTaskHasWarning)
                 {
+                    if (TaskFinished != null) TaskFinished.Invoke((Guid)task.EntityId, (Guid)task.InstanceID, false);
+
                     throw new EngineException(logger, $"The task (instance: {task.InstanceID}) was executed but one or more warning occurs. This job was aborted.");
                 }
             }
+            if (TaskFinished != null) TaskFinished.Invoke((Guid)task.EntityId, (Guid)task.InstanceID, true);
+
         }
 
         public void Init()
