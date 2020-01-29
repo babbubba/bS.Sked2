@@ -54,9 +54,6 @@ export class MessageService implements OnInit {
   }
 
   notify(notifyTitle: string, notifyMessage: string, verbosity: Verbosity = 0): void {
-    //this.notifyMessage = notifyMessage;
-    //this.showNotify = true;
-    //this.notifyVerbosity = verbosity;
     let className = '';
     switch (verbosity) {
       case Verbosity.Info:

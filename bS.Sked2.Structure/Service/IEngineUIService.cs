@@ -205,6 +205,7 @@ namespace bS.Sked2.Structure.Service
         /// <param name="jobId">The job identifier.</param>
         /// <param name="taskId">The task identifier.</param>
         /// <returns></returns>
+        [Obsolete]
         bool AddTaskToJob(Guid jobId, Guid taskId);
 
         /// <summary>

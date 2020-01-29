@@ -46,12 +46,10 @@ namespace bS.Sked2.Service.UI.Tests
 
             // Create task
             var taskVM = engineUIService.GetCreateTask();
+            taskVM.ParentJobId = jobId.ToString();
             taskVM.Name = "Task di prova 2";
             taskVM.Description = "Task di prova creato con UI service.";
             var taskId = engineUIService.CreateNewTask(taskVM);
-
-            // Add task to job
-            engineUIService.AddTaskToJob(jobId, taskId);
 
             // Create the module
             var moduleVM = engineUIService.GetCreateModule();

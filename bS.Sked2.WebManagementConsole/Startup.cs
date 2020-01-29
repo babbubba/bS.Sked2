@@ -101,18 +101,6 @@ namespace bS.Sked2.WebManagementConsole
 
             app.UseRouting();
 
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapHub<MyHub>("/myhub", options =>
-            //    {
-            //        options.Transports =
-            //            HttpTransportType.WebSockets |
-            //            HttpTransportType.LongPolling;
-            //    });
-            //});
-
-            //app.UseCors(builder => builder.WithOrigins("https://localhost:44323"));
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -120,6 +108,13 @@ namespace bS.Sked2.WebManagementConsole
                     pattern: "{controller}/{action=Index}/{id?}");
 
                 endpoints.MapHub<MessageNotificationHub>("/messagenotificationHub", options =>
+                {
+                    options.Transports =
+                        HttpTransportType.WebSockets |
+                        HttpTransportType.LongPolling;
+                });
+
+                endpoints.MapHub<EngineNotificationHub>("/enginenotificationHub", options =>
                 {
                     options.Transports =
                         HttpTransportType.WebSockets |
@@ -139,11 +134,6 @@ namespace bS.Sked2.WebManagementConsole
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
-
-            //app.UseSignalR(route =>
-            //{
-            //    route.MapHub<NotificationHub>("/notificationHub");
-            //});
         }
     }
 }

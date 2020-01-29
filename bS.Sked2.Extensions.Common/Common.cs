@@ -5,6 +5,8 @@ using bS.Sked2.Extensions.Common.Models;
 using bS.Sked2.Extensions.Common.SqlServer;
 using bS.Sked2.Model.Service;
 using bS.Sked2.Structure.Engine;
+using bS.Sked2.Structure.Engine.Data;
+using bS.Sked2.Structure.Engine.Data.Types;
 using bS.Sked2.Structure.Models;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
@@ -45,7 +47,7 @@ namespace bS.Sked2.Extensions.Common
 
         public override void Init()
         {
-            var workspaceRootPath = GetDataValue(EngineDataDirection.Input, "WorkspacePath").Get<string>();
+            var workspaceRootPath = GetDataValue(EngineDataDirection.Input, "WorkspacePath").Get<VirtualPath>().Path;
             StorageService.LoadConfig(new StorageServiceConfig(workspaceRootPath));
             IsInit = true;
         }

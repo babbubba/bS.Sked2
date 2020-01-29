@@ -17,7 +17,7 @@ namespace bS.Sked2.Extensions.Common.SqlServer
 {
     public class SqlTableWriter : EngineElement
     {
-        public SqlTableWriter(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<Engine.Engine> logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
+        public SqlTableWriter(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<EngineElement> logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
             // Register element properties
             RegisterInputProperties("ConnectionString", "Sql Server Connection String", DataType.String, true);

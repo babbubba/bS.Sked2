@@ -235,13 +235,17 @@ namespace bS.Sked2.Engine
             services.AddSingleton(loggerFactory.CreateLogger<StorageService>());
             services.AddSingleton<IStorageService, StorageService>();
             services.AddSingleton(Configuration);
+            services.AddSingleton(loggerFactory.CreateLogger<EngineJob>());
+            services.AddSingleton(loggerFactory.CreateLogger<EngineTask>());
+            services.AddSingleton(loggerFactory.CreateLogger<EngineElement>());
+
             services.AddSingleton<IEngine, Engine>();
             services.AddTransient<IEngineJob, EngineJob>();
             services.AddTransient<IEngineTask, EngineTask>();
             services.AddTransient<EngineLink>();
 
             // Register all extensions elements and modules types
-            var engineModuleTypes = AssembliesExtensions.GetTypesImplementingInterface<IEngineModule>(new string[] { Configuration.ExtensionsFolder }, true);
+            var engineModuleTypes = AssembliesExtensions.GetTypesImplementingInterface<IEngineModule>(new string[] { Configuration.ExtensionsFolder }, false);
             foreach (var engineModule in engineModuleTypes)
             {
                 engineModule.GetMethod("RegisterModule").Invoke(null, new object[] { services });

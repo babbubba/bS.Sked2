@@ -55,7 +55,7 @@ namespace bS.Sked2.Engine.Objects
         public EngineElement(
             IUnitOfWork uow,
             IEngineRepository enginRepo,
-            ILogger logger,
+            ILogger<EngineElement> logger,
             IMessageService messageService) : base(logger, messageService)
         {
             this.uow = uow;

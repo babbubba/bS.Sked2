@@ -57,7 +57,7 @@ namespace bS.Sked2.Engine.Objects
         public EngineTask(
             IUnitOfWork uow,
             IEngineRepository engineRepository,
-            ILogger logger,
+            ILogger<EngineTask> logger,
             IMessageService messageService,
             IEngine engine,
             IServiceProvider serviceProvider) : base(logger, messageService)
@@ -269,6 +269,13 @@ namespace bS.Sked2.Engine.Objects
                     //var engineModuleType = AssembliesExtensions.GetTypesImplementingInterface<IEngineModule>()
                     var engineModuleType = AssembliesExtensions.GetTypesImplementingInterface<IEngineModule>(new string[] { engine.Configuration.ExtensionsFolder }, true)
                         .FirstOrDefault(ed => (string)ed.GetProperty("KeyConst")?.GetValue(ed) == elementEntry.ParentModule.Key);
+
+                    if (engineModuleType == null)
+                    {
+                        // we cant find a valid module implementation
+                        throw new EngineException(logger, $"Cannot find a valid implementation for the module with key: '{elementEntry.ParentModule.Key}'.");
+                    }
+
                     // create new instance of Engine Module
                     var engineModule = (IEngineModule)serviceProvider.GetService(engineModuleType);
 
@@ -285,6 +292,12 @@ namespace bS.Sked2.Engine.Objects
                 //var engineElementType = AssembliesExtensions.GetTypesImplementingInterface<IEngineElement>()
                 var engineElementType = AssembliesExtensions.GetTypesImplementingInterface<IEngineElement>(new string[] { engine.Configuration.ExtensionsFolder }, true)
                     .FirstOrDefault(ed => (string)ed.GetProperty("KeyConst")?.GetValue(ed) == elementEntry.Key);
+
+                if (engineElementType == null)
+                {
+                    // we cant find a valid module implementation
+                    throw new EngineException(logger, $"Cannot find a valid implementation for the element with key: '{elementEntry.Key}'.");
+                }
 
                 // create new instance of Engine Element
                 var engineElement = (IEngineElement)serviceProvider.GetService(engineElementType);

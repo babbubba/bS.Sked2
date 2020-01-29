@@ -20,7 +20,7 @@ namespace bS.Sked2.Extensions.Common.FlatFile
     /// <seealso cref="bS.Sked2.Structure.Engine.BaseEngineElement" />
     public class FlatFileReader : EngineElement
     {
-        public FlatFileReader(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<Engine.Engine> logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
+        public FlatFileReader(IUnitOfWork uow, IEngineRepository enginRepo, ILogger<EngineElement> logger, IMessageService messageService) : base(uow, enginRepo, logger, messageService)
         {
             //RegisterInputProperties("SourceFilePath", "Source file path", DataType.String, true);
             RegisterInputProperties("SourceFilePath", "Source file path", DataType.VirtualPath, true);

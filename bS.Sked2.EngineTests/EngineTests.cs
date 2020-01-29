@@ -9,6 +9,8 @@ using bS.Sked2.Model.Repositories;
 using bS.Sked2.Service.Message;
 using bS.Sked2.Service.Validation;
 using bS.Sked2.Structure.Engine;
+using bS.Sked2.Structure.Engine.Data;
+using bS.Sked2.Structure.Engine.Data.Types;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,12 +44,12 @@ namespace bS.Sked2.Engine.Tests
 
             var engineConfig = new EngineConfig
             {
-                ExtensionsFolder = @"C:\temp\"
+                ExtensionsFolder = @".\"
             };
 
-            services.AddSingleton<ILogger>(Mock.Of<ILogger<Engine>>());
-            services.AddSingleton(Mock.Of<ILogger<EngineElement>>());
-            services.AddSingleton(Mock.Of<ILogger<EngineTask>>());
+            //services.AddSingleton<ILogger>(Mock.Of<ILogger<Engine>>());
+            //services.AddSingleton(Mock.Of<ILogger<EngineElement>>());
+            //services.AddSingleton(Mock.Of<ILogger<EngineTask>>());
 
             services.AddSingleton<IDbContext>(dbContext);
 
@@ -61,6 +63,9 @@ namespace bS.Sked2.Engine.Tests
             services.AddSingleton<IEngine, Engine>();
             services.AddSingleton<IEngineTask, EngineTask>();
             services.AddTransient<FlatFileReader>();
+
+            //services.AddLogging(config => config.AddConsole());
+            services.AddLogging();
 
             serviceProvider = services.BuildServiceProvider();
         }
@@ -88,7 +93,7 @@ namespace bS.Sked2.Engine.Tests
 
                 //Module Common
                 var commonModuleEntry = new CommonModuleEntry();
-                commonModuleEntry.InputProperties.FirstOrDefault(x => x.Key == "WorkspacePath").Value = @"<string>.\</string>";
+                commonModuleEntry.InputProperties.FirstOrDefault(x => x.Key == "WorkspacePath").Value = new VirtualPathValue(new VirtualPath(@".\")).WriteToStringValue();
                 engineRepository.CreateModule(commonModuleEntry);
 
                 //first

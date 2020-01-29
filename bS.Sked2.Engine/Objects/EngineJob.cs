@@ -21,7 +21,7 @@ namespace bS.Sked2.Engine.Objects
         public EngineJob(
             IUnitOfWork uow,
             IEngineRepository enginRepo,
-            ILogger logger,
+            ILogger<EngineJob> logger,
             IMessageService messageService,
             IServiceProvider serviceProvider,
             IEngine engine) : base(logger, messageService)
