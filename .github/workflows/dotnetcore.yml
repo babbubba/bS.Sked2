@@ -1,4 +1,4 @@
-name: Build app on Windows Server 2019 (.NET Core 3.1.100)
+name: bS.Sked 2 on Windows Server 2019 (.NET Core 3.1.100)
 
 on: [push]
 
@@ -15,3 +15,5 @@ jobs:
         dotnet-version: 3.1.100
     - name: Build with dotnet
       run: dotnet build --configuration Release
+    - name: Test
+      run: dotnet test --verbosity normal
