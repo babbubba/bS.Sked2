@@ -4,6 +4,6 @@
     <h6 class="card-subtitle mb-2 text-muted">{{task.id}}</h6>
     <p class="card-text">{{task.description}}</p>
     <button (click)="editTask()" class="btn btn-sm card-link border-warning">Edit</button>
-    <button (click)="openTask()" class="btn btn-sm card-link border-success">Open</button>
+    <a class="btn btn-sm card-link border-success" routerLink="/task/{{task.id}}">Open</a>
   </div>
 </div>

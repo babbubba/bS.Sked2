@@ -63,6 +63,13 @@ namespace bS.Sked2.WebManagementConsole.Controllers
             return engineUIService.GetTasks().Where(x => x.ParentJobId == Guid.Parse(id));
         }
 
+        [HttpGet("{id}")]
+        [Route("gettask/{id}")]
+        public ITaskDefinitionDetail GetTask(string id)
+        {
+            return engineUIService.GetTasks().FirstOrDefault(x => x.Id == Guid.Parse(id));
+        }
+
         [HttpGet]
         [Route("gettaskcreate")]
         public ITaskDefinitionCreate GetTaskCreate()
@@ -83,6 +90,13 @@ namespace bS.Sked2.WebManagementConsole.Controllers
         {
             engineUIService.EditTask(taskDefinition);
             return true;
+        }
+
+        [HttpGet("{id}")]
+        [Route("gettaskelements/{id}")]
+        public IEnumerable<IElementDefinitionPreview> GetTaskElements(string id)
+        {
+            return engineUIService.GetElementsPreview(Guid.Parse(id));
         }
     }
 }

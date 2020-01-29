@@ -23,6 +23,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ErrorIntercept } from './error.interceptor';
 import { ToastComponent } from './toast/toast.component';
+import { TaskPageComponent } from './task-page/task-page.component';
+import { ElementPreviewComponent } from './element-preview/element-preview.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { ToastComponent } from './toast/toast.component';
     TriggerPreviewComponent,
     AddEditTaskModalComponent,
     ToastComponent,
+    TaskPageComponent,
+    ElementPreviewComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -52,6 +56,7 @@ import { ToastComponent } from './toast/toast.component';
       { path: '', component: DashboardComponent, pathMatch: 'full' },
       { path: 'monitor', component: MonitorComponent },
       { path: 'job/:id', component: JobPageComponent },
+      { path: 'task/:id', component: TaskPageComponent },
     ])
   ],
   entryComponents: [

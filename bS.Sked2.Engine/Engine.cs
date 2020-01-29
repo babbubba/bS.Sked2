@@ -2,18 +2,21 @@
 using bs.Data.Interfaces;
 using bS.Sked2.Engine.Objects;
 using bS.Sked2.Model.Repositories;
+using bS.Sked2.Model.UI;
 using bS.Sked2.Service.Message;
 using bS.Sked2.Service.Storage;
 using bS.Sked2.Service.Validation;
 using bS.Sked2.Shared;
 using bS.Sked2.Structure.Base.Exceptions;
 using bS.Sked2.Structure.Engine;
+using bS.Sked2.Structure.Engine.UI;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
 using bS.Sked2.Structure.Service.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using static bS.Sked2.Structure.Engine.IEngine;
 
 namespace bS.Sked2.Engine
@@ -218,6 +221,50 @@ namespace bS.Sked2.Engine
             }
             if (TaskFinished != null) TaskFinished.Invoke((Guid)task.EntityId, (Guid)task.InstanceID, true);
 
+        }
+
+        public IEngineElement GetEngineElement(string elementKey)
+        {
+
+            var engineElementType = AssembliesExtensions.GetTypesImplementingInterface<IEngineElement>(new string[] { Configuration.ExtensionsFolder }, true)
+                      .FirstOrDefault(ed => (string)ed.GetProperty("KeyConst")?.GetValue(ed) == elementKey);
+
+            if (engineElementType == null)
+            {
+                // we cant find a valid element implementation
+                throw new EngineException(logger, $"Cannot find a valid implementation for the element with key: '{elementKey}'.");
+            }
+
+            // create new instance of Engine Element
+            var engineElement = (IEngineElement)serviceProvider.GetService(engineElementType);
+
+            if (engineElement == null)
+            {
+                // we cant find a valid module implementation
+                throw new EngineException(logger, $"Cannot find a registered instance for the element with key: '{elementKey}'.");
+            }
+
+            return engineElement;
+
+        }
+
+        public IElementType GetEngineElementType(string elementKey)
+        {
+            var result = new ElementTypeViewModel();
+            var engineElementType = AssembliesExtensions.GetTypesImplementingInterface<IEngineElement>(new string[] { Configuration.ExtensionsFolder }, true)
+                        .FirstOrDefault(ed => (string)ed.GetProperty("KeyConst")?.GetValue(ed) == elementKey);
+
+            if (engineElementType == null)
+            {
+                // we cant find a valid element implementation
+                throw new EngineException(logger, $"Cannot find a valid implementation for the element with key: '{elementKey}'.");
+            }
+
+            result.Key = elementKey;
+            result.Name = (string)engineElementType.GetProperty("Name")?.GetValue(engineElementType);
+            result.Description = (string)engineElementType.GetProperty("Description")?.GetValue(engineElementType);
+
+            return result;
         }
 
         public void Init()

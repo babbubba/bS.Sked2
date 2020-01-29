@@ -1,4 +1,4 @@
-export class ElementDetail {
+export class TaskElement {
   id: string;
   name: string;
   description: string;

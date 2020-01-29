@@ -40,7 +40,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\baseService.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\models\element.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\taskElement.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\task.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\trigger.ts" />
   </ItemGroup>

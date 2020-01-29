@@ -176,7 +176,19 @@ namespace bS.Sked2.Service.UI
 
         public IEnumerable<IElementDefinitionPreview> GetElementsPreview(Guid taskId)
         {
-            throw new NotImplementedException();
+            var result = engineRepository.GetElements()
+               .Where(e => !e.IsDeleted && e.ParentTask.Id == taskId)
+               .OrderBy(t => t.Position)
+               .Select(e => new ElementDefinitionPreviewViewModel
+               {
+                   Id = e.Id,
+                   Description = e.Description,
+                   Name = e.Name,
+                   Position = e.Position,
+                   IsEnabled = e.IsEnabled,
+                   ElementType = engine.GetEngineElementType(e.Key)
+               }) ;
+            return result;
         }
 
         public IEnumerable<IModuleDefinitionDetail> GetModulesForElement(IElementType elementType)

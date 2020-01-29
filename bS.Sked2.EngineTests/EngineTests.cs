@@ -44,7 +44,8 @@ namespace bS.Sked2.Engine.Tests
 
             var engineConfig = new EngineConfig
             {
-                ExtensionsFolder = @".\"
+                ExtensionsFolder = @"..\..\..\..\bS.Sked2.Extensions.Common\bin\Debug\netcoreapp3.0\"
+
             };
 
             //services.AddSingleton<ILogger>(Mock.Of<ILogger<Engine>>());

@@ -19,7 +19,6 @@ import { MessageService, Verbosity } from '../message.service';
 export class JobPageComponent implements OnInit {
   constructor(
     private routeParams: ActivatedRoute,
-    private messageService: MessageService,
     private jobService: JobsService,
     private taskService: TasksService,
     private spinnerService: NgxSpinnerService,
@@ -51,7 +50,8 @@ export class JobPageComponent implements OnInit {
           });
       },
       error => {
-        this.messageService.display("Invalid url", Verbosity.Error);
+        this.spinnerService.hide();
+        console.error(error);
       });
   }
 

@@ -1,0 +1,30 @@
+<div class="row" *ngIf="task">
+  <div class="col">
+    <div class="card text-white mb-4 bg-info">
+      <div class="card-body">
+        <h6 class="job m-0 font-weight-bold">Task: "{{task.name}}" <small class="job float-right">{{task.id}}</small></h6>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="elements col">
+    <div class="elements card">
+      <div class="elements card-header">
+        <h6 class="m-0 font-weight-bold text-primary">
+          Elements
+        </h6>
+      </div>
+      <div class="elements card-body">
+        <ul class="elements list-group">
+          <li *ngFor="let element of elements" class="elements list-group-item" [class.bg-light]="!element.isEnabled">
+            <app-element-preview [element]="element"></app-element-preview>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+  <p style="color: white">Loading data...</p>
+</ngx-spinner>

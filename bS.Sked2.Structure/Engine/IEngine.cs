@@ -1,4 +1,5 @@
-﻿using System;
+﻿using bS.Sked2.Structure.Engine.UI;
+using System;
 
 namespace bS.Sked2.Structure.Engine
 {
@@ -87,5 +88,8 @@ namespace bS.Sked2.Structure.Engine
         event ElementFinishedEvent ElementFinished;
 
         event ModuleInitedEvent ModuleInited;
+
+        IEngineElement GetEngineElement(string elementKey);
+        IElementType GetEngineElementType(string elementKey);
     }
 }

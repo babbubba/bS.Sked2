@@ -15,6 +15,7 @@ export class TasksService extends BaseService {
 
   getTaskCreateUrl: string = 'api/engine/gettaskcreate';
   getJobTasksUrl: string = 'api/engine/getjobtasks';
+  getTaskUrl: string = 'api/engine/gettask';
   createTaskUrl: string = 'api/engine/createtask';
   editTaskUrl: string = 'api/engine/edittask';
 
@@ -24,6 +25,10 @@ export class TasksService extends BaseService {
 
   getJobTasks(jobId: string): Observable<Task[]> {
     return this.http.get<Task[]>(this.getJobTasksUrl + '/' + jobId);
+  }
+
+  getTask(taskId: string): Observable<Task> {
+    return this.http.get<Task>(this.getTaskUrl + '/' + taskId);
   }
 
   createTask(task: Task): Observable<string> {

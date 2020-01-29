@@ -289,7 +289,6 @@ namespace bS.Sked2.Engine.Objects
                 }
 
                 // finding the EngineElement to execute this entry
-                //var engineElementType = AssembliesExtensions.GetTypesImplementingInterface<IEngineElement>()
                 var engineElementType = AssembliesExtensions.GetTypesImplementingInterface<IEngineElement>(new string[] { engine.Configuration.ExtensionsFolder }, true)
                     .FirstOrDefault(ed => (string)ed.GetProperty("KeyConst")?.GetValue(ed) == elementEntry.Key);
 
@@ -301,6 +300,8 @@ namespace bS.Sked2.Engine.Objects
 
                 // create new instance of Engine Element
                 var engineElement = (IEngineElement)serviceProvider.GetService(engineElementType);
+
+                //var engineElement = engine.GetEngineElement(elementEntry.Key);
 
                 // load data from entry
                 engineElement.LoadFromEntity(elementEntry.Id);

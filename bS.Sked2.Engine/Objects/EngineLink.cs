@@ -17,9 +17,11 @@ namespace bS.Sked2.Engine.Objects
         {
             
         }
-        public override string Key => "ElementsLink";
+        public override string Key => KeyConst;
 
         public static string KeyConst => "ElementsLink";
+        public static string Name => "Link";
+        public static string Description => "Link between two elements";
 
 
         public override void LoadFromEntity(Guid EntityId)

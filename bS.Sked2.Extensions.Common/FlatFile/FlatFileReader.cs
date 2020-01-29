@@ -32,7 +32,7 @@ namespace bS.Sked2.Extensions.Common.FlatFile
             RegisterOutputProperties("Table", "Rows imported from flat file", DataType.Table, true);
         }
 
-        public override string Key => "FlatFileReader";
+        public override string Key => KeyConst;
         public static string KeyConst => "FlatFileReader";
         public static string Name => "Flat File Reader";
         public static string Description => "Reads data from a flat file and returns a Table Data Value";
