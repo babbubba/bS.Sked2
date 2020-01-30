@@ -4,8 +4,10 @@ using bS.Sked2.Engine;
 using bS.Sked2.Model.Engine;
 using bS.Sked2.Model.Repositories;
 using bS.Sked2.Model.Service;
+using bS.Sked2.Model.UI;
 using bS.Sked2.Service.UI;
 using bS.Sked2.Structure.Engine;
+using bS.Sked2.Structure.Engine.UI;
 using bS.Sked2.Structure.Repositories;
 using bS.Sked2.Structure.Service;
 using bS.Sked2.WebManagementConsole.Hub;
@@ -33,6 +35,7 @@ namespace bS.Sked2.WebManagementConsole
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {

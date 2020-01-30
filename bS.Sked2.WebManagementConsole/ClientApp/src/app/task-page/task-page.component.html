@@ -13,6 +13,7 @@
       <div class="elements card-header">
         <h6 class="m-0 font-weight-bold text-primary">
           Elements
+          <button class="btn btn-primary btn-sm float-right" [disabled]="disableAddElementButton" (click)="addNewElement()">Add Element</button>
         </h6>
       </div>
       <div class="elements card-body">
@@ -59,7 +60,7 @@
                         stroke-width="2"
                         marker-end="url(#arrow)">
               </svg:path>
-              <a (click)="onLinkClick(link.id)">
+              <a (click)="onLinkClick(link.elementId)">
                 <svg:text class="edge-label"
                           text-anchor="middle">
                   <textPath class="text-path"

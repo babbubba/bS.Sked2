@@ -1,7 +1,4 @@
 ﻿using bS.Sked2.Structure.Engine.UI;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace bS.Sked2.Model.UI
 {

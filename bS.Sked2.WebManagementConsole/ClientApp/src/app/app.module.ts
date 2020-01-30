@@ -27,6 +27,7 @@ import { ErrorIntercept } from './error.interceptor';
 import { ToastComponent } from './toast/toast.component';
 import { TaskPageComponent } from './task-page/task-page.component';
 import { ElementPreviewComponent } from './element-preview/element-preview.component';
+import { AddElementModalComponent } from './add-element-modal/add-element-modal.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ElementPreviewComponent } from './element-preview/element-preview.compo
     ToastComponent,
     TaskPageComponent,
     ElementPreviewComponent,
+    AddElementModalComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -65,6 +67,7 @@ import { ElementPreviewComponent } from './element-preview/element-preview.compo
   ],
   entryComponents: [
     AddEditTaskModalComponent,
+    AddElementModalComponent
   ],
   providers: [
     {

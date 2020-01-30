@@ -1,4 +1,5 @@
 ﻿using bS.Sked2.Structure.Engine.UI;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,7 +16,7 @@ namespace bS.Sked2.Model.UI
         [StringLength(250), Required]
         public string Description { get; set; }
         [Required]
-        public Guid ParentTaskId { get; set; }        
+        public Guid ParentTaskId { get; set; }
         public IEnumerable<IElementType> ElementTypesList { get; set; }
     }
 }

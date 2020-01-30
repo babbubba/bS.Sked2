@@ -98,5 +98,19 @@ namespace bS.Sked2.WebManagementConsole.Controllers
         {
             return engineUIService.GetElementsPreview(Guid.Parse(id));
         }
+
+        [HttpGet]
+        [Route("getelementcreate")]
+        public IElementDefinitionCreate GetElementreate()
+        {
+            return engineUIService.GetCreateElement();
+        }
+
+        [HttpPut]
+        [Route("createelement")]
+        public string CreateElement(ElementDefinitionCreateViewModel elementdefinition)
+        {
+            return engineUIService.CreateNewElement(elementdefinition).ToString();
+        }
     }
 }

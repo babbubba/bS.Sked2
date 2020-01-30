@@ -43,7 +43,7 @@ namespace bS.Sked2.Service.UI
                 elementEntry = (IElementEntry)engineElement.GetEmptyEntity();
 
                 // Populate the entry element whit data provided by user
-                // elementEntry.ParentTask = taskEntry;
+                elementEntry.ParentTask = taskEntry;
                 elementEntry.Name = elementDefinition.Name;
                 elementEntry.Description = elementDefinition.Description;
                 elementEntry.IsEnabled = true;
@@ -53,7 +53,7 @@ namespace bS.Sked2.Service.UI
             }
 
             // Add new element to parent task
-            AddElementToTask(elementDefinition.ParentTaskId, elementEntry.Id);
+            //AddElementToTask(elementDefinition.ParentTaskId, elementEntry.Id);
 
             return elementEntry.Id;
         }
@@ -115,7 +115,7 @@ namespace bS.Sked2.Service.UI
             {
                 Name = "New Element",
                 Description = "New Element description",
-                ElementTypesList = GetElementTypes()
+                ElementTypesList = GetElementTypes().Where(t=>t.Key != "ElementsLink")
             };
         }
 

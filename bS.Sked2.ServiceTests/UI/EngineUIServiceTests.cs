@@ -3,6 +3,7 @@ using bs.Data.Interfaces;
 using bS.Sked2.Model.Engine;
 using bS.Sked2.Model.Repositories;
 using bS.Sked2.Model.Service;
+using bS.Sked2.Model.UI;
 using bS.Sked2.Shared;
 using bS.Sked2.Structure.Engine;
 using bS.Sked2.Structure.Engine.Data;
@@ -68,7 +69,7 @@ namespace bS.Sked2.Service.UI.Tests
             // Create Element 1 (FlatFileReader)
             var element1VM = engineUIService.GetCreateElement();
             element1VM.Name = "Read CSV File";
-            element1VM.Description = "Read teh CSV file with the cities.";
+            element1VM.Description = "Read the CSV file with the cities.";
             element1VM.ElementTypeKey = element1VM.ElementTypesList.First(etp => etp.Key == "FlatFileReader").Key;
             element1VM.ParentTaskId = taskId;
             var element1Id = engineUIService.CreateNewElement(element1VM);

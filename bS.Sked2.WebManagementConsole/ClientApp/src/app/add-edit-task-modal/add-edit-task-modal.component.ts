@@ -14,7 +14,11 @@ export class AddEditTaskModalComponent implements OnInit {
   actionType: string;
   submitted: boolean;
 
-  constructor(public activeModal: NgbActiveModal,/* private fb: FormBuilder,*/ private tasksService: TasksService, private messageService: MessageService) {
+  constructor(
+    public activeModal: NgbActiveModal,
+    private tasksService: TasksService,
+    private messageService: MessageService
+  ) {
     this.actionType = "Add";
     this.submitted = false;
   }

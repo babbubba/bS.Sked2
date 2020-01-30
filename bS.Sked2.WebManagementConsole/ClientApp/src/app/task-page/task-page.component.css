@@ -1,5 +1,6 @@
 div.elements.card-body {
     padding: 0px;
+    height: 60vh;
 }
 
 g.node,

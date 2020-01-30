@@ -3,6 +3,8 @@ export class TaskElement {
   name: string;
   description: string;
   type: ElementType;
+  elementTypeKey: string;
+  elementTypesList: ElementType[];
   parentModuleId: string;
   parentTaskId: string;
   inputProperties: ElementProperty[];
