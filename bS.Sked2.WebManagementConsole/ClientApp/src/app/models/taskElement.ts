@@ -7,6 +7,9 @@ export class TaskElement {
   parentTaskId: string;
   inputProperties: ElementProperty[];
   outputProperties: ElementProperty[];
+  previousId: string;
+  nextId: string;
+  position: number;
 }
 
 export class ElementProperty {

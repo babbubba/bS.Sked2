@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxGraphModule } from '@swimlane/ngx-graph';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -50,6 +52,8 @@ import { ElementPreviewComponent } from './element-preview/element-preview.compo
     HttpClientModule,
     FormsModule,
     NgxSpinnerModule,
+    NgxGraphModule,
+    NgxChartsModule,
     NgbModule,
     ReactiveFormsModule,
     RouterModule.forRoot([

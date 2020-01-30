@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var ElementDetail = /** @class */ (function () {
-    function ElementDetail() {
+var TaskElement = /** @class */ (function () {
+    function TaskElement() {
     }
-    return ElementDetail;
+    return TaskElement;
 }());
-exports.ElementDetail = ElementDetail;
+exports.TaskElement = TaskElement;
 var ElementProperty = /** @class */ (function () {
     function ElementProperty() {
     }
@@ -24,4 +24,4 @@ var PropertyType = /** @class */ (function () {
     return PropertyType;
 }());
 exports.PropertyType = PropertyType;
-//# sourceMappingURL=element.js.map
+//# sourceMappingURL=taskElement.js.map

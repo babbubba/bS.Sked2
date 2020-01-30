@@ -9,7 +9,7 @@ namespace bS.Sked2.Model.UI
     {
         public Guid Id { get; set; }
 
-        public IElementType ElementType { get ; set; }
+        public IElementType Type { get ; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         //public bool IsValid { get; set; }
@@ -20,5 +20,7 @@ namespace bS.Sked2.Model.UI
 
 
         public IList<IElementDefinitionPreviewMessage> Messages { get; set; }
+        public Guid PreviousId { get; set; }
+        public Guid NextId { get; set; }
     }
 }

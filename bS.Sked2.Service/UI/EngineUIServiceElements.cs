@@ -1,4 +1,5 @@
-﻿using bS.Sked2.Model.UI;
+﻿using bS.Sked2.Model;
+using bS.Sked2.Model.UI;
 using bS.Sked2.Service.Base;
 using bS.Sked2.Shared;
 using bS.Sked2.Structure.Base.Exceptions;
@@ -176,18 +177,44 @@ namespace bS.Sked2.Service.UI
 
         public IEnumerable<IElementDefinitionPreview> GetElementsPreview(Guid taskId)
         {
-            var result = engineRepository.GetElements()
-               .Where(e => !e.IsDeleted && e.ParentTask.Id == taskId)
-               .OrderBy(t => t.Position)
-               .Select(e => new ElementDefinitionPreviewViewModel
-               {
-                   Id = e.Id,
-                   Description = e.Description,
-                   Name = e.Name,
-                   Position = e.Position,
-                   IsEnabled = e.IsEnabled,
-                   ElementType = engine.GetEngineElementType(e.Key)
-               }) ;
+            var result = new List<IElementDefinitionPreview>();
+
+            var elements = engineRepository.GetElements()
+                .Where(e => !e.IsDeleted && e.ParentTask.Id == taskId)
+                .OrderBy(t => t.Position);
+
+            //var elements = engineRepository.GetElements()
+            //   .Where(e => !e.IsDeleted && e.ParentTask.Id == taskId)
+            //   .OrderBy(t => t.Position)
+            //   .Select(e => new ElementDefinitionPreviewViewModel
+            //   {
+            //       Id = e.Id,
+            //       Description = e.Description,
+            //       Name = e.Name,
+            //       Position = e.Position,
+            //       IsEnabled = e.IsEnabled,
+            //       Type = engine.GetEngineElementType(e.Key)
+            //   }) ;
+            foreach (var element in elements)
+            {
+                var type = engine.GetEngineElementType(element.Key);
+                var elementViewModel = new ElementDefinitionPreviewViewModel
+                {
+                    Id = element.Id,
+                    Description = element.Description,
+                    Name = element.Name,
+                    Position = element.Position,
+                    IsEnabled = element.IsEnabled,
+                    Type = type
+                };
+
+                if (type.Key == "ElementsLink")
+                {
+                    elementViewModel.PreviousId = ((ElementsLinkEntry)element).Previuous.Id;
+                    elementViewModel.NextId = ((ElementsLinkEntry)element).Next.Id;
+                }
+                result.Add(elementViewModel);
+            }
             return result;
         }
 

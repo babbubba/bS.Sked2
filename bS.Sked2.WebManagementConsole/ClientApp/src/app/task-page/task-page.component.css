@@ -1,0 +1,8 @@
+div.elements.card-body {
+    padding: 0px;
+}
+
+g.node,
+g.edge {
+  cursor: help;
+} 
