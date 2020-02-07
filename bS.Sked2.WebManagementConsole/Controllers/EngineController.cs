@@ -112,5 +112,29 @@ namespace bS.Sked2.WebManagementConsole.Controllers
         {
             return engineUIService.CreateNewElement(elementdefinition).ToString();
         }
+
+        [HttpPut]
+        [Route("updateelement")]
+        public string UpdateElement(ElementDefinitionCreateViewModel elementdefinition)
+        {
+            return engineUIService.UpdateElement(elementdefinition).ToString();
+        }
+
+        [HttpDelete("{id}")]
+        [Route("deleteelement/{id}")]
+        public ActionResult DeleteElement(string id)
+        {
+            try
+            {
+                engineUIService.DeleteElement(Guid.Parse(id));
+            }
+            catch (Exception)
+            {
+
+                return NotFound();
+            }
+
+            return Ok();
+        }
     }
 }

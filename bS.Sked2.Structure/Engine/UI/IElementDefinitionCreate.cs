@@ -11,5 +11,6 @@ namespace bS.Sked2.Structure.Engine.UI
         Guid ParentTaskId { get; set; }
 
         IEnumerable<IElementType> ElementTypesList { get; set; }
+        Guid Id { get; set; }
     }
 }

@@ -190,6 +190,12 @@ namespace bS.Sked2.WebManagementConsole
 
             timer?.Change(Timeout.Infinite, 0);
 
+            messageNotificationHubContext.Clients.All.SendAsync(
+             "DisplayNotify",
+             "Engine service stopped",
+             "The Engine Service was stopped and it is not still executing jobs.",
+             MessageSeverity.Warning);
+
             return Task.CompletedTask;
         }
     }

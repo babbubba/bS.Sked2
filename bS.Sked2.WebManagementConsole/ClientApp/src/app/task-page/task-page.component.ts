@@ -10,6 +10,7 @@ import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddElementModalComponent } from '../add-element-modal/add-element-modal.component';
+import { EditElementModalComponent } from '../edit-element-modal/edit-element-modal.component';
 
 @Component({
   selector: 'app-task-page',
@@ -49,6 +50,7 @@ export class TaskPageComponent implements OnInit {
               .subscribe(result => {
                 this.elements = result;
                 this.drawFlow();
+                this.updateGraph();
                 this.spinnerService.hide();
               });
           });
@@ -96,7 +98,17 @@ export class TaskPageComponent implements OnInit {
 
   onNodeClick(elementId) {
     var element = this.elements.find(x => x.id == elementId)
-    alert(element.name);
+    //alert(element.name);
+    const modalEditElement = this.modalService.open(EditElementModalComponent);
+    modalEditElement.componentInstance.element = element;
+    modalEditElement.result
+      .then(res => {
+        if (res === "Success" || res === "Deleted") {
+          //save  success then reload data
+          this.loadData();
+        }
+      })
+      .catch(err => { });
   }
 
   onLinkClick(linkId) {

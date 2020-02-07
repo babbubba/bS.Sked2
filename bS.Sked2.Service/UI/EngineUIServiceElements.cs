@@ -52,15 +52,35 @@ namespace bS.Sked2.Service.UI
                 engineRepository.CreateElement(elementEntry);
             }
 
-            // Add new element to parent task
-            //AddElementToTask(elementDefinition.ParentTaskId, elementEntry.Id);
+            return elementEntry.Id;
+        }
+
+        public Guid UpdateElement(IElementDefinitionCreate elementDefinition)
+        {
+            IElementEntry elementEntry = null;
+            using (var transaction = uow.BeginTransaction())
+            {
+                elementEntry = engineRepository.GetElementById(elementDefinition.Id);
+                // Populate the entry element whit data provided by user
+                elementEntry.Name = elementDefinition.Name;
+                elementEntry.Description = elementDefinition.Description;
+                elementEntry.IsEnabled = true;
+
+                // update the element in db
+                engineRepository.UpdateElement(elementEntry);
+            }
 
             return elementEntry.Id;
         }
 
         public void DeleteElement(Guid elementId)
         {
-            throw new NotImplementedException();
+            using (var transaction = uow.BeginTransaction())
+            {
+                // delete the element in db
+                var elementEntry = engineRepository.GetElementById(elementId);
+                engineRepository.DeleteLogicallyElement(elementEntry);
+            }
         }
 
         /// <summary>
@@ -99,7 +119,7 @@ namespace bS.Sked2.Service.UI
                     entry.ParentModule = parentModule;
                 }
 
-                engineRepository.UpdateEment(entry);
+                engineRepository.UpdateElement(entry);
             }
 
         
@@ -247,7 +267,7 @@ namespace bS.Sked2.Service.UI
                     var element = engineRepository.GetElementById(elementId);
                     var module = engineRepository.GetModuleById(moduleId);
                     element.ParentModule = module;
-                    engineRepository.UpdateEment(element);
+                    engineRepository.UpdateElement(element);
                 }
             }
             catch (Exception)

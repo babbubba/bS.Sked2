@@ -17,6 +17,7 @@ namespace bS.Sked2.Structure.Service
         /// <param name="elementDefinition">The element definition.</param>
         /// <returns></returns>
         Guid CreateNewElement(IElementDefinitionCreate elementDefinition);
+        Guid UpdateElement(IElementDefinitionCreate elementDefinition);
 
         /// <summary>
         /// Deletes the element.

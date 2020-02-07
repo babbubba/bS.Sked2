@@ -29,11 +29,12 @@ namespace bS.Sked2.Structure.Repositories
         ITaskEntry GetTaskById(Guid Id);
         IEnumerable<ITaskEntry> GetTasks();
 
-        void UpdateEment(IElementEntry elementEntry);
+        void UpdateElement(IElementEntry elementEntry);
 
         void UpdateJob(IJobEntry jobEntry);
 
         void UpdateTask(ITaskEntry taskEntry);
         void UpdateModule(IModuleEntry entry);
+        void DeleteLogicallyElement(IElementEntry elementEntry);
     }
 }

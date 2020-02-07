@@ -84,7 +84,7 @@ namespace bS.Sked2.Model.Repositories
         {
             base.Update((TaskEntry)taskEntry);
         }
-        public void UpdateEment(IElementEntry elementEntry)
+        public void UpdateElement(IElementEntry elementEntry)
         { 
             base.Update((ElementEntry)elementEntry);
 
@@ -94,6 +94,11 @@ namespace bS.Sked2.Model.Repositories
         {
             base.Update((ModuleEntry)entry);
 
+        }
+
+        public void DeleteLogicallyElement(IElementEntry elementEntry)
+        {
+            base.DeleteLogically((ElementEntry)elementEntry);
         }
 
         //public void CreateLinkElement(IElementsLinkEntry linkElement)

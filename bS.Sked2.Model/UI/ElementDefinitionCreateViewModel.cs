@@ -9,7 +9,6 @@ namespace bS.Sked2.Model.UI
 {
     public class ElementDefinitionCreateViewModel : IElementDefinitionCreate
     {
-        [Required]
         public string ElementTypeKey { get; set; }
         [StringLength(50), Required]
         public string Name { get; set; }
@@ -18,5 +17,6 @@ namespace bS.Sked2.Model.UI
         [Required]
         public Guid ParentTaskId { get; set; }
         public IEnumerable<IElementType> ElementTypesList { get; set; }
+        public Guid Id { get; set; }
     }
 }

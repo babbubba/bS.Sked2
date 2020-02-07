@@ -8,10 +8,13 @@ import { BaseService } from './baseService';
   providedIn: 'root'
 })
 export class ElementService extends BaseService {
+ 
 
   getTaskElementsUrl: string = 'api/engine/gettaskelements';
   getElementCreateUrl: string = 'api/engine/getelementcreate';
   createElementUrl: string = 'api/engine/createelement';
+  updateElementUrl: string = 'api/engine/updateelement';
+  deleteElementUrl: string = 'api/engine/deleteelement';
 
   constructor(private http: HttpClient) {
     super();
@@ -29,5 +32,14 @@ export class ElementService extends BaseService {
   createElement(element: TaskElement): Observable<string> {
     element.elementTypesList = null;
     return this.http.put<string>(this.createElementUrl, element, this.httpOptions);
+  }
+
+  updateElement(element: TaskElement): Observable<string> {
+    element.elementTypesList = null;
+    return this.http.put<string>(this.updateElementUrl, element, this.httpOptions);
+  }
+
+  deleteElement(elementId: string): Observable<TaskElement> {
+    return this.http.delete <TaskElement>(this.deleteElementUrl + '/' + elementId, this.httpOptions);
   }
 }
